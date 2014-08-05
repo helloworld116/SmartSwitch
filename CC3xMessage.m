@@ -44,7 +44,6 @@ typedef struct {
 } msgHeader;
 
 // D2P_CONFIG_RESULT 0x02
-
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
@@ -53,16 +52,20 @@ typedef struct {
   unsigned short crc;
 } d2pMsg02;
 
+typedef struct { char name[32]; } socketName;
+
 // P2D_SERVER_INFO 0x05
 typedef struct {
   msgHeader header;
   unsigned char ip[4];
   unsigned short port;
   char deviceName[32];
+  unsigned char count;
+  socketName sName[2];
   unsigned short crc;
 } p2dMsg05;
 
-// P2D_SERVER_RESP 0x07
+// P2D_SERVER_RESP 0x06
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
@@ -88,13 +91,13 @@ typedef struct {
   unsigned short crc;
 } d2pMsg0A;
 
-// P2D_SCAN_DEV_REQ 0x09
+// P2D_STATE_INQUIRY 0x0B
 typedef struct {
   msgHeader header;
   unsigned short crc;
 } p2dMsg0B;
 
-// D2P_STATE_RESP 0x0c
+// D2P_STATE_RESP 0x0C
 typedef struct {
   msgHeader header;
   char state;
@@ -104,16 +107,12 @@ typedef struct {
   char deviceName[32];
   unsigned char deviceLockState;
   unsigned char FWVersion;
-  unsigned short pm;
-  unsigned char temperatureHigh;
-  unsigned char temperatureLow;
-  unsigned char humidity;  //湿度
+  unsigned char extensionLength;
   unsigned short power;
-  unsigned char airTag;  //空气质量代号
   unsigned short crc;
 } d2pMsg0C;
 
-// P2S_STATE_INQUIRY 0xd
+// P2S_STATE_INQUIRY 0x0D
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
@@ -131,12 +130,15 @@ typedef struct {
   char deviceName[32];
   unsigned char deviceLockState;
   unsigned char FWVersion;
+  unsigned char extensionLength;
+  unsigned short power;
   unsigned short crc;
 } d2pMsg0E;
 
 // P2D_CONTROL_REQ 0x11
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   unsigned char on;
   unsigned short crc;
 } p2dMsg11;
@@ -145,6 +147,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } d2pMsg12;
@@ -153,6 +156,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned char on;
   unsigned short crc;
 } p2sMsg13;
@@ -161,6 +165,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } s2pMsg14;
@@ -168,6 +173,7 @@ typedef struct {
 // P2D_GET_TIMER_REQ 0x17
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   unsigned short crc;
 } p2dMsg17;
 
@@ -182,6 +188,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
   timerTask timerList[8];
@@ -192,6 +199,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned short crc;
 } p2sMsg19;
 
@@ -199,6 +207,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
   timerTask *timerList;
@@ -208,6 +217,7 @@ typedef struct {
 // P2D_SET_TIMER_REQ 0x1D
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   unsigned char currentTimer[4];
   unsigned char timerNumber;
   timerTask *timerList;
@@ -218,6 +228,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } d2pMsg1E;
@@ -226,6 +237,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
   timerTask *timerList;
@@ -236,6 +248,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } s2pMsg20;
@@ -329,6 +342,7 @@ typedef struct {
 // P2D_SET_NAME_REQ 0x3F
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   char name[32];
   unsigned short crc;
 } p2dMsg3F;
@@ -337,6 +351,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } d2pMsg40;
@@ -345,6 +360,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char name[32];
   unsigned short crc;
 } p2sMsg41;
@@ -353,6 +369,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } s2pMsg42;
@@ -391,6 +408,7 @@ typedef struct {
 // P2D_SET_DELAY_REQ 0x4D
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   unsigned short delay;
   char on;
   unsigned short crc;
@@ -401,6 +419,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } d2pMsg4E;
@@ -409,6 +428,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned short delay;
   char on;
   unsigned short crc;
@@ -417,6 +437,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   char state;
   unsigned short crc;
 } s2pMsg50;
@@ -424,6 +445,7 @@ typedef struct {
 // P2D_GET_DELAY_REQ 0x53
 typedef struct {
   msgHeader header;
+  unsigned char socketId;
   unsigned short crc;
 } p2dMsg53;
 
@@ -431,6 +453,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned short delay;
   unsigned char on;
   unsigned short crc;
@@ -440,6 +463,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
+  unsigned char socketId;
   unsigned short crc;
 } p2sMsg55;
 
@@ -980,17 +1004,17 @@ typedef struct {
 
   //有电量、空气质量数据才处理
   if ([aData length] == 61) {
-    //赋值过程中，高低位互换了，后续查明原因
-    message.pmTwoPointFive = (msg.pm >> 8 | msg.pm << 8);
-    message.temperature =
-        ((msg.temperatureHigh & 0x7f) * 256 + msg.temperatureLow) / 10.0f;
-    if (msg.temperatureHigh & (1 << 7)) {
-      message.temperature = -message.temperature;
-    }
-    message.humidity = msg.humidity;
-    unsigned short power = (msg.power >> 8 | msg.power << 8);
-    message.power = power == 0 ? 0.f : 53035.5f / power;
-    message.airTag = msg.airTag;
+    //    //赋值过程中，高低位互换了，后续查明原因
+    //    message.pmTwoPointFive = (msg.pm >> 8 | msg.pm << 8);
+    //    message.temperature =
+    //        ((msg.temperatureHigh & 0x7f) * 256 + msg.temperatureLow) / 10.0f;
+    //    if (msg.temperatureHigh & (1 << 7)) {
+    //      message.temperature = -message.temperature;
+    //    }
+    //    message.humidity = msg.humidity;
+    //    unsigned short power = (msg.power >> 8 | msg.power << 8);
+    //    message.power = power == 0 ? 0.f : 53035.5f / power;
+    //    message.airTag = msg.airTag;
   }
   message.crc = msg.crc;
   return message;

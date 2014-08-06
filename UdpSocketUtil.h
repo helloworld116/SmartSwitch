@@ -11,7 +11,7 @@
  *  请求响应后的处理
  */
 @protocol UDPDelegate<NSObject>
-#pragma mark 请求响应后的处理
+#pragma mark - 请求响应后的处理
 @optional
 /**
  *  手机添加设备响应后的处理
@@ -98,7 +98,7 @@
  */
 - (void)responseMsgId5A:(CC3xMessage *)msg;
 
-#pragma mark 请求没响应后的处理
+#pragma mark - 请求没响应后的处理
 /**
  *  手机添加设备请求无响应处理
  */
@@ -162,7 +162,7 @@
  */
 - (void)noResponseMsgId5A;
 
-#pragma mark 请求没有发送的处理
+#pragma mark - 请求没有发送的处理
 /**
  *  UDP请求发送失败后的处理
  */
@@ -235,6 +235,7 @@
 - (void)noSendMsgId59;
 @end
 
+#pragma mark - UdpSocketUtil
 @interface UdpSocketUtil : NSObject
 @property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
 @property(nonatomic, assign) id<UDPDelegate> delegate;

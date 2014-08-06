@@ -14,8 +14,6 @@
 		15295269199071EF00924FC3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 15295268199071EF00924FC3 /* main.m */; };
 		1529526D199071F000924FC3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1529526C199071F000924FC3 /* AppDelegate.m */; };
 		15295270199071F000924FC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1529526E199071F000924FC3 /* Main.storyboard */; };
-		15295273199071F000924FC3 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15295272199071F000924FC3 /* MasterViewController.m */; };
-		15295276199071F000924FC3 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15295275199071F000924FC3 /* DetailViewController.m */; };
 		15295278199071F000924FC3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15295277199071F000924FC3 /* Images.xcassets */; };
 		1529527F199071F000924FC3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529527E199071F000924FC3 /* XCTest.framework */; };
 		15295280199071F000924FC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529525C199071EF00924FC3 /* Foundation.framework */; };
@@ -40,6 +38,20 @@
 		152952CD19908B7200924FC3 /* ViewUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952C719908B7200924FC3 /* ViewUtil.m */; };
 		152952D11990A35000924FC3 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 152952D01990A35000924FC3 /* libxml2.dylib */; };
 		152952D41990D01D00924FC3 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D31990D01D00924FC3 /* BaseViewController.m */; };
+		152952D71991BF4600924FC3 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D61991BF4600924FC3 /* MenuViewController.m */; };
+		152952DA1991BFF800924FC3 /* SocketAndSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D91991BFF800924FC3 /* SocketAndSceneViewController.m */; };
+		1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */; };
+		1587F4351991DB6F0061EB86 /* AddSocketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4341991DB6F0061EB86 /* AddSocketViewController.m */; };
+		1587F439199208570061EB86 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F438199208570061EB86 /* HelpViewController.m */; };
+		1587F43C199208600061EB86 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F43B199208600061EB86 /* SettingViewController.m */; };
+		1587F43F199208690061EB86 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F43E199208690061EB86 /* AboutViewController.m */; };
+		1587F442199208D70061EB86 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F441199208D70061EB86 /* ShareViewController.m */; };
+		1587F44519920B460061EB86 /* AddModelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F44419920B460061EB86 /* AddModelViewController.m */; };
+		1587F44819920B590061EB86 /* BuyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F44719920B590061EB86 /* BuyViewController.m */; };
+		1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F44B199225EF0061EB86 /* AddSenceViewController.m */; };
+		1587F450199229210061EB86 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F44F199229210061EB86 /* LoginViewController.m */; };
+		1587F4531992292E0061EB86 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4521992292D0061EB86 /* RegisterViewController.m */; };
+		1587F456199230BB0061EB86 /* SDZGUserProtocolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F455199230BB0061EB86 /* SDZGUserProtocolViewController.m */; };
 		A5C618E8CDA540B5B4FD8868 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3A51A2AE54D4395A7991CCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -65,10 +77,6 @@
 		1529526B199071F000924FC3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1529526C199071F000924FC3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1529526F199071F000924FC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		15295271199071F000924FC3 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
-		15295272199071F000924FC3 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		15295274199071F000924FC3 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		15295275199071F000924FC3 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		15295277199071F000924FC3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1529527D199071F000924FC3 /* SmartSwitchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmartSwitchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1529527E199071F000924FC3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -113,6 +121,34 @@
 		152952D01990A35000924FC3 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		152952D21990D01D00924FC3 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		152952D31990D01D00924FC3 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		152952D51991BF4600924FC3 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
+		152952D61991BF4600924FC3 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		152952D81991BFF800924FC3 /* SocketAndSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketAndSceneViewController.h; sourceTree = "<group>"; };
+		152952D91991BFF800924FC3 /* SocketAndSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketAndSceneViewController.m; sourceTree = "<group>"; };
+		1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSidePanelController.h; sourceTree = "<group>"; };
+		1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSidePanelController.m; sourceTree = "<group>"; };
+		1587F4331991DB6F0061EB86 /* AddSocketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSocketViewController.h; sourceTree = "<group>"; };
+		1587F4341991DB6F0061EB86 /* AddSocketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSocketViewController.m; sourceTree = "<group>"; };
+		1587F437199208570061EB86 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		1587F438199208570061EB86 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		1587F43A199208600061EB86 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
+		1587F43B199208600061EB86 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
+		1587F43D199208690061EB86 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		1587F43E199208690061EB86 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		1587F440199208D70061EB86 /* ShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		1587F441199208D70061EB86 /* ShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		1587F44319920B460061EB86 /* AddModelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddModelViewController.h; sourceTree = "<group>"; };
+		1587F44419920B460061EB86 /* AddModelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddModelViewController.m; sourceTree = "<group>"; };
+		1587F44619920B590061EB86 /* BuyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyViewController.h; sourceTree = "<group>"; };
+		1587F44719920B590061EB86 /* BuyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyViewController.m; sourceTree = "<group>"; };
+		1587F44A199225EF0061EB86 /* AddSenceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSenceViewController.h; sourceTree = "<group>"; };
+		1587F44B199225EF0061EB86 /* AddSenceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSenceViewController.m; sourceTree = "<group>"; };
+		1587F44E199229210061EB86 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		1587F44F199229210061EB86 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		1587F4511992292D0061EB86 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		1587F4521992292D0061EB86 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		1587F454199230BB0061EB86 /* SDZGUserProtocolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGUserProtocolViewController.h; sourceTree = "<group>"; };
+		1587F455199230BB0061EB86 /* SDZGUserProtocolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGUserProtocolViewController.m; sourceTree = "<group>"; };
 		CABB3F26A985482997979951 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F3A51A2AE54D4395A7991CCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -184,17 +220,33 @@
 		15295262199071EF00924FC3 /* SmartSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				1587F44D199229050061EB86 /* 用户相关 */,
+				1587F44919921C660061EB86 /* 开关和场景 */,
 				1529526B199071F000924FC3 /* AppDelegate.h */,
 				1529526C199071F000924FC3 /* AppDelegate.m */,
 				1529526E199071F000924FC3 /* Main.storyboard */,
-				15295271199071F000924FC3 /* MasterViewController.h */,
-				15295272199071F000924FC3 /* MasterViewController.m */,
-				15295274199071F000924FC3 /* DetailViewController.h */,
-				15295275199071F000924FC3 /* DetailViewController.m */,
 				15295277199071F000924FC3 /* Images.xcassets */,
 				15295263199071EF00924FC3 /* Supporting Files */,
 				152952D21990D01D00924FC3 /* BaseViewController.h */,
 				152952D31990D01D00924FC3 /* BaseViewController.m */,
+				152952D51991BF4600924FC3 /* MenuViewController.h */,
+				152952D61991BF4600924FC3 /* MenuViewController.m */,
+				1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */,
+				1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */,
+				1587F4331991DB6F0061EB86 /* AddSocketViewController.h */,
+				1587F4341991DB6F0061EB86 /* AddSocketViewController.m */,
+				1587F437199208570061EB86 /* HelpViewController.h */,
+				1587F438199208570061EB86 /* HelpViewController.m */,
+				1587F43A199208600061EB86 /* SettingViewController.h */,
+				1587F43B199208600061EB86 /* SettingViewController.m */,
+				1587F43D199208690061EB86 /* AboutViewController.h */,
+				1587F43E199208690061EB86 /* AboutViewController.m */,
+				1587F440199208D70061EB86 /* ShareViewController.h */,
+				1587F441199208D70061EB86 /* ShareViewController.m */,
+				1587F44319920B460061EB86 /* AddModelViewController.h */,
+				1587F44419920B460061EB86 /* AddModelViewController.m */,
+				1587F44619920B590061EB86 /* BuyViewController.h */,
+				1587F44719920B590061EB86 /* BuyViewController.m */,
 			);
 			path = SmartSwitch;
 			sourceTree = "<group>";
@@ -297,6 +349,30 @@
 				152952CF19908BB800924FC3 /* PassValueDelegate.h */,
 			);
 			name = protocol;
+			sourceTree = "<group>";
+		};
+		1587F44919921C660061EB86 /* 开关和场景 */ = {
+			isa = PBXGroup;
+			children = (
+				152952D81991BFF800924FC3 /* SocketAndSceneViewController.h */,
+				152952D91991BFF800924FC3 /* SocketAndSceneViewController.m */,
+				1587F44A199225EF0061EB86 /* AddSenceViewController.h */,
+				1587F44B199225EF0061EB86 /* AddSenceViewController.m */,
+			);
+			name = "开关和场景";
+			sourceTree = "<group>";
+		};
+		1587F44D199229050061EB86 /* 用户相关 */ = {
+			isa = PBXGroup;
+			children = (
+				1587F44E199229210061EB86 /* LoginViewController.h */,
+				1587F44F199229210061EB86 /* LoginViewController.m */,
+				1587F4511992292D0061EB86 /* RegisterViewController.h */,
+				1587F4521992292D0061EB86 /* RegisterViewController.m */,
+				1587F454199230BB0061EB86 /* SDZGUserProtocolViewController.h */,
+				1587F455199230BB0061EB86 /* SDZGUserProtocolViewController.m */,
+			);
+			name = "用户相关";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -436,24 +512,36 @@
 			files = (
 				1529526D199071F000924FC3 /* AppDelegate.m in Sources */,
 				152952D41990D01D00924FC3 /* BaseViewController.m in Sources */,
-				15295273199071F000924FC3 /* MasterViewController.m in Sources */,
+				152952DA1991BFF800924FC3 /* SocketAndSceneViewController.m in Sources */,
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
+				152952D71991BF4600924FC3 /* MenuViewController.m in Sources */,
+				1587F456199230BB0061EB86 /* SDZGUserProtocolViewController.m in Sources */,
 				152952AF1990899F00924FC3 /* CC3xAPManager.m in Sources */,
 				152952B719908B3F00924FC3 /* GDataXMLNode.m in Sources */,
 				152952A51990899400924FC3 /* CC3xMessage.m in Sources */,
 				152952B01990899F00924FC3 /* CC3xUtility.m in Sources */,
+				1587F442199208D70061EB86 /* ShareViewController.m in Sources */,
+				1587F44519920B460061EB86 /* AddModelViewController.m in Sources */,
+				1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */,
+				1587F4531992292E0061EB86 /* RegisterViewController.m in Sources */,
+				1587F43F199208690061EB86 /* AboutViewController.m in Sources */,
+				1587F450199229210061EB86 /* LoginViewController.m in Sources */,
 				152952C819908B7200924FC3 /* SendResponseHandler.m in Sources */,
 				152952B3199089B100924FC3 /* CRC.c in Sources */,
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,
-				15295276199071F000924FC3 /* DetailViewController.m in Sources */,
+				1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */,
+				1587F4351991DB6F0061EB86 /* AddSocketViewController.m in Sources */,
 				152952CA19908B7200924FC3 /* NetUtil.m in Sources */,
 				152952A61990899400924FC3 /* CC3xMoreAction.m in Sources */,
 				152952CB19908B7200924FC3 /* MessageUtil.m in Sources */,
 				152952A71990899400924FC3 /* CC3xServerInfo.m in Sources */,
 				152952A91990899400924FC3 /* CC3xTimerTask.m in Sources */,
+				1587F439199208570061EB86 /* HelpViewController.m in Sources */,
+				1587F44819920B590061EB86 /* BuyViewController.m in Sources */,
 				152952CC19908B7200924FC3 /* XMLUtil.m in Sources */,
+				1587F43C199208600061EB86 /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +681,7 @@
 					"\"/usr/include/libxml2\"",
 				);
 				INFOPLIST_FILE = "SmartSwitch/SmartSwitch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -622,6 +711,7 @@
 					"\"/usr/include/libxml2\"",
 				);
 				INFOPLIST_FILE = "SmartSwitch/SmartSwitch-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

@@ -18,6 +18,7 @@
     #import <MBProgressHUD.h>
     #import <JASidePanelController.h>
     #import <UIViewController+JASidePanel.h>
+    #import <KxMenu.h>
 
     #import "AppDelegate.h"
     #import "CC3xUtility.h"

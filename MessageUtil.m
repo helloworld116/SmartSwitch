@@ -525,7 +525,7 @@
   });
 }
 
-#pragma mark 区分内网和外网处理
+#pragma mark - 处理内外网请求
 - (void)sendMsg0BOr0D:(GCDAsyncUdpSocket *)udpSocket
               aSwitch:(CC3xSwitch *)aSwitch
              sendMode:(SENDMODE)mode {

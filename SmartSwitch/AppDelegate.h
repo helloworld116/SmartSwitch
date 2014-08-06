@@ -12,4 +12,6 @@
 
 @property(strong, nonatomic) UIWindow *window;
 @property(nonatomic, assign) NetworkStatus networkStatus;
+@property(nonatomic, strong) UIViewController *centerViewController;
+@property(nonatomic, strong) UIViewController *leftViewController;
 @end

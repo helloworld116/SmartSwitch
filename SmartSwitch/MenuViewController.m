@@ -94,7 +94,7 @@
   switch (indexPath.row) {
     case 0:
       nextVC = [self.storyboard
-          instantiateViewControllerWithIdentifier:@"AddSocketNavController"];
+          instantiateViewControllerWithIdentifier:@"AddSwitchNavController"];
       break;
     case 1:
       nextVC = [self.storyboard
@@ -122,7 +122,7 @@
       break;
     default:
       nextVC = [self.storyboard
-          instantiateViewControllerWithIdentifier:@"AddSocketNavController"];
+          instantiateViewControllerWithIdentifier:@"AddSwitchNavController"];
       break;
   }
   kSharedAppliction.centerViewController =

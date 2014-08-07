@@ -19,7 +19,7 @@
       instantiateViewControllerWithIdentifier:@"MenuViewController"];
   [self setLeftPanel:kSharedAppliction.leftViewController];
   [self setCenterPanel:[self.storyboard instantiateViewControllerWithIdentifier:
-                                            @"SocketAndSceneNavController"]];
+                                            @"SwitchAndSceneNavController"]];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil

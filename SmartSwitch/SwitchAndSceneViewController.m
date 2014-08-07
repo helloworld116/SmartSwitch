@@ -1,19 +1,24 @@
 //
-//  SocketAndSceneViewController.m
+//  SwitchAndSceneViewController.m
 //  SmartSwitch
 //
 //  Created by sdzg on 14-8-6.
 //  Copyright (c) 2014年 itouchco.com. All rights reserved.
 //
 
-#import "SocketAndSceneViewController.h"
+#import "SwitchAndSceneViewController.h"
+#import "SwitchListTableViewController.h"
 
-@interface SocketAndSceneViewController ()
+@interface SwitchAndSceneViewController ()
+//@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+//@property(strong, nonatomic) IBOutlet SwitchTableView *switchTableView;
+@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
+
 - (IBAction)showMenu:(id)sender;
 - (IBAction)showAddMenu:(id)sender;
 @end
 
-@implementation SocketAndSceneViewController
+@implementation SwitchAndSceneViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil {
@@ -27,6 +32,19 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  //  self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width
+  //  * 2,
+  //                                           self.scrollView.frame.size.height);
+  UITableView *switchTableView =
+      ((SwitchListTableViewController *)
+       [self.storyboard instantiateViewControllerWithIdentifier:
+                            @"SwitchListTableViewController"]).tableView;
+
+  NSLog(@"1");
+
+  switchTableView.frame = CGRectMake(0, 64, self.view.frame.size.width,
+                                     self.view.frame.size.height - 64);
+  [self.view addSubview:switchTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -86,7 +104,6 @@ preparation before navigation
 - (void)menuItemSence:(id)sender {
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"AddSenceViewController"];
-  //    nextVC.modalPresentationStyle = UIMo
   [self presentViewController:nextVC animated:YES completion:^{}];
 }
 @end

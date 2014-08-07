@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-EAIntroView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-JASidePanels.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -34,7 +39,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-PNChart.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Reachability.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-TWMessageBarManager.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-UICountingLabel.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,42 +67,62 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>50BD18B13E1A484293184FB8</key>
+		<key>08E8B4FD633240108040E227</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6639E2154B21446B976BA22B</key>
+		<key>4DCD733C3D97444C9C06F5F5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>794F9F2A742447FFBD9BE57E</key>
+		<key>535791F4C6DA4A9B8ABAA74A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7D9C8058F6A94E50BE6807FC</key>
+		<key>5FFD85690D164E6FBBFE7031</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A15DE77D10664C6798BDED77</key>
+		<key>60A15BA33D834AA8B2006E51</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D29033E435AA4F7B96FD9EEB</key>
+		<key>7C06621589BF4A22976AA2B4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F22F8BC71DEE4CAAA46D144E</key>
+		<key>8FDEB4786CC044B982C1F287</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FA8A9D392C804AF7BF82FE90</key>
+		<key>919D083D560E40C58574D208</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A4C09064B31C4EA99EEF1077</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BC361ED74C2B40C6B3927AFB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D6A43F9CC0D446178646C613</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F64E943F99DC47FBA2DEABE2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

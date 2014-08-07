@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SocketAndSceneViewController : UIViewController
+@interface SwitchAndSceneViewController : UIViewController
 
 @end

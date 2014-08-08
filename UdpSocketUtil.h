@@ -14,6 +14,19 @@
 #pragma mark - 请求响应后的处理
 @optional
 /**
+ *  为设备配置wifi后的响应
+ *
+ *  @param msg     响应报文经过包装后的对象
+ *  @param address 路由器的地址
+ */
+- (void)responseMsgId2:(CC3xMessage *)msg address:(NSData *)address;
+/**
+ *
+ *
+ *  @param msg
+ */
+- (void)responseMsgId6:(CC3xMessage *)msg;
+/**
  *  手机添加设备响应后的处理
  *
  *  @param msg 响应报文经过包装后的对象
@@ -99,6 +112,10 @@
 - (void)responseMsgId5A:(CC3xMessage *)msg;
 
 #pragma mark - 请求没响应后的处理
+/**
+ *  手机添加设备请求无响应处理
+ */
+- (void)noResponseMsgId6;
 /**
  *  手机添加设备请求无响应处理
  */

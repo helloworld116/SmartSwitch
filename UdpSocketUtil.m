@@ -69,7 +69,7 @@
   // 2、指定时间后检查数据是否为空，为空说明未响应，触发请求重发
   switch (tag) {
     case P2D_SERVER_INFO_05:
-
+      [SendResponseHandler shareInstance].responseData6 = nil;
       break;
     case P2D_SCAN_DEV_09:
       [SendResponseHandler shareInstance].responseDataA = nil;
@@ -245,10 +245,22 @@
        didReceiveData:(NSData*)data
           fromAddress:(NSData*)address
     withFilterContext:(id)filterContext {
-  //  NSLog(@"receiveData is %@", [CC3xMessageUtil hexString:data]);
+  NSLog(@"receiveData is %@", [CC3xMessageUtil hexString:data]);
   if (data) {
     CC3xMessage* msg = (CC3xMessage*)filterContext;
     switch (msg.msgId) {
+      case 0x2:
+        if ([self.delegate
+                respondsToSelector:@selector(responseMsgId2:address:)]) {
+          [self.delegate responseMsgId2:msg address:address];
+        }
+        break;
+      case 0x6:
+        [SendResponseHandler shareInstance].responseData6 = data;
+        if ([self.delegate respondsToSelector:@selector(responseMsgId6:)]) {
+          [self.delegate responseMsgId6:msg];
+        }
+        break;
       case 0xa:
         [SendResponseHandler shareInstance].responseDataA = data;
         if ([self.delegate respondsToSelector:@selector(responseMsgIdA:)]) {

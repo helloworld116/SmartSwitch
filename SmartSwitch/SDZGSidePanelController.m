@@ -20,6 +20,7 @@
   [self setLeftPanel:kSharedAppliction.leftViewController];
   [self setCenterPanel:[self.storyboard instantiateViewControllerWithIdentifier:
                                             @"SwitchAndSceneNavController"]];
+  [self setLeftFixedWidth:269.f];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil

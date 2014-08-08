@@ -8,15 +8,17 @@
 
 #import "AddSwitchViewController.h"
 
-@interface AddSwitchViewController ()<UITextFieldDelegate>
+@interface AddSwitchViewController ()<UITextFieldDelegate, UDPDelegate>
 @property(strong, nonatomic) IBOutlet UITextField *textWIFI;
 @property(strong, nonatomic) IBOutlet UITextField *textPassword;
 @property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
 
 @property(strong, nonatomic) FirstTimeConfig *config;
-
+@property(strong, atomic) GCDAsyncUdpSocket *udpSocket;
 @property(strong, nonatomic) NSString *wifi;
 @property(strong, nonatomic) NSString *password;
+//为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
+@property(assign, atomic) int count;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
@@ -42,22 +44,30 @@
   [self.sidePanelController setLeftPanel:nil];
   self.textWIFI.delegate = self;
   self.textPassword.delegate = self;
+  self.udpSocket = [UdpSocketUtil shareInstance].udpSocket;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-
-  [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(reachabilityChanged:)
-             name:kReachabilityChangedNotification
-           object:nil];
+  [UdpSocketUtil shareInstance].delegate = self;
+//  [[NSNotificationCenter defaultCenter]
+//      addObserver:self
+//         selector:@selector(reachabilityChanged:)
+//             name:kReachabilityChangedNotification
+//           object:nil];
 
 #if defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR
 #else
   NSString *ssid = [FirstTimeConfig getSSID];
   self.textWIFI.text = ssid;
 #endif
+  self.textPassword.text = @"sdzg2014";
+  self.password = @"sdzg2014";
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  [UdpSocketUtil shareInstance].delegate = nil;
+  [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,6 +91,7 @@ preparation before navigation
 }
 
 - (IBAction)doConfig:(id)sender {
+  [self startTransmitting];
 }
 
 #pragma mark - 返回
@@ -91,8 +102,10 @@ preparation before navigation
                                                       object:self];
 }
 
+#pragma mark - CC3000
 //网络连接完好，进行udp传输
 - (void)startTransmitting {
+  self.count = 0;
 #if defined(TARGET_IPHONE_SIMULATOR) && TARGET_IPHONE_SIMULATOR
 #else
   @try {
@@ -103,6 +116,9 @@ preparation before navigation
       self.config = [[FirstTimeConfig alloc] init];
     }
     [self sendAction];
+    [NSThread detachNewThreadSelector:@selector(waitForAckThread:)
+                             toTarget:self
+                           withObject:nil];
   }
   @catch (NSException *exception) {
     LogInfo(@"%s exception == %@", __FUNCTION__, [exception description]);
@@ -116,7 +132,6 @@ preparation before navigation
   @try {
     LogInfo(@"begin");
     [self.config transmitSettings];
-
     LogInfo(@"end");
   }
   @catch (NSException *exception) {
@@ -124,12 +139,6 @@ preparation before navigation
   }
   @finally {
   }
-}
-
-// button触发配置方法
-- (void)touchToAdd:(UIButton *)sender {
-  [self stopAction];
-  [self startTransmitting];
 }
 
 - (void)stopAction {
@@ -152,24 +161,52 @@ preparation before navigation
     LogInfo(@"Bool value == %d", val);
     if (val) {
       [self stopAction];
-      [self performSelectorOnMainThread:@selector(stopAction)
-                             withObject:nil
-                          waitUntilDone:YES];
     }
   }
   @catch (NSException *exception) {
     LogInfo(@"%s exception == %@", __FUNCTION__, [exception description]);
-    /// stop here
   }
   @finally {
   }
 
   if ([NSThread isMainThread] == NO) {
-    LogInfo(@"这不是主线程");
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    NSLog(@"this is not main thread");
+    [NSThread exit];
   } else {
-    LogInfo(@"这是主线程");
+    NSLog(@"this is main thread");
   }
   LogInfo(@"%s end", __PRETTY_FUNCTION__);
 }
+
+#pragma mark - UITextFieldDelegate
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+  [textField resignFirstResponder];
+  return YES;
+}
+
+#pragma mark - UDPDelegate
+- (void)responseMsgId2:(CC3xMessage *)msg address:(NSData *)address {
+  self.count++;
+  if (self.count == 1) {
+    [[MessageUtil shareInstance] sendMsg05:self.udpSocket
+                                   address:address
+                                  sendMode:ActiveMode];
+  }
+}
+
+- (void)responseMsgId6:(CC3xMessage *)msg {
+  if (msg.state == 0) {
+    //设备添加成功
+  }
+}
+
+- (void)noResponseMsgId6 {
+}
+
+- (void)noSendMsgId5 {
+}
+
 @end

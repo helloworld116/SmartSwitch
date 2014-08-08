@@ -9,13 +9,29 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "SmartSwitch/SwitchTableView.m"
-            timestampString = "429088374.841329"
+            filePath = "MessageUtil.m"
+            timestampString = "429163085.276902"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "-awakeFromNib"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "-sendDataToAddress"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CC3xMessage.m"
+            timestampString = "429170759.372737"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1166"
+            endingLineNumber = "1166"
+            landmarkName = "+parseMessage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

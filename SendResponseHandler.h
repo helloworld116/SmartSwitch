@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface SendResponseHandler : NSObject
+@property(atomic, strong) NSData *responseData6;
 @property(atomic, strong) NSData *responseDataA;
 @property(atomic, strong) NSData *responseDataC;
 @property(atomic, strong) NSData *responseDataE;

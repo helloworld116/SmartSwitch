@@ -41,7 +41,7 @@ preparation before navigation
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return 5;
+  return 10;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView

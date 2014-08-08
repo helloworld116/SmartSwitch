@@ -14,7 +14,9 @@
 @end
 
 @implementation MenuCell
-
+- (void)awakeFromNib {
+  self.backgroundColor = [UIColor clearColor];
+}
 @end
 
 @interface MenuViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -51,9 +53,11 @@
     @"晟大设置",
     @"关于晟大"
   ];
-  //  self.imageNames = @[];
+  self.imageNames =
+      @[ @"tb01", @"tb02", @"tb03", @"tb04", @"tb05", @"tb06", @"tb07" ];
   self.tableView.delegate = self;
   self.tableView.dataSource = self;
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -77,7 +81,7 @@
   MenuCell *menuCell = [tableView dequeueReusableCellWithIdentifier:CellId];
   NSString *menuName = self.menuNames[indexPath.row];
   NSString *imgName = self.imageNames[indexPath.row];
-  //  menuCell.imgMenu.image = [UIImage imageNamed:imgName];
+  menuCell.imgMenu.image = [UIImage imageNamed:imgName];
   menuCell.lblMenuName.text = menuName;
 
   UIView *backgroundView = [[UIView alloc] initWithFrame:menuCell.bounds];

@@ -11,6 +11,7 @@
 
 @interface MessageUtil : NSObject
 typedef enum { ActiveMode, PassiveMode } SENDMODE;
+@property(atomic, assign) int msg5SendCount;
 @property(atomic, assign) int msg9SendCount;
 @property(atomic, assign) int msgBSendCount;
 @property(atomic, assign) int msgDSendCount;
@@ -31,6 +32,16 @@ typedef enum { ActiveMode, PassiveMode } SENDMODE;
 + (instancetype)shareInstance;
 
 #pragma mark - send
+/**
+ *  P2D_SERVER_INFO
+ *
+ *  @param udpSocket
+ *  @param address   发往的地址
+ *  @param mode
+ */
+- (void)sendMsg05:(GCDAsyncUdpSocket *)udpSocket
+          address:(NSData *)address
+         sendMode:(SENDMODE)mode;
 /**
  *  手机添加设备
  *

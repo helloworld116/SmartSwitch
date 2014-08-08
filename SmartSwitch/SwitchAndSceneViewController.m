@@ -8,6 +8,7 @@
 
 #import "SwitchAndSceneViewController.h"
 #import "SwitchListTableViewController.h"
+#import "SwitchTableView.h"
 
 @interface SwitchAndSceneViewController ()
 //@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -36,7 +37,7 @@
   //  * 2,
   //                                           self.scrollView.frame.size.height);
   UITableView *switchTableView =
-      ((SwitchListTableViewController *)
+      ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
                             @"SwitchListTableViewController"]).tableView;
 
@@ -48,6 +49,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+  NSLog(@"switchandscene viewwillappear");
   [super viewWillAppear:animated];
 }
 

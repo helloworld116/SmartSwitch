@@ -11,6 +11,7 @@
 @property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
 @property(atomic, strong) NSData *msg;
 @property(atomic, strong) NSString *host;
+@property(atomic, strong) NSData *address;
 @property(atomic, assign) uint16_t port;
 @property(atomic, assign) long tag;
 @end
@@ -34,7 +35,7 @@
   _udpSocket = socket;
 }
 
-- (void)send {
+- (void)sendDataToHost {
   if (self.udpSocket.isClosed) {
     [CC3xUtility setupUdpSocket:self.udpSocket port:APP_PORT];
   }
@@ -43,6 +44,37 @@
                       port:self.port
                withTimeout:kUDPTimeOut
                        tag:self.tag];
+}
+
+- (void)sendDataToAddress {
+  if (self.udpSocket.isClosed) {
+    [CC3xUtility setupUdpSocket:self.udpSocket port:APP_PORT];
+  }
+  [self.udpSocket sendData:self.msg
+                 toAddress:self.address
+               withTimeout:kUDPTimeOut
+                       tag:self.tag];
+}
+
+- (void)sendMsg05:(GCDAsyncUdpSocket *)udpSocket
+          address:(NSData *)address
+         sendMode:(SENDMODE)mode {
+  dispatch_async(GLOBAL_QUEUE, ^{
+      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
+        if (mode == ActiveMode) {
+          self.msg5SendCount = 0;
+        } else if (mode == PassiveMode) {
+          self.msg5SendCount++;
+        }
+        self.udpSocket = udpSocket;
+        self.msg = [CC3xMessageUtil getP2dMsg05];
+        self.address = address;
+        self.tag = P2D_SERVER_INFO_05;
+        [self sendDataToAddress];
+      } else {
+        //不在内网的情况下的处理
+      }
+  });
 }
 
 - (void)sendMsg09:(GCDAsyncUdpSocket *)udpSocket sendMode:(SENDMODE)mode {
@@ -58,7 +90,7 @@
         self.host = BROADCAST_ADDRESS;
         self.port = DEVICE_PORT;
         self.tag = P2D_SCAN_DEV_09;
-        [self send];
+        [self sendDataToHost];
       } else {
         //不在内网的情况下的处理
       }
@@ -78,7 +110,7 @@
         self.host = BROADCAST_ADDRESS;
         self.port = DEVICE_PORT;
         self.tag = P2D_STATE_INQUIRY_0B;
-        [self send];
+        [self sendDataToHost];
       } else {
         //不在内网的情况下的处理
       }
@@ -107,7 +139,7 @@
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
         self.tag = P2S_STATE_INQUIRY_0D;
-        [self send];
+        [self sendDataToHost];
       }
   });
 }
@@ -137,7 +169,7 @@
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
         self.tag = tag;
-        [self send];
+        [self sendDataToHost];
       }
   });
 }
@@ -155,7 +187,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_STATE_INQUIRY_0B;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg0D:(GCDAsyncUdpSocket *)udpSocket
@@ -171,7 +203,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_STATE_INQUIRY_0D;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg11:(GCDAsyncUdpSocket *)udpSocket
@@ -188,7 +220,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_CONTROL_REQ_11;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg13:(GCDAsyncUdpSocket *)udpSocket
@@ -206,7 +238,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_CONTROL_REQ_13;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg17:(GCDAsyncUdpSocket *)udpSocket
@@ -222,7 +254,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_TIMER_REQ_17;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg19:(GCDAsyncUdpSocket *)udpSocket
@@ -238,7 +270,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_TIMER_REQ_19;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg1D:(GCDAsyncUdpSocket *)udpSocket
@@ -269,7 +301,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_TIMER_REQ_1D;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg1F:(GCDAsyncUdpSocket *)udpSocket
@@ -301,7 +333,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_TIMER_REQ_1F;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg25:(GCDAsyncUdpSocket *)udpSocket
@@ -317,7 +349,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_PROPERTY_REQ_25;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg27:(GCDAsyncUdpSocket *)udpSocket
@@ -333,7 +365,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_PROPERTY_REQ_27;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg39:(GCDAsyncUdpSocket *)udpSocket
@@ -350,7 +382,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_LOCATE_REQ_39;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg3B:(GCDAsyncUdpSocket *)udpSocket
@@ -367,7 +399,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_LOCATE_REQ_3B;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg3F:(GCDAsyncUdpSocket *)udpSocket
@@ -384,7 +416,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_NAME_REQ_3F;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg41:(GCDAsyncUdpSocket *)udpSocket
@@ -401,7 +433,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_NAME_REQ_41;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg47:(GCDAsyncUdpSocket *)udpSocket
@@ -418,7 +450,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_DEV_LOCK_REQ_47;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg49:(GCDAsyncUdpSocket *)udpSocket
@@ -435,7 +467,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_DEV_LOCK_REQ_49;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg4D:(GCDAsyncUdpSocket *)udpSocket
@@ -453,7 +485,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_DELAY_REQ_4D;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg4F:(GCDAsyncUdpSocket *)udpSocket
@@ -472,7 +504,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_DELAY_REQ_4F;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg53:(GCDAsyncUdpSocket *)udpSocket
@@ -488,7 +520,7 @@
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_DELAY_REQ_53;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg55:(GCDAsyncUdpSocket *)udpSocket
@@ -504,7 +536,7 @@
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_DELAY_REQ_55;
-  [self send];
+  [self sendDataToHost];
 }
 
 - (void)sendMsg59:(GCDAsyncUdpSocket *)udpSocket
@@ -521,7 +553,7 @@
       self.host = SERVER_IP;
       self.port = SERVER_PORT;
       self.tag = P2S_PHONE_INIT_REQ_59;
-      [self send];
+      [self sendDataToHost];
   });
 }
 

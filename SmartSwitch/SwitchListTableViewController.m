@@ -35,6 +35,10 @@
   NSLog(@"2");
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  NSLog(@"SwitchList viewWillAppear");
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.

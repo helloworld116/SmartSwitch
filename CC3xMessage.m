@@ -60,8 +60,8 @@ typedef struct {
   unsigned char ip[4];
   unsigned short port;
   char deviceName[32];
-  unsigned char count;
-  socketName sName[2];
+  //  unsigned char count;
+  //  socketName sName[2];
   unsigned short crc;
 } p2dMsg05;
 
@@ -71,7 +71,7 @@ typedef struct {
   unsigned char mac[6];
   char state;
   unsigned short crc;
-} p2dMsg06;
+} d2pMsg06;
 
 // P2D_SCAN_DEV_REQ 0x09
 typedef struct {
@@ -948,6 +948,22 @@ typedef struct {
   return message;
 }
 
++ (CC3xMessage *)parseD2P06:(NSData *)aData {
+  CC3xMessage *message = nil;
+  d2pMsg06 msg;
+  [aData getBytes:&msg length:sizeof(msg)];
+
+  message = [[CC3xMessage alloc] init];
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+                                           msg.mac[0], msg.mac[1], msg.mac[2],
+                                           msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.state = msg.state;
+  message.crc = msg.crc;
+  return message;
+}
+
 + (CC3xMessage *)parseD2P0A:(NSData *)aData {
   CC3xMessage *message = nil;
   d2pMsg0A msg;
@@ -1146,6 +1162,9 @@ typedef struct {
     case 0x2:
       result = [CC3xMessageUtil parseD2P02:data];
       break;
+    case 0x6:
+      result = [CC3xMessageUtil parseD2P06:data];
+      break;
     case 0xc:
     case 0xe:
       result = [CC3xMessageUtil parseD2P0C:data];
@@ -1157,7 +1176,6 @@ typedef struct {
     case 0x1a:
       result = [CC3xMessageUtil parseD2P18:data];
       break;
-    case 0x06:
     case 0x12:
     case 0x14:
     case 0x1e:

@@ -63,7 +63,16 @@
   if (kSharedAppliction.networkStatus != NotReachable) {
     switch (tag) {
       case P2D_SERVER_INFO_05:
-
+        if (!self.responseData6) {
+          if (kSharedAppliction.networkStatus == ReachableViaWiFi &&
+              [MessageUtil shareInstance].msg5SendCount < kTryCount &&
+              [[UdpSocketUtil shareInstance].delegate
+                  respondsToSelector:@selector(noResponseMsgId6)]) {
+            NSLog(@"tag %ld 重新发送%d次", tag,
+                  [MessageUtil shareInstance].msg5SendCount + 1);
+            [[UdpSocketUtil shareInstance].delegate noResponseMsgId6];
+          }
+        }
         break;
       case P2D_SCAN_DEV_09:
         if (!self.responseDataA) {

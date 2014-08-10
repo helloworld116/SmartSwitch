@@ -13,7 +13,7 @@
 @interface SwitchAndSceneViewController ()
 //@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 //@property(strong, nonatomic) IBOutlet SwitchTableView *switchTableView;
-@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
+@property (strong, nonatomic) IBOutlet UIView *viewOfContainer;
 
 - (IBAction)showMenu:(id)sender;
 - (IBAction)showAddMenu:(id)sender;
@@ -105,7 +105,7 @@ preparation before navigation
 
 - (void)menuItemSence:(id)sender {
   UIViewController *nextVC = [self.storyboard
-      instantiateViewControllerWithIdentifier:@"AddSenceViewController"];
+      instantiateViewControllerWithIdentifier:@"AddSenceNavController"];
   [self presentViewController:nextVC animated:YES completion:^{}];
 }
 @end

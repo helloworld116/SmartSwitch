@@ -9,16 +9,17 @@
 #import "AddSwitchViewController.h"
 
 @interface AddSwitchViewController ()<UITextFieldDelegate, UDPDelegate>
-@property(strong, nonatomic) IBOutlet UITextField *textWIFI;
-@property(strong, nonatomic) IBOutlet UITextField *textPassword;
-@property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
+@property (strong, nonatomic) IBOutlet UITextField *textWIFI;
+@property (strong, nonatomic) IBOutlet UITextField *textPassword;
+@property (strong, nonatomic) IBOutlet UIButton *btnShowPassword; //展示选中图片
+@property (assign, nonatomic) BOOL isShowPassword;
 
-@property(strong, nonatomic) FirstTimeConfig *config;
-@property(strong, atomic) GCDAsyncUdpSocket *udpSocket;
-@property(strong, nonatomic) NSString *wifi;
-@property(strong, nonatomic) NSString *password;
+@property (strong, nonatomic) FirstTimeConfig *config;
+@property (strong, atomic) GCDAsyncUdpSocket *udpSocket;
+@property (strong, nonatomic) NSString *wifi;
+@property (strong, nonatomic) NSString *password;
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
-@property(assign, atomic) int count;
+@property (assign, atomic) int count;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
@@ -88,6 +89,15 @@ preparation before navigation
 */
 
 - (IBAction)showOrHiddenPassword:(id)sender {
+  self.textPassword.secureTextEntry = self.isShowPassword;
+  self.isShowPassword = !self.isShowPassword;
+  if (self.isShowPassword) {
+    [self.btnShowPassword setImage:[UIImage imageNamed:@"xsmm"]
+                          forState:UIControlStateNormal];
+  } else {
+    [self.btnShowPassword setImage:[UIImage imageNamed:@"xsmm02"]
+                          forState:UIControlStateNormal];
+  }
 }
 
 - (IBAction)doConfig:(id)sender {

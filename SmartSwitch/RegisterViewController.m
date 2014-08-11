@@ -9,6 +9,10 @@
 #import "RegisterViewController.h"
 
 @interface RegisterViewController ()
+@property(strong, nonatomic) IBOutlet UIView *view1;
+@property(strong, nonatomic) IBOutlet UIView *view2;
+@property(strong, nonatomic) IBOutlet UIView *view3;
+@property(strong, nonatomic) IBOutlet UIView *view4;
 - (IBAction)back:(id)sender;
 - (IBAction)toUserProtocolPage:(id)sender;
 @end
@@ -28,6 +32,18 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.navigationItem.title = @"用户注册";
+  self.view1.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view1.layer.borderWidth = 1.f;
+  self.view1.layer.cornerRadius = 1.f;
+  self.view2.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view2.layer.borderWidth = 1.f;
+  self.view2.layer.cornerRadius = 1.f;
+  self.view3.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view3.layer.borderWidth = 1.f;
+  self.view3.layer.cornerRadius = 1.f;
+  self.view4.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view4.layer.borderWidth = 1.f;
+  self.view4.layer.cornerRadius = 1.f;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -9,9 +9,12 @@
 #import "LoginViewController.h"
 
 @interface LoginViewController ()
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 - (IBAction)back:(id)sender;
 - (IBAction)toRegisterPage:(id)sender;
 
+@property(strong, nonatomic) IBOutlet UIView *view1;
+@property(strong, nonatomic) IBOutlet UIView *view2;
 @end
 
 @implementation LoginViewController
@@ -29,6 +32,14 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.navigationItem.title = @"用户登陆";
+  self.scrollView.contentSize = CGSizeMake(
+      self.scrollView.frame.size.width, self.scrollView.frame.size.height + 1);
+  self.view1.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view1.layer.borderWidth = 1.f;
+  self.view1.layer.cornerRadius = 1.f;
+  self.view2.layer.borderColor = [UIColor lightGrayColor].CGColor;
+  self.view2.layer.borderWidth = 1.f;
+  self.view2.layer.cornerRadius = 1.f;
 }
 
 - (void)didReceiveMemoryWarning {

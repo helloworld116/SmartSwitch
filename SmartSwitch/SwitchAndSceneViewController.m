@@ -7,13 +7,20 @@
 //
 
 #import "SwitchAndSceneViewController.h"
-#import "SwitchListTableViewController.h"
 #import "SwitchTableView.h"
+#import "SceneTableView.h"
 
-@interface SwitchAndSceneViewController ()
+@interface SwitchAndSceneViewController ()<SwitchTableViewDelegate>
 //@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 //@property(strong, nonatomic) IBOutlet SwitchTableView *switchTableView;
-@property (strong, nonatomic) IBOutlet UIView *viewOfContainer;
+
+@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property(strong, nonatomic) SceneTableView *tableViewOfScene;
+@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
+@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property(strong, nonatomic) IBOutlet UIButton *btnScene;
+- (IBAction)showSwitchView:(id)sender;
+- (IBAction)showSceneView:(id)sender;
 
 - (IBAction)showMenu:(id)sender;
 - (IBAction)showAddMenu:(id)sender;
@@ -40,12 +47,10 @@
       ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
                             @"SwitchListTableViewController"]).tableView;
-
-  NSLog(@"1");
-
-  switchTableView.frame = CGRectMake(0, 64, self.view.frame.size.width,
-                                     self.view.frame.size.height - 64);
-  [self.view addSubview:switchTableView];
+  switchTableView.frame = self.viewOfContainer.bounds;
+  self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
+  self.tableViewOfSwitch.switchTableViewDelegate = self;
+  [self.viewOfContainer addSubview:switchTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -54,6 +59,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+  //  self.tableViewOfSwitch.contentOffset = CGPointZero;
   [super viewDidAppear:animated];
   if (![self.sidePanelController leftPanel]) {
     [self.sidePanelController
@@ -80,21 +86,43 @@ preparation before navigation
 */
 
 #pragma mark - 导航栏菜单
+- (IBAction)showSwitchView:(id)sender {
+  self.btnSwitch.selected = YES;
+  self.btnScene.selected = NO;
+  [self.viewOfContainer bringSubviewToFront:self.tableViewOfSwitch];
+}
+
+- (IBAction)showSceneView:(id)sender {
+  self.btnSwitch.selected = NO;
+  self.btnScene.selected = YES;
+  if (!self.tableViewOfScene) {
+    UITableView *sceneTableView =
+        ((UITableViewController *)
+         [self.storyboard instantiateViewControllerWithIdentifier:
+                              @"SceneListTableViewController"]).tableView;
+    sceneTableView.frame = self.viewOfContainer.bounds;
+    self.tableViewOfScene = (SceneTableView *)sceneTableView;
+    [self.viewOfContainer addSubview:sceneTableView];
+  }
+  [self.viewOfContainer bringSubviewToFront:self.tableViewOfScene];
+}
+
 - (IBAction)showMenu:(id)sender {
   [self.sidePanelController showLeftPanelAnimated:YES];
 }
 
 - (IBAction)showAddMenu:(id)sender {
   //  UIBarButtonItem *item = (UIBarButtonItem *)sender;
+  [KxMenu setTintColor:[UIColor blackColor]];
   [KxMenu showMenuInView:self.view
                 fromRect:CGRectMake(self.view.frame.size.width - 35, 44, 20, 20)
                menuItems:@[
                            [KxMenuItem menuItem:@"添加开关"
-                                          image:[UIImage imageNamed:@"image"]
+                                          image:[UIImage imageNamed:@"tjkg"]
                                          target:self
                                          action:@selector(menuItemSocket:)],
                            [KxMenuItem menuItem:@"添加场景"
-                                          image:[UIImage imageNamed:@"image"]
+                                          image:[UIImage imageNamed:@"tjcj"]
                                          target:self
                                          action:@selector(menuItemSence:)]
                          ]];
@@ -107,5 +135,12 @@ preparation before navigation
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"AddSenceNavController"];
   [self presentViewController:nextVC animated:YES completion:^{}];
+}
+
+#pragma mark - SwitchTableViewDelegate
+- (void)showSwitchDetail {
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"SwitchDetailViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
 }
 @end

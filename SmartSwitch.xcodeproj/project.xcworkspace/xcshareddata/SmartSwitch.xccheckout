@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BDCF0164-0E20-4D84-B35E-F8072CC24938</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SmartSwitch</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2A7F343B-89D0-453D-8C98-8DEAD300722E</key>
+		<string>https://github.com/helloworld116/SmartSwitch.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SmartSwitch.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2A7F343B-89D0-453D-8C98-8DEAD300722E</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/helloworld116/SmartSwitch.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2A7F343B-89D0-453D-8C98-8DEAD300722E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2A7F343B-89D0-453D-8C98-8DEAD300722E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SmartSwitch</string>
+		</dict>
+	</array>
+</dict>
+</plist>

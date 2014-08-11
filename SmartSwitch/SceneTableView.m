@@ -9,7 +9,7 @@
 #import "SceneTableView.h"
 #import "SceneListCell.h"
 
-@interface SceneTableView ()
+@interface SceneTableView ()<UITableViewDataSource, UITableViewDelegate>
 
 @property(strong, nonatomic) NSMutableArray *scenes;
 @end
@@ -17,8 +17,8 @@
 @implementation SceneTableView
 
 - (void)awakeFromNib {
-  //  self.dataSource = self;
-  //  self.delegate = self;
+  self.dataSource = self;
+  self.delegate = self;
 }
 
 /*
@@ -35,24 +35,24 @@ preparation before navigation
 #pragma mark - UITableViewDataSource
 //- (CGFloat)tableView:(UITableView *)tableView
 //    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  return self.tableView.rowHeight;
+//  return self.rowHeight;
 //}
-//
-//- (NSInteger)tableView:(UITableView *)tableView
-//    numberOfRowsInSection:(NSInteger)section {
-//  return 5;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView
-//         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  static NSString *CellId = @"SceneListCell";
-//  SceneListCell *listCell =
-//      (SceneListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
-//  return listCell;
-//}
-//
-//#pragma mark - UITableViewDelegate
-//- (void)tableView:(UITableView *)tableView
-//    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//}
+
+- (NSInteger)tableView:(UITableView *)tableView
+    numberOfRowsInSection:(NSInteger)section {
+  return 10;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *CellId = @"SceneListCell";
+  SceneListCell *listCell =
+      (SceneListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
+  return listCell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+}
 @end

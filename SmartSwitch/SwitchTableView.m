@@ -9,8 +9,10 @@
 #import "SwitchTableView.h"
 #import "SwitchListCell.h"
 #import "SwitchExpandCell.h"
+#import "SwitchDetailViewController.h"
 
-@interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource>
+@interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
+                              SwitchListCellDelegate>
 @property(strong, nonatomic) NSMutableArray *switchs;
 @end
 
@@ -49,11 +51,32 @@ preparation before navigation
   static NSString *CellId = @"SwitchListCell";
   SwitchListCell *listCell =
       (SwitchListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
+  listCell.cellDelegate = self;
   return listCell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
+  if ([self.switchTableViewDelegate
+          respondsToSelector:@selector(showSwitchDetail)]) {
+    [self.switchTableViewDelegate showSwitchDetail];
+  }
+}
+
+#pragma mark - SwitchListCellDelegate
+- (void)cellDoExpand:(SwitchListCell *)cell {
+  CGFloat angle;
+  if (cell.isExpand) {
+    angle = 0 * (M_PI / 180.0f);
+  } else {
+    angle = -90 * (M_PI / 180.0f);
+  }
+  [UIView animateWithDuration:0.3
+                   animations:^{
+                       cell.btnExpand.transform =
+                           CGAffineTransformMakeRotation(angle);
+                   }];
 }
 @end

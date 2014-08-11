@@ -30,5 +30,9 @@
 }
 
 - (IBAction)doExpand:(id)sender {
+  if ([self.cellDelegate respondsToSelector:@selector(cellDoExpand:)]) {
+    [self.cellDelegate cellDoExpand:self];
+  }
+  self.isExpand = !self.isExpand;
 }
 @end

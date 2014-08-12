@@ -10,13 +10,14 @@
 #import "SwitchTableView.h"
 #import "SceneTableView.h"
 
-@interface SwitchAndSceneViewController ()<SwitchTableViewDelegate>
-//@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@interface SwitchAndSceneViewController ()<SwitchTableViewDelegate,
+                                           UIScrollViewDelegate>
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 //@property(strong, nonatomic) IBOutlet SwitchTableView *switchTableView;
 
 @property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
 @property(strong, nonatomic) SceneTableView *tableViewOfScene;
-@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
+//@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
 @property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
 - (IBAction)showSwitchView:(id)sender;
@@ -40,14 +41,17 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 2,
+                                           self.scrollView.frame.size.height);
+  self.scrollView.delegate = self;
   UITableView *switchTableView =
       ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
                             @"SwitchListTableViewController"]).tableView;
-  switchTableView.frame = self.viewOfContainer.bounds;
+  switchTableView.frame = self.scrollView.bounds;
   self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
   self.tableViewOfSwitch.switchTableViewDelegate = self;
-  [self.viewOfContainer addSubview:switchTableView];
+  [self.scrollView addSubview:switchTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -60,6 +64,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+  self.scrollView.contentInset = UIEdgeInsetsZero;
   self.tableViewOfSwitch.contentInset = UIEdgeInsetsZero;
   self.tableViewOfSwitch.scrollIndicatorInsets = UIEdgeInsetsZero;
   [super viewDidAppear:animated];
@@ -86,7 +91,8 @@ preparation before navigation
 - (IBAction)showSwitchView:(id)sender {
   self.btnSwitch.selected = YES;
   self.btnScene.selected = NO;
-  [self.viewOfContainer bringSubviewToFront:self.tableViewOfSwitch];
+  //  [self.viewOfContainer bringSubviewToFront:self.tableViewOfSwitch];
+  self.scrollView.contentOffset = CGPointMake(0, 0);
 }
 
 - (IBAction)showSceneView:(id)sender {
@@ -97,11 +103,18 @@ preparation before navigation
         ((UITableViewController *)
          [self.storyboard instantiateViewControllerWithIdentifier:
                               @"SceneListTableViewController"]).tableView;
-    sceneTableView.frame = self.viewOfContainer.bounds;
+    //    sceneTableView.frame = self.viewOfContainer.bounds;
+    sceneTableView.frame = CGRectMake(self.scrollView.frame.size.width, 0,
+                                      self.scrollView.frame.size.width,
+                                      self.scrollView.frame.size.height);
+
     self.tableViewOfScene = (SceneTableView *)sceneTableView;
-    [self.viewOfContainer addSubview:sceneTableView];
+    //    [self.viewOfContainer addSubview:sceneTableView];
+    [self.scrollView addSubview:sceneTableView];
   }
-  [self.viewOfContainer bringSubviewToFront:self.tableViewOfScene];
+  //  [self.viewOfContainer bringSubviewToFront:self.tableViewOfScene];
+  self.scrollView.contentOffset =
+      CGPointMake(self.scrollView.frame.size.width, 0);
 }
 
 - (IBAction)showMenu:(id)sender {
@@ -147,5 +160,23 @@ preparation before navigation
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"SwitchDetailViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+  double i = scrollView.contentOffset.x / (self.view.bounds.size.width);
+  if (i == 0) {
+    [self showSwitchView:nil];
+  } else if (i == 1) {
+    [self showSceneView:nil];
+  }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate {
+  double i = scrollView.contentOffset.x / (self.view.bounds.size.width);
+  if (i < 0) {
+    [self showMenu:nil];
+  }
 }
 @end

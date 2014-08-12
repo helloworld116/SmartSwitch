@@ -9,17 +9,17 @@
 #import "AddSwitchViewController.h"
 
 @interface AddSwitchViewController ()<UITextFieldDelegate, UDPDelegate>
-@property (strong, nonatomic) IBOutlet UITextField *textWIFI;
-@property (strong, nonatomic) IBOutlet UITextField *textPassword;
-@property (strong, nonatomic) IBOutlet UIButton *btnShowPassword; //展示选中图片
-@property (assign, nonatomic) BOOL isShowPassword;
+@property(strong, nonatomic) IBOutlet UITextField *textWIFI;
+@property(strong, nonatomic) IBOutlet UITextField *textPassword;
+@property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
+@property(assign, nonatomic) BOOL isShowPassword;
 
-@property (strong, nonatomic) FirstTimeConfig *config;
-@property (strong, atomic) GCDAsyncUdpSocket *udpSocket;
-@property (strong, nonatomic) NSString *wifi;
-@property (strong, nonatomic) NSString *password;
+@property(strong, nonatomic) FirstTimeConfig *config;
+@property(strong, atomic) GCDAsyncUdpSocket *udpSocket;
+@property(strong, nonatomic) NSString *wifi;
+@property(strong, nonatomic) NSString *password;
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
-@property (assign, atomic) int count;
+@property(assign, atomic) int count;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
@@ -106,6 +106,7 @@ preparation before navigation
 
 #pragma mark - 返回
 - (IBAction)back:(id)sender {
+  [self dismissViewControllerAnimated:YES completion:^{}];
   [self.sidePanelController
       setCenterPanel:kSharedAppliction.centerViewController];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"back"

@@ -31,7 +31,6 @@
       setTitleTextAttributes:@{
                                UITextAttributeTextColor : [UIColor whiteColor]
                              }];
-
   return YES;
 }
 

@@ -32,6 +32,7 @@
     #import "XMLUtil.h"
     #import "PassValueDelegate.h"
     #import "ViewUtil.h"
+    #import "UIColor+Hex.h"
 #endif
 
 #if TARGET_OS_IPHONE

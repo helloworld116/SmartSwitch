@@ -31,6 +31,16 @@
   //    initWithCustomView:<#(UIView *)#>
   //    self.navigationItem.leftBarButtonItem
   //  self.scrollView.contentSize = CGSizeMake(320, 516);
+  self.navigationItem.title = @"开关名称";
+  self.navigationItem.leftBarButtonItem =
+      [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fh"]
+                                       style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(pop:)];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+      initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                           target:self
+                           action:@selector(showAddMenu:)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,5 +59,45 @@ preparation before navigation
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark - 导航栏事件
+- (void)pop:(id)sender {
+  [self.navigationController popViewControllerAnimated:YES];
+}
 
+- (void)showAddMenu:(id)sender {
+  //  UIBarButtonItem *item = (UIBarButtonItem *)sender;
+  [KxMenu setTintColor:[UIColor blackColor]];
+  [KxMenu showMenuInView:self.view
+                fromRect:CGRectMake(self.view.frame.size.width - 35, -20, 20, 20)
+               menuItems:@[
+                           [KxMenuItem menuItem:@"延时任务"
+                                          image:[UIImage imageNamed:@"tjcj"]
+                                         target:self
+                                         action:@selector(menuItem1:)],
+                           [KxMenuItem menuItem:@"定时任务"
+                                          image:[UIImage imageNamed:@"tjcj"]
+                                         target:self
+                                         action:@selector(menuItem2:)],
+                           [KxMenuItem menuItem:@"历史电量"
+                                          image:[UIImage imageNamed:@"tjcj"]
+                                         target:self
+                                         action:@selector(menuItem3:)]
+                         ]];
+}
+
+- (void)menuItem1:(id)sender {
+  //延时
+}
+
+- (void)menuItem2:(id)sender {
+  //定时
+}
+
+- (void)menuItem3:(id)sender {
+  //历史电量
+  UIViewController *nextVC =
+      [self.storyboard instantiateViewControllerWithIdentifier:
+                           @"HistoryElectricityViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
 @end

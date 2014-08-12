@@ -40,9 +40,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  //  self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width
-  //  * 2,
-  //                                           self.scrollView.frame.size.height);
   UITableView *switchTableView =
       ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
@@ -54,18 +51,18 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-  NSLog(@"switchandscene viewwillappear");
   [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-  //  self.tableViewOfSwitch.contentOffset = CGPointZero;
-  [super viewDidAppear:animated];
   if (![self.sidePanelController leftPanel]) {
     [self.sidePanelController
         setLeftPanel:kSharedAppliction.leftViewController];
     [self.sidePanelController showLeftPanelAnimated:YES];
   }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  self.tableViewOfSwitch.contentInset = UIEdgeInsetsZero;
+  self.tableViewOfSwitch.scrollIndicatorInsets = UIEdgeInsetsZero;
+  [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -108,7 +105,12 @@ preparation before navigation
 }
 
 - (IBAction)showMenu:(id)sender {
-  [self.sidePanelController showLeftPanelAnimated:YES];
+  if ([self.sidePanelController visiblePanel] ==
+      kSharedAppliction.leftViewController) {
+    [self.sidePanelController showCenterPanelAnimated:YES];
+  } else {
+    [self.sidePanelController showLeftPanelAnimated:YES];
+  }
 }
 
 - (IBAction)showAddMenu:(id)sender {
@@ -129,6 +131,9 @@ preparation before navigation
 }
 
 - (void)menuItemSocket:(id)sender {
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"AddSwitchNavController"];
+  [self presentViewController:nextVC animated:YES completion:^{}];
 }
 
 - (void)menuItemSence:(id)sender {

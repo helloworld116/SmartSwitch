@@ -10,6 +10,7 @@
 
 @interface SwitchDetailViewController ()
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
@@ -27,10 +28,6 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  //    UIBarButtonItem *btnLeft = [UIBarButtonItem alloc]
-  //    initWithCustomView:<#(UIView *)#>
-  //    self.navigationItem.leftBarButtonItem
-  //  self.scrollView.contentSize = CGSizeMake(320, 516);
   self.navigationItem.title = @"开关名称";
   self.navigationItem.leftBarButtonItem =
       [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fh"]
@@ -41,11 +38,17 @@
       initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                            target:self
                            action:@selector(showAddMenu:)];
+  //  self.scrollView.contentSize = CGSizeMake(320, 1000);
+  //  self.scrollView.contentOffset = CGPointMake(0, -50);
 }
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
 }
 
 /*
@@ -67,22 +70,23 @@ preparation before navigation
 - (void)showAddMenu:(id)sender {
   //  UIBarButtonItem *item = (UIBarButtonItem *)sender;
   [KxMenu setTintColor:[UIColor blackColor]];
-  [KxMenu showMenuInView:self.view
-                fromRect:CGRectMake(self.view.frame.size.width - 35, -20, 20, 20)
-               menuItems:@[
-                           [KxMenuItem menuItem:@"延时任务"
-                                          image:[UIImage imageNamed:@"tjcj"]
-                                         target:self
-                                         action:@selector(menuItem1:)],
-                           [KxMenuItem menuItem:@"定时任务"
-                                          image:[UIImage imageNamed:@"tjcj"]
-                                         target:self
-                                         action:@selector(menuItem2:)],
-                           [KxMenuItem menuItem:@"历史电量"
-                                          image:[UIImage imageNamed:@"tjcj"]
-                                         target:self
-                                         action:@selector(menuItem3:)]
-                         ]];
+  [KxMenu
+      showMenuInView:self.view
+            fromRect:CGRectMake(self.view.frame.size.width - 35, -20, 20, 20)
+           menuItems:@[
+                       [KxMenuItem menuItem:@"延时任务"
+                                      image:[UIImage imageNamed:@"tjcj"]
+                                     target:self
+                                     action:@selector(menuItem1:)],
+                       [KxMenuItem menuItem:@"定时任务"
+                                      image:[UIImage imageNamed:@"tjcj"]
+                                     target:self
+                                     action:@selector(menuItem2:)],
+                       [KxMenuItem menuItem:@"历史电量"
+                                      image:[UIImage imageNamed:@"tjcj"]
+                                     target:self
+                                     action:@selector(menuItem3:)]
+                     ]];
 }
 
 - (void)menuItem1:(id)sender {
@@ -91,6 +95,9 @@ preparation before navigation
 
 - (void)menuItem2:(id)sender {
   //定时
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"TimerViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 - (void)menuItem3:(id)sender {

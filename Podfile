@@ -1,4 +1,4 @@
-platform :ios, "6.0"
+platform :ios, "7.0"
 
 pod 'CocoaAsyncSocket'
 pod 'MBProgressHUD' , :git => 'https://github.com/jdg/MBProgressHUD.git'
@@ -12,3 +12,4 @@ pod 'PNChart', '~> 0.5'
 pod 'EAIntroView', '~> 2.6.0'
 pod 'NSDate+Calendar'
 pod 'HexColors'
+pod 'SGNavigationProgress'

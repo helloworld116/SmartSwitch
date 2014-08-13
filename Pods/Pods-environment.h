@@ -78,6 +78,12 @@
 #define COCOAPODS_VERSION_MINOR_EAIntroView 6
 #define COCOAPODS_VERSION_PATCH_EAIntroView 3
 
+// HexColors
+#define COCOAPODS_POD_AVAILABLE_HexColors
+#define COCOAPODS_VERSION_MAJOR_HexColors 2
+#define COCOAPODS_VERSION_MINOR_HexColors 2
+#define COCOAPODS_VERSION_PATCH_HexColors 1
+
 // JASidePanels
 #define COCOAPODS_POD_AVAILABLE_JASidePanels
 #define COCOAPODS_VERSION_MAJOR_JASidePanels 1
@@ -96,6 +102,12 @@
 #define COCOAPODS_VERSION_MINOR_MBProgressHUD 8
 #define COCOAPODS_VERSION_PATCH_MBProgressHUD 0
 
+// NSDate+Calendar
+#define COCOAPODS_POD_AVAILABLE_NSDate_Calendar
+#define COCOAPODS_VERSION_MAJOR_NSDate_Calendar 0
+#define COCOAPODS_VERSION_MINOR_NSDate_Calendar 0
+#define COCOAPODS_VERSION_PATCH_NSDate_Calendar 4
+
 // PNChart
 #define COCOAPODS_POD_AVAILABLE_PNChart
 #define COCOAPODS_VERSION_MAJOR_PNChart 0
@@ -107,6 +119,12 @@
 #define COCOAPODS_VERSION_MAJOR_Reachability 3
 #define COCOAPODS_VERSION_MINOR_Reachability 1
 #define COCOAPODS_VERSION_PATCH_Reachability 1
+
+// SGNavigationProgress
+#define COCOAPODS_POD_AVAILABLE_SGNavigationProgress
+#define COCOAPODS_VERSION_MAJOR_SGNavigationProgress 1
+#define COCOAPODS_VERSION_MINOR_SGNavigationProgress 2
+#define COCOAPODS_VERSION_PATCH_SGNavigationProgress 0
 
 // TWMessageBarManager
 #define COCOAPODS_POD_AVAILABLE_TWMessageBarManager

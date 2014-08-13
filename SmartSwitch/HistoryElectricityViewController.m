@@ -7,7 +7,9 @@
 //
 
 #import "HistoryElectricityViewController.h"
-#import <PNChart/PNChart.h>
+#import <PNChart.h>
+#import <HexColor.h>
+#import <NSDate+Calendar.h>
 #define kBarWidth 25
 
 @interface HistoryElectricityViewController ()
@@ -59,8 +61,11 @@
   ];
   self.values =
       @[ @1, @24, @12, @18, @30, @10, @21, @1, @24, @12, @18, @30, @10, @21 ];
-  [self setMonthsWithSelectedMonth:8];
-  [self setDays:30 selectedDay:12];
+  NSDate *currentDate = [NSDate date];
+  [self setMonthsWithSelectedMonth:[currentDate month]];
+  NSDateComponents *lastDayInMonth =
+      [[currentDate dateMonthEnd] dateComponentsDate];
+  [self setDays:lastDayInMonth.day selectedDay:[currentDate day]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,7 +81,9 @@
       initWithFrame:CGRectMake(0, 0, width,
                                self.scrollViewBarChart.frame.size.height + 24)];
   barChart.backgroundColor = [UIColor clearColor];
-  barChart.barBackgroundColor = [UIColor colorWithHex:0x99ccff alpha:0.1];
+  barChart.barBackgroundColor =
+      [UIColor colorWithHexString:@"#99ccff" alpha:0.1];
+  //    [UIColor colorWithHex:0x99ccff alpha:0.1];
   barChart.yLabelFormatter = ^(CGFloat yValue) {
       CGFloat yValueParsed = yValue;
       NSString *labelText = [NSString stringWithFormat:@"%1.fw", yValueParsed];
@@ -92,7 +99,7 @@
   barChart.labelTextColor = [UIColor whiteColor];
   [barChart setXLabels:self.times];
   [barChart setYValues:self.values];
-  [barChart setStrokeColor:[UIColor colorWithHex:0xccffff alpha:0.5]];
+  [barChart setStrokeColor:[UIColor colorWithHexString:@"#ccffff" alpha:0.5]];
   [barChart strokeChart];
 
   //    barChart.delegate = self;
@@ -102,6 +109,10 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
 }
 
 /*

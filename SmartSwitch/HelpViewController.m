@@ -7,8 +7,10 @@
 //
 
 #import "HelpViewController.h"
+#import <UINavigationController+SGProgress.h>
 
-@interface HelpViewController ()
+@interface HelpViewController ()<UIWebViewDelegate>
+@property(strong, nonatomic) IBOutlet UIWebView *webView;
 - (IBAction)back:(id)sender;
 @end
 
@@ -27,6 +29,13 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   [self.sidePanelController setLeftPanel:nil];
+  [self.navigationController showSGProgressWithDuration:1
+                                           andTintColor:[UIColor whiteColor]];
+  NSURL *url =
+      [NSURL URLWithString:@"http://server.itouchco.com:18080/faq.html"];
+  NSURLRequest *request = [NSURLRequest requestWithURL:url];
+  self.webView.delegate = self;
+  [self.webView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,5 +60,29 @@ preparation before navigation
       setCenterPanel:kSharedAppliction.centerViewController];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"back"
                                                       object:self];
+}
+
+#pragma mark - UIWebviewDelegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+  //    [self.navigationController showSGProgress];  // defaults to 3 seconds
+  //  [self.navigationController
+  //      showSGProgressWithDuration:3];  // uses the navbar tint color
+  //  [self.navigationController showSGProgressWithDuration:3
+  //                                           andTintColor:[UIColor
+  //                                           blueColor]];
+  //  [self.navigationController showSGProgressWithDuration:3
+  //                                           andTintColor:[UIColor blueColor]
+  //                                               andTitle:@"Sending..."];
+  //  [self.navigationController showSGProgressWithMaskAndDuration:3];
+  //  [self.navigationController showSGProgressWithMaskAndDuration:3
+  //                                                      andTitle:@"Sending..."];
+
+  //  [self.navigationController showSGProgressWithDuration:3
+  //                                           andTintColor:[UIColor redColor]
+  //                                               andTitle:@"Sending..."];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+  //  [self.navigationController finishSGProgress];
 }
 @end

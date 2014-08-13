@@ -9,7 +9,9 @@
 #import "AboutViewController.h"
 
 @interface AboutViewController ()
+@property (strong, nonatomic) IBOutlet UILabel *lblInfo;
 - (IBAction)back:(id)sender;
+- (IBAction)update:(id)sender;
 @end
 
 @implementation AboutViewController
@@ -50,5 +52,8 @@ preparation before navigation
       setCenterPanel:kSharedAppliction.centerViewController];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"back"
                                                       object:self];
+}
+
+- (IBAction)update:(id)sender {
 }
 @end

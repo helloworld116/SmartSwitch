@@ -10,6 +10,7 @@
 
 @interface ShareViewController ()
 - (IBAction)back:(id)sender;
+- (IBAction)share:(id)sender;
 @end
 
 @implementation ShareViewController
@@ -51,5 +52,8 @@ preparation before navigation
       setCenterPanel:kSharedAppliction.centerViewController];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"back"
                                                       object:self];
+}
+
+- (IBAction)share:(id)sender {
 }
 @end

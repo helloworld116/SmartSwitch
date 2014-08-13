@@ -41,6 +41,10 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  //  if (isEqualOrGreaterToiOS7) {
+  //    self.automaticallyAdjustsScrollViewInsets = NO;
+  //  }
+
   self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 2,
                                            self.scrollView.frame.size.height);
   self.scrollView.delegate = self;
@@ -48,7 +52,7 @@
       ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
                             @"SwitchListTableViewController"]).tableView;
-  switchTableView.frame = self.scrollView.bounds;
+  //  switchTableView.frame = self.scrollView.bounds;
   self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
   self.tableViewOfSwitch.switchTableViewDelegate = self;
   [self.scrollView addSubview:switchTableView];
@@ -64,10 +68,16 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-  self.scrollView.contentInset = UIEdgeInsetsZero;
-  self.tableViewOfSwitch.contentInset = UIEdgeInsetsZero;
-  self.tableViewOfSwitch.scrollIndicatorInsets = UIEdgeInsetsZero;
   [super viewDidAppear:animated];
+}
+
+- (void)viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
+  //  self.scrollView.contentInset = UIEdgeInsetsZero;
+  //  self.tableViewOfSwitch.contentInset = UIEdgeInsetsZero;
+  //  self.tableViewOfSwitch.scrollIndicatorInsets = UIEdgeInsetsZero;
+  self.tableViewOfSwitch.frame = self.scrollView.bounds;
+  NSLog(@"viewWillLayoutSubviews");
 }
 
 - (void)didReceiveMemoryWarning {

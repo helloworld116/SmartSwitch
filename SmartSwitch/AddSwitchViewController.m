@@ -9,6 +9,7 @@
 #import "AddSwitchViewController.h"
 
 @interface AddSwitchViewController ()<UITextFieldDelegate, UDPDelegate>
+@property(strong, nonatomic) IBOutlet UIView *contentView;
 @property(strong, nonatomic) IBOutlet UITextField *textWIFI;
 @property(strong, nonatomic) IBOutlet UITextField *textPassword;
 @property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
@@ -46,6 +47,12 @@
   self.textWIFI.delegate = self;
   self.textPassword.delegate = self;
   self.udpSocket = [UdpSocketUtil shareInstance].udpSocket;
+  if (is4Inch) {
+    CGRect rect = self.contentView.frame;
+    rect.size = CGSizeMake(rect.size.width, rect.size.width + 88.f);
+    self.contentView.frame = rect;
+  }
+  NSLog(@"content frame is %@", NSStringFromCGRect(self.contentView.frame));
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -64,6 +71,12 @@
 #endif
   self.textPassword.text = @"sdzg2014";
   self.password = @"sdzg2014";
+  NSLog(@"content frame is %@", NSStringFromCGRect(self.contentView.frame));
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  NSLog(@"content frame is %@", NSStringFromCGRect(self.contentView.frame));
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -101,7 +114,7 @@ preparation before navigation
 }
 
 - (IBAction)doConfig:(id)sender {
-  [self startTransmitting];
+  //  [self startTransmitting];
 }
 
 #pragma mark - 返回

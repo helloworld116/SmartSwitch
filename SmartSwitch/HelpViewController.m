@@ -28,7 +28,9 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.navigationItem.title = @"晟大帮助";
   [self.sidePanelController setLeftPanel:nil];
+
   [self.navigationController showSGProgressWithDuration:1
                                            andTintColor:[UIColor whiteColor]];
   NSURL *url =

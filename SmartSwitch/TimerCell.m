@@ -23,7 +23,7 @@
   // Initialization code
   self.viewContent.layer.borderColor = [UIColor lightGrayColor].CGColor;
   self.viewContent.layer.borderWidth = 1.f;
-  self.viewContent.layer.cornerRadius = .5f;
+  self.viewContent.layer.cornerRadius = 1.5f;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

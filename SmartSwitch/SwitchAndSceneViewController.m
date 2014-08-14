@@ -40,11 +40,6 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  // Do any additional setup after loading the view.
-  //  if (isEqualOrGreaterToiOS7) {
-  //    self.automaticallyAdjustsScrollViewInsets = NO;
-  //  }
-
   self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 2,
                                            self.scrollView.frame.size.height);
   self.scrollView.delegate = self;
@@ -69,15 +64,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  self.tableViewOfSwitch.frame = self.scrollView.bounds;
 }
 
 - (void)viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
-  //  self.scrollView.contentInset = UIEdgeInsetsZero;
-  //  self.tableViewOfSwitch.contentInset = UIEdgeInsetsZero;
-  //  self.tableViewOfSwitch.scrollIndicatorInsets = UIEdgeInsetsZero;
-  self.tableViewOfSwitch.frame = self.scrollView.bounds;
-  NSLog(@"viewWillLayoutSubviews");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,18 +130,19 @@ preparation before navigation
 - (IBAction)showAddMenu:(id)sender {
   //  UIBarButtonItem *item = (UIBarButtonItem *)sender;
   [KxMenu setTintColor:[UIColor blackColor]];
-  [KxMenu showMenuInView:self.view
-                fromRect:CGRectMake(self.view.frame.size.width - 35, 44, 20, 20)
-               menuItems:@[
-                           [KxMenuItem menuItem:@"添加开关"
-                                          image:[UIImage imageNamed:@"tjkg"]
-                                         target:self
-                                         action:@selector(menuItemSocket:)],
-                           [KxMenuItem menuItem:@"添加场景"
-                                          image:[UIImage imageNamed:@"tjcj"]
-                                         target:self
-                                         action:@selector(menuItemSence:)]
-                         ]];
+  [KxMenu
+      showMenuInView:self.view
+            fromRect:CGRectMake(self.view.frame.size.width - 35, -20, 20, 20)
+           menuItems:@[
+                       [KxMenuItem menuItem:@"添加开关"
+                                      image:[UIImage imageNamed:@"tjkg"]
+                                     target:self
+                                     action:@selector(menuItemSocket:)],
+                       [KxMenuItem menuItem:@"添加场景"
+                                      image:[UIImage imageNamed:@"tjcj"]
+                                     target:self
+                                     action:@selector(menuItemSence:)]
+                     ]];
 }
 
 - (void)menuItemSocket:(id)sender {

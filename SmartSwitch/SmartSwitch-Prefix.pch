@@ -19,6 +19,7 @@
     #import <JASidePanelController.h>
     #import <UIViewController+JASidePanel.h>
     #import <KxMenu.h>
+    #import <EGORefreshTableHeaderView.h>
 
     #import "AppDelegate.h"
     #import "CC3xUtility.h"
@@ -55,3 +56,4 @@
 #define kTemplatePicDict @{@"902" : @"icon_ac",@"904" : @"icon_light",@"906" : @"icon_stb",@"908" : @"icon_plug",@"910" : @"icon_tv",@"912" : @"icon_v",@"914" : @"icon_ir"}
 
 #define isEqualOrGreaterToiOS7 ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0)
+#define is4Inch ([[UIScreen mainScreen] bounds].size.height == 568)

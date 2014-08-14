@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.navigationItem.title = @"晟大分享";
   [self.sidePanelController setLeftPanel:nil];
 }
 

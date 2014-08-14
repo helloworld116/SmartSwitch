@@ -8,10 +8,13 @@
 
 #import "SwitchDetailViewController.h"
 
-@interface SwitchDetailViewController ()
+@interface SwitchDetailViewController ()<UIScrollViewDelegate,
+                                         EGORefreshTableHeaderDelegate>
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property(strong, nonatomic) IBOutlet UIView *contentView;
 
+@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property(assign, nonatomic) BOOL reloading;
 @end
 
 @implementation SwitchDetailViewController
@@ -34,12 +37,23 @@
                                        style:UIBarButtonItemStylePlain
                                       target:self
                                       action:@selector(pop:)];
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-      initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                           target:self
-                           action:@selector(showAddMenu:)];
-  //  self.scrollView.contentSize = CGSizeMake(320, 1000);
-  //  self.scrollView.contentOffset = CGPointMake(0, -50);
+  self.navigationItem.rightBarButtonItem =
+      [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tj"]
+                                       style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(showAddMenu:)];
+  self.scrollView.delegate = self;
+
+  self.refreshHeaderView = [[EGORefreshTableHeaderView alloc]
+       initWithFrame:CGRectMake(0.0f, 0.0f - self.scrollView.bounds.size.height,
+                                self.scrollView.frame.size.width,
+                                self.scrollView.bounds.size.height)
+      arrowImageName:@"whiteArrow"
+           textColor:[UIColor whiteColor]];
+  self.refreshHeaderView.backgroundColor = [UIColor clearColor];
+  self.refreshHeaderView.delegate = self;
+  [self.scrollView addSubview:self.refreshHeaderView];
+  [self.refreshHeaderView refreshLastUpdatedDate];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,6 +105,9 @@ preparation before navigation
 
 - (void)menuItem1:(id)sender {
   //延时
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"DelayViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 - (void)menuItem2:(id)sender {
@@ -106,5 +123,52 @@ preparation before navigation
       [self.storyboard instantiateViewControllerWithIdentifier:
                            @"HistoryElectricityViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+#pragma mark Data Source Loading / Reloading Methods
+- (void)reloadTableViewDataSource {
+  //  should be calling your tableviews data source model to reload
+  //  put here just for demo
+  _reloading = YES;
+}
+
+- (void)doneLoadingTableViewData {
+  //  model should call this when its done loading
+  _reloading = NO;
+  [_refreshHeaderView
+      egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+  [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate {
+  [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:
+            (EGORefreshTableHeaderView *)view {
+  [self reloadTableViewDataSource];
+  [self performSelector:@selector(doneLoadingTableViewData)
+             withObject:nil
+             afterDelay:3.0];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
+            (EGORefreshTableHeaderView *)view {
+  return _reloading;  // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
+                (EGORefreshTableHeaderView *)view {
+  return [NSDate date];  // should return date data source was last changed
 }
 @end

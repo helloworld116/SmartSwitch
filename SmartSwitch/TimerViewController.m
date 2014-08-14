@@ -25,13 +25,16 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-
-  // Uncomment the following line to preserve selection between presentations.
-  // self.clearsSelectionOnViewWillAppear = NO;
-
-  // Uncomment the following line to display an Edit button in the navigation
-  // bar for this view controller.
-  // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+  self.navigationItem.title = @"定时列表";
+  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+      initWithImage:[UIImage imageNamed:@"fh"]
+              style:UIBarButtonItemStylePlain
+             target:self.navigationController
+             action:@selector(popViewControllerAnimated:)];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+      initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                           target:self
+                           action:@selector(editTimer:)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,4 +115,10 @@ preparation before navigation
 }
 */
 
+#pragma mark - UINavigationBar
+- (void)editTimer:(id)sender {
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
 @end

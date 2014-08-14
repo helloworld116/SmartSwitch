@@ -55,6 +55,10 @@
 		1587F45C199313570061EB86 /* SceneTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F45B199313570061EB86 /* SceneTableView.m */; };
 		1587F45F199315680061EB86 /* SwitchListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F45E199315680061EB86 /* SwitchListCell.m */; };
 		1587F462199315760061EB86 /* SceneListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F461199315760061EB86 /* SceneListCell.m */; };
+		15A7AC91199C4D7E00EED480 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC90199C4D7E00EED480 /* TimerEditViewController.m */; };
+		15A7AC94199C567900EED480 /* CycleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC93199C567900EED480 /* CycleViewController.m */; };
+		15A7AC99199CA38900EED480 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 15A7AC9B199CA38900EED480 /* Localizable.strings */; };
+		15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC9D199CAE3100EED480 /* DelayViewController.m */; };
 		15BB6B281994DFF5004D447A /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BB6B271994DFF5004D447A /* InsetsTextField.m */; };
 		15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E6119989E73006516D8 /* SwitchDetailViewController.m */; };
 		15BC9E651998BD61006516D8 /* SocketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E641998BD61006516D8 /* SocketView.m */; };
@@ -166,6 +170,15 @@
 		1587F45E199315680061EB86 /* SwitchListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchListCell.m; sourceTree = "<group>"; };
 		1587F460199315760061EB86 /* SceneListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneListCell.h; sourceTree = "<group>"; };
 		1587F461199315760061EB86 /* SceneListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneListCell.m; sourceTree = "<group>"; };
+		15A7AC8F199C4D7E00EED480 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = "<group>"; };
+		15A7AC90199C4D7E00EED480 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = "<group>"; };
+		15A7AC92199C567900EED480 /* CycleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CycleViewController.h; sourceTree = "<group>"; };
+		15A7AC93199C567900EED480 /* CycleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CycleViewController.m; sourceTree = "<group>"; };
+		15A7AC95199CA2F500EED480 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		15A7AC96199CA2F500EED480 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		15A7AC9A199CA38900EED480 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		15A7AC9C199CAE3000EED480 /* DelayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayViewController.h; sourceTree = "<group>"; };
+		15A7AC9D199CAE3100EED480 /* DelayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayViewController.m; sourceTree = "<group>"; };
 		15BB6B261994DFF5004D447A /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		15BB6B271994DFF5004D447A /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
 		15BC9E6019989E73006516D8 /* SwitchDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDetailViewController.h; sourceTree = "<group>"; };
@@ -292,6 +305,7 @@
 				15295265199071EF00924FC3 /* InfoPlist.strings */,
 				15295268199071EF00924FC3 /* main.m */,
 				1529526A199071EF00924FC3 /* SmartSwitch-Prefix.pch */,
+				15A7AC9B199CA38900EED480 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -437,6 +451,12 @@
 				15BC9E70199B74B8006516D8 /* TimerViewController.m */,
 				15BC9E72199B74CE006516D8 /* TimerCell.h */,
 				15BC9E73199B74CE006516D8 /* TimerCell.m */,
+				15A7AC8F199C4D7E00EED480 /* TimerEditViewController.h */,
+				15A7AC90199C4D7E00EED480 /* TimerEditViewController.m */,
+				15A7AC92199C567900EED480 /* CycleViewController.h */,
+				15A7AC93199C567900EED480 /* CycleViewController.m */,
+				15A7AC9C199CAE3000EED480 /* DelayViewController.h */,
+				15A7AC9D199CAE3100EED480 /* DelayViewController.m */,
 			);
 			name = "开关";
 			sourceTree = "<group>";
@@ -518,6 +538,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 15295250199071EF00924FC3;
 			productRefGroup = 1529525A199071EF00924FC3 /* Products */;
@@ -536,6 +557,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				15295278199071F000924FC3 /* Images.xcassets in Resources */,
+				15A7AC99199CA38900EED480 /* Localizable.strings in Resources */,
 				15295267199071EF00924FC3 /* InfoPlist.strings in Resources */,
 				15295270199071F000924FC3 /* Main.storyboard in Resources */,
 			);
@@ -595,6 +617,7 @@
 				15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */,
 				15BC9E651998BD61006516D8 /* SocketView.m in Sources */,
 				152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */,
+				15A7AC91199C4D7E00EED480 /* TimerEditViewController.m in Sources */,
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
 				152952D71991BF4600924FC3 /* MenuViewController.m in Sources */,
@@ -602,6 +625,7 @@
 				152952AF1990899F00924FC3 /* CC3xAPManager.m in Sources */,
 				152952B719908B3F00924FC3 /* GDataXMLNode.m in Sources */,
 				152952A51990899400924FC3 /* CC3xMessage.m in Sources */,
+				15A7AC94199C567900EED480 /* CycleViewController.m in Sources */,
 				1587F4591993133A0061EB86 /* SwitchTableView.m in Sources */,
 				152952B01990899F00924FC3 /* CC3xUtility.m in Sources */,
 				1587F442199208D70061EB86 /* ShareViewController.m in Sources */,
@@ -611,6 +635,7 @@
 				1587F43F199208690061EB86 /* AboutViewController.m in Sources */,
 				1587F450199229210061EB86 /* LoginViewController.m in Sources */,
 				152952C819908B7200924FC3 /* SendResponseHandler.m in Sources */,
+				15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */,
 				152952B3199089B100924FC3 /* CRC.c in Sources */,
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,
@@ -658,6 +683,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				15295266199071EF00924FC3 /* en */,
+				15A7AC95199CA2F500EED480 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -674,8 +700,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				15295288199071F000924FC3 /* en */,
+				15A7AC96199CA2F500EED480 /* zh-Hans */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		15A7AC9B199CA38900EED480 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				15A7AC9A199CA38900EED480 /* zh-Hans */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

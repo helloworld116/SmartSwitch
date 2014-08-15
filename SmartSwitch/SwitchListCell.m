@@ -23,6 +23,21 @@
   // Initialization code
 }
 
+- (void)drawRect:(CGRect)rect {
+  //  rect = self.contentView.frame;
+  //  CGContextRef context = UIGraphicsGetCurrentContext();
+  //  //  CGContextSetFillColorWithColor(
+  //  //      context, [UIColor colorWithHexString:@"#cccccc"].CGColor);
+  //  //  CGContextFillRect(context, rect);
+  //  //  CGContextSetStrokeColorWithColor(
+  //  //      context, [UIColor colorWithHexString:@"#cccccc"].CGColor);
+  //  //  CGContextStrokeRect(context,
+  //  //                      CGRectMake(0, rect.size.height - 3,
+  //  rect.size.width,
+  //  //                      3));
+  //  //  CGContextStrokePath(context);
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
   [super setSelected:selected animated:animated];
 

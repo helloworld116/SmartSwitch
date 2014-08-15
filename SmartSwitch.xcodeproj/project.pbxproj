@@ -39,6 +39,8 @@
 		152952D41990D01D00924FC3 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D31990D01D00924FC3 /* BaseViewController.m */; };
 		152952D71991BF4600924FC3 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D61991BF4600924FC3 /* MenuViewController.m */; };
 		152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */; };
+		156CB953199DE70D007A9C35 /* SwitchInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */; };
+		156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB955199DF84A007A9C35 /* WelcomeViewController.m */; };
 		1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */; };
 		1587F4351991DB6F0061EB86 /* AddSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4341991DB6F0061EB86 /* AddSwitchViewController.m */; };
 		1587F439199208570061EB86 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F438199208570061EB86 /* HelpViewController.m */; };
@@ -138,6 +140,10 @@
 		152952D61991BF4600924FC3 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		152952D81991BFF800924FC3 /* SwitchAndSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchAndSceneViewController.h; sourceTree = "<group>"; };
 		152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchAndSceneViewController.m; sourceTree = "<group>"; };
+		156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchInfoViewController.h; sourceTree = "<group>"; };
+		156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchInfoViewController.m; sourceTree = "<group>"; };
+		156CB954199DF84A007A9C35 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
+		156CB955199DF84A007A9C35 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSidePanelController.h; sourceTree = "<group>"; };
 		1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSidePanelController.m; sourceTree = "<group>"; };
 		1587F4331991DB6F0061EB86 /* AddSwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSwitchViewController.h; sourceTree = "<group>"; };
@@ -294,6 +300,8 @@
 				1587F44419920B460061EB86 /* AddModelViewController.m */,
 				1587F44619920B590061EB86 /* BuyViewController.h */,
 				1587F44719920B590061EB86 /* BuyViewController.m */,
+				156CB954199DF84A007A9C35 /* WelcomeViewController.h */,
+				156CB955199DF84A007A9C35 /* WelcomeViewController.m */,
 			);
 			path = SmartSwitch;
 			sourceTree = "<group>";
@@ -457,6 +465,8 @@
 				15A7AC93199C567900EED480 /* CycleViewController.m */,
 				15A7AC9C199CAE3000EED480 /* DelayViewController.h */,
 				15A7AC9D199CAE3100EED480 /* DelayViewController.m */,
+				156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */,
+				156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */,
 			);
 			name = "开关";
 			sourceTree = "<group>";
@@ -640,12 +650,14 @@
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,
 				1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */,
+				156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */,
 				1587F4351991DB6F0061EB86 /* AddSwitchViewController.m in Sources */,
 				152952CA19908B7200924FC3 /* NetUtil.m in Sources */,
 				152952A61990899400924FC3 /* CC3xMoreAction.m in Sources */,
 				1587F45F199315680061EB86 /* SwitchListCell.m in Sources */,
 				152952CB19908B7200924FC3 /* MessageUtil.m in Sources */,
 				15BC9E71199B74B8006516D8 /* TimerViewController.m in Sources */,
+				156CB953199DE70D007A9C35 /* SwitchInfoViewController.m in Sources */,
 				15BC9E6A1999BA03006516D8 /* HistoryElectricityViewController.m in Sources */,
 				1587F462199315760061EB86 /* SceneListCell.m in Sources */,
 				152952A71990899400924FC3 /* CC3xServerInfo.m in Sources */,

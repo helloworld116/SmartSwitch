@@ -20,6 +20,7 @@
     #import <UIViewController+JASidePanel.h>
     #import <KxMenu.h>
     #import <EGORefreshTableHeaderView.h>
+    #import <HexColor.h>
 
     #import "AppDelegate.h"
     #import "CC3xUtility.h"

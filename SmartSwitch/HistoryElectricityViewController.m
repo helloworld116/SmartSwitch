@@ -8,7 +8,6 @@
 
 #import "HistoryElectricityViewController.h"
 #import <PNChart.h>
-#import <HexColor.h>
 #import <NSDate+Calendar.h>
 #define kBarWidth 25
 

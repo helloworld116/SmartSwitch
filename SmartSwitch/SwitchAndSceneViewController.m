@@ -17,7 +17,6 @@
 
 @property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
 @property(strong, nonatomic) SceneTableView *tableViewOfScene;
-//@property(strong, nonatomic) IBOutlet UIView *viewOfContainer;
 @property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
 - (IBAction)showSwitchView:(id)sender;
@@ -47,7 +46,6 @@
       ((UITableViewController *)
        [self.storyboard instantiateViewControllerWithIdentifier:
                             @"SwitchListTableViewController"]).tableView;
-  //  switchTableView.frame = self.scrollView.bounds;
   self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
   self.tableViewOfSwitch.switchTableViewDelegate = self;
   [self.scrollView addSubview:switchTableView];
@@ -65,34 +63,27 @@
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   self.tableViewOfSwitch.frame = self.scrollView.bounds;
+  //  NSLog(@"self.scrollView contentOffset is %@",
+  //        NSStringFromCGPoint(self.scrollView.contentOffset));
+  //  NSLog(@"self.scrollView contentSize is %@",
+  //        NSStringFromCGSize(self.scrollView.contentSize));
+  //  NSLog(@"self.scrollView contentInset is %@",
+  //        NSStringFromUIEdgeInsets(self.scrollView.contentInset));
 }
 
-- (void)viewWillLayoutSubviews {
-  [super viewWillLayoutSubviews];
-}
+//- (void)viewWillLayoutSubviews {
+//  [super viewWillLayoutSubviews];
+//}
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - 导航栏菜单
 - (IBAction)showSwitchView:(id)sender {
   self.btnSwitch.selected = YES;
   self.btnScene.selected = NO;
-  //  [self.viewOfContainer bringSubviewToFront:self.tableViewOfSwitch];
   self.scrollView.contentOffset = CGPointMake(0, 0);
 }
 
@@ -104,16 +95,13 @@ preparation before navigation
         ((UITableViewController *)
          [self.storyboard instantiateViewControllerWithIdentifier:
                               @"SceneListTableViewController"]).tableView;
-    //    sceneTableView.frame = self.viewOfContainer.bounds;
     sceneTableView.frame = CGRectMake(self.scrollView.frame.size.width, 0,
                                       self.scrollView.frame.size.width,
                                       self.scrollView.frame.size.height);
 
     self.tableViewOfScene = (SceneTableView *)sceneTableView;
-    //    [self.viewOfContainer addSubview:sceneTableView];
     [self.scrollView addSubview:sceneTableView];
   }
-  //  [self.viewOfContainer bringSubviewToFront:self.tableViewOfScene];
   self.scrollView.contentOffset =
       CGPointMake(self.scrollView.frame.size.width, 0);
 }

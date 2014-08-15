@@ -12,9 +12,13 @@
 #import "SwitchDetailViewController.h"
 
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
-                              SwitchListCellDelegate,
+                              SwitchListCellDelegate, SwitchExpandCellDelegate,
                               EGORefreshTableHeaderDelegate>
 @property(strong, nonatomic) NSMutableArray *switchs;
+@property(assign, nonatomic) BOOL isOpen;  //是否展开
+@property(strong, nonatomic)
+    NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
+
 @property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property(assign, nonatomic) BOOL reloading;
 @end
@@ -33,22 +37,16 @@
   [self.refreshHeaderView refreshLastUpdatedDate];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 #pragma mark - UITableViewDataSource
-//- (CGFloat)tableView:(UITableView *)tableView
-//    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//  return self.tableView.rowHeight;
-//}
+- (CGFloat)tableView:(UITableView *)tableView
+    heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+  if (self.selectedIndexPath && indexPath.row == self.selectedIndexPath.row &&
+      self.isOpen) {
+    return 180;
+  } else {
+    return 100;
+  }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
@@ -58,10 +56,27 @@ preparation before navigation
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *CellId = @"SwitchListCell";
-  SwitchListCell *listCell =
-      (SwitchListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
-  listCell.cellDelegate = self;
-  return listCell;
+  static NSString *cellForExpandId = @"SwitchExpandCell";
+  UITableViewCell *cell;
+  if (self.selectedIndexPath && indexPath.row == self.selectedIndexPath.row &&
+      self.isOpen) {
+    SwitchExpandCell *expandCell = (SwitchExpandCell *)
+        [tableView dequeueReusableCellWithIdentifier:cellForExpandId];
+    expandCell.expandCellDelegate = self;
+    expandCell.cellDelegate = self;
+    expandCell.isExpand = YES;
+    expandCell.btnExpand.transform =
+        CGAffineTransformMakeRotation(-90 * (M_PI / 180.0f));
+    cell = expandCell;
+  } else {
+    SwitchListCell *listCell =
+        (SwitchListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
+    listCell.cellDelegate = self;
+    listCell.isExpand = NO;
+    listCell.btnExpand.transform = CGAffineTransformMakeRotation(0);
+    cell = listCell;
+  }
+  return cell;
 }
 
 #pragma mark - UITableViewDelegate
@@ -77,19 +92,50 @@ preparation before navigation
 #pragma mark - SwitchListCellDelegate
 - (void)cellDoExpand:(SwitchListCell *)cell {
   CGFloat angle;
-  if (cell.isExpand) {
+  NSMutableArray *indexPaths = [@[] mutableCopy];
+  NSIndexPath *indexPath = [self indexPathForCell:cell];
+  if (cell.isExpand && self.selectedIndexPath.row == indexPath.row) {
+    //关闭
     angle = 0 * (M_PI / 180.0f);
+    self.isOpen = NO;
+    if (self.selectedIndexPath) {
+      self.selectedIndexPath = nil;
+    } else {
+      self.selectedIndexPath = indexPath;
+    }
+    [indexPaths addObject:indexPath];
   } else {
+    //展开
     angle = -90 * (M_PI / 180.0f);
+    if (self.selectedIndexPath && self.selectedIndexPath.row != indexPath.row) {
+      [indexPaths addObject:self.selectedIndexPath];
+      SwitchListCell *oldExpandCell =
+          (SwitchListCell *)[self cellForRowAtIndexPath:self.selectedIndexPath];
+      oldExpandCell.isExpand = NO;
+      [UIView animateWithDuration:0.3
+                       animations:^{
+                           oldExpandCell.btnExpand.transform =
+                               CGAffineTransformMakeRotation(0);
+                       }];
+    }
+    self.isOpen = YES;
+    self.selectedIndexPath = indexPath;
+    [indexPaths addObject:indexPath];
   }
   [UIView animateWithDuration:0.3
                    animations:^{
                        cell.btnExpand.transform =
                            CGAffineTransformMakeRotation(angle);
                    }];
+  [self reloadRowsAtIndexPaths:indexPaths
+              withRowAnimation:UITableViewRowAnimationFade];
 }
 
-#pragma mark Data Source Loading / Reloading Methods
+#pragma mark - SwitchExpandCellDelegate
+- (void)socketAction:(UIButton *)btnSocket {
+}
+
+#pragma mark - Data Source Loading / Reloading Methods
 - (void)reloadTableViewDataSource {
   //  should be calling your tableviews data source model to reload
   //  put here just for demo

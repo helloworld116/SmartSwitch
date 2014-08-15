@@ -42,6 +42,11 @@
   // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - UIStatusBarStyle
+- (UIStatusBarStyle)preferredStatusBarStyle {
+  return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - override JASidePanelController
 - (void)styleContainer:(UIView *)container
                animate:(BOOL)animate

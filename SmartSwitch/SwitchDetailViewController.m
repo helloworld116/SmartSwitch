@@ -99,7 +99,11 @@ preparation before navigation
                        [KxMenuItem menuItem:@"历史电量"
                                       image:[UIImage imageNamed:@"tjcj"]
                                      target:self
-                                     action:@selector(menuItem3:)]
+                                     action:@selector(menuItem3:)],
+                       [KxMenuItem menuItem:@"开关名称"
+                                      image:[UIImage imageNamed:@"tjcj"]
+                                     target:self
+                                     action:@selector(menuItem4:)]
                      ]];
 }
 
@@ -122,6 +126,13 @@ preparation before navigation
   UIViewController *nextVC =
       [self.storyboard instantiateViewControllerWithIdentifier:
                            @"HistoryElectricityViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+- (void)menuItem4:(id)sender {
+  //开关名称
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"SwitchInfoViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 

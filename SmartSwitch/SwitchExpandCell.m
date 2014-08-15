@@ -28,5 +28,13 @@
 
   // Configure the view for the selected state
 }
+- (IBAction)doExpand:(id)sender {
+  [super doExpand:sender];
+}
 
+- (IBAction)socketTouched:(id)sender {
+  if ([self.expandCellDelegate respondsToSelector:@selector(socketAction:)]) {
+    [self.expandCellDelegate socketAction:(UIButton *)self];
+  }
+}
 @end

@@ -45,8 +45,8 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view.
   self.menuNames = @[
-    @"添加设备",
-    @"添加模式",
+    @"添加开关",
+    @"添加场景",
     @"晟大分享",
     @"购买设备",
     @"晟大帮助",

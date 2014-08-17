@@ -69,6 +69,7 @@
 		15BC9E74199B74CE006516D8 /* TimerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E73199B74CE006516D8 /* TimerCell.m */; };
 		15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E7F60F1993189A00C46854 /* SwitchExpandCell.m */; };
 		15E7F61319933A4300C46854 /* libFTC_DEBUG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E7F61119933A4300C46854 /* libFTC_DEBUG.a */; };
+		4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */; };
 		A5C618E8CDA540B5B4FD8868 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3A51A2AE54D4395A7991CCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -201,6 +202,8 @@
 		15E7F60F1993189A00C46854 /* SwitchExpandCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchExpandCell.m; sourceTree = "<group>"; };
 		15E7F61119933A4300C46854 /* libFTC_DEBUG.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFTC_DEBUG.a; sourceTree = "<group>"; };
 		15E7F61219933A4300C46854 /* libFTC_RELEASE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFTC_RELEASE.a; sourceTree = "<group>"; };
+		4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpRequest.h; sourceTree = "<group>"; };
+		4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpRequest.m; sourceTree = "<group>"; };
 		CABB3F26A985482997979951 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F3A51A2AE54D4395A7991CCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -395,6 +398,8 @@
 				152952C519908B7200924FC3 /* XMLUtil.m */,
 				152952C619908B7200924FC3 /* ViewUtil.h */,
 				152952C719908B7200924FC3 /* ViewUtil.m */,
+				4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */,
+				4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -652,6 +657,7 @@
 				1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */,
 				156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */,
 				1587F4351991DB6F0061EB86 /* AddSwitchViewController.m in Sources */,
+				4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */,
 				152952CA19908B7200924FC3 /* NetUtil.m in Sources */,
 				152952A61990899400924FC3 /* CC3xMoreAction.m in Sources */,
 				1587F45F199315680061EB86 /* SwitchListCell.m in Sources */,

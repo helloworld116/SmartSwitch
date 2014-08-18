@@ -60,8 +60,8 @@ typedef struct {
   unsigned char ip[4];
   unsigned short port;
   char deviceName[32];
-  //  unsigned char count;
-  //  socketName sName[2];
+  unsigned char count;
+  socketName *socketName;
   unsigned short crc;
 } p2dMsg05;
 
@@ -107,8 +107,7 @@ typedef struct {
   char deviceName[32];
   unsigned char deviceLockState;
   unsigned char FWVersion;
-  unsigned char extensionLength;
-  unsigned short power;
+  unsigned char onOffState;
   unsigned short crc;
 } d2pMsg0C;
 
@@ -120,7 +119,6 @@ typedef struct {
 } p2sMsg0D;
 
 // D2P_STATE_RESP 0x0E
-
 typedef struct {
   msgHeader header;
   char state;
@@ -130,8 +128,7 @@ typedef struct {
   char deviceName[32];
   unsigned char deviceLockState;
   unsigned char FWVersion;
-  unsigned char extensionLength;
-  unsigned short power;
+  unsigned char onOffState;
   unsigned short crc;
 } d2pMsg0E;
 
@@ -139,6 +136,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char socketId;
+  char password[6];
   unsigned char on;
   unsigned short crc;
 } p2dMsg11;
@@ -157,6 +155,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
+  char password[6];
   unsigned char on;
   unsigned short crc;
 } p2sMsg13;
@@ -180,10 +179,11 @@ typedef struct {
 // Timer related structure
 typedef struct {
   char week;
-  unsigned char startTime[4];
-  unsigned char endTime[4];
-  char timeDetail;
+  unsigned char actionTime[4];
+  char takeEffect;  //是否生效，1表示动作，0表示不动作
+  char actionType;  //动作类型，1表示开，0表示关
 } timerTask;
+
 // D2P_GET_TIMER_RESP 0x18
 typedef struct {
   msgHeader header;
@@ -191,7 +191,7 @@ typedef struct {
   unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
-  timerTask timerList[8];
+  timerTask *timerList;
   unsigned short crc;
 } d2pMsg18;
 
@@ -218,6 +218,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char socketId;
+  char password[6];
   unsigned char currentTimer[4];
   unsigned char timerNumber;
   timerTask *timerList;
@@ -238,6 +239,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
+  char password[4];
   unsigned char currentTime[4];
   unsigned char timerNumber;
   timerTask *timerList;
@@ -288,6 +290,10 @@ typedef struct {
 // D2P_GET_POWER_INFO_RESP	0X34
 typedef struct {
   msgHeader header;
+  unsigned char mac[6];
+  char state;   // 0表示成功
+  short pulse;  //电量脉冲的周期值x，单位为ms 功率W=（53035.5/x）
+                //保留2位小数
   unsigned short crc;
 } d2pMsg34;
 
@@ -303,7 +309,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   char state;
-  char power;
+  unsigned short pulse;
   unsigned short crc;
 } s2pMsg36;
 
@@ -311,14 +317,14 @@ typedef struct {
 
 typedef struct {
   msgHeader header;
-  unsigned char on;
+  unsigned char on;  // 1闪烁 0消除闪烁
   unsigned short crc;
 } p2dMsg39;
 // D2P_LOCATE_RESP 0x3A
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;
+  char state;  // 0成功，非0失败
   unsigned short crc;
 } d2pMsg3A;
 
@@ -327,7 +333,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char on;
+  char on;  // 1闪烁 0消除闪烁
   unsigned short crc;
 } p2sMsg3B;
 
@@ -335,14 +341,15 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;
+  char state;  // 0成功，非0失败
   unsigned short crc;
 } s2pMsg3C;
 
 // P2D_SET_NAME_REQ 0x3F
 typedef struct {
   msgHeader header;
-  unsigned char socketId;
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char password[6];
   char name[32];
   unsigned short crc;
 } p2dMsg3F;
@@ -351,8 +358,8 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char socketId;
-  char state;
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char state;          // 0表示成功
   unsigned short crc;
 } d2pMsg40;
 
@@ -360,7 +367,8 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char socketId;
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char password[4];
   char name[32];
   unsigned short crc;
 } p2sMsg41;
@@ -369,15 +377,16 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char socketId;
-  char state;
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char state;          // 0表示成功
   unsigned short crc;
 } s2pMsg42;
 
 // P2D_DEV_LOCK_REQ 0x47
 typedef struct {
   msgHeader header;
-  char lock;
+  char password[6];
+  char lock;  // 0X1加锁；0X0解锁
   unsigned short crc;
 } p2dMsg47;
 
@@ -385,7 +394,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;
+  char state;  // 0成功
   unsigned short crc;
 } d2pMsg48;
 
@@ -393,7 +402,8 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;
+  char password[6];
+  char lock;  // 0X1加锁；0X0解锁
   unsigned short crc;
 } p2sMsg49;
 
@@ -401,7 +411,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;
+  char state;  // 0成功
   unsigned short crc;
 } s2pMsg4A;
 
@@ -409,18 +419,18 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char socketId;
-  unsigned short delay;
-  char on;
+  char password[6];
+  unsigned short delay;  // max= 1440分钟
+  char on;               // 0x1表示开，0x0表示关
   unsigned short crc;
 } p2dMsg4D;
 
-//
 // D2P_SET_DELAY_RESP 0x4E
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
-  char state;
+  char state;  // 0表示成功
   unsigned short crc;
 } d2pMsg4E;
 
@@ -429,16 +439,18 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
+  char password[6];
   unsigned short delay;
-  char on;
+  char on;  // 0x1表示开，0x0表示关
   unsigned short crc;
 } p2sMsg4F;
+
 // S2P_SET_DELAY_RESP 0x50
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
-  char state;
+  char state;  // 0表示成功
   unsigned short crc;
 } s2pMsg50;
 
@@ -455,7 +467,7 @@ typedef struct {
   unsigned char mac[6];
   unsigned char socketId;
   unsigned short delay;
-  unsigned char on;
+  unsigned char on;  // 0x1表示开，0x0表示关
   unsigned short crc;
 } d2pMsg54;
 
@@ -467,13 +479,23 @@ typedef struct {
   unsigned short crc;
 } p2sMsg55;
 
+// S2P_GET_DELAY_RESP 0X56
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  unsigned char socketId;
+  unsigned short delay;
+  unsigned char on;  // 0x1表示开，0x0表示关
+  unsigned short crc;
+} s2pmsg56;
+
 // P2S_PHONE_INIT_REQ 0x59
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char phoneType[20];
-  char systemName[20];
-  char appVersion[10];
+  char phoneType[20];   //手机型号
+  char systemName[20];  //手机操作系统版本
+  char appVersion[10];  // app软件版本
   unsigned short crc;
 } p2sMsg59;
 
@@ -484,6 +506,124 @@ typedef struct {
   char updateUrl[100];
   unsigned short crc;
 } s2pMsg5A;
+
+// P2D_GET_NAME_REQ	0X5D
+typedef struct {
+  msgHeader header;
+  unsigned short crc;
+} p2dMsg5D;
+
+// D2P_GET_NAME_RESP	0X5E
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char deviceName[32];
+  unsigned char count;
+  socketName *socketName;
+  unsigned short crc;
+} d2pMsg5E;
+
+// P2S_GET_NAME_REQ 	0X5F
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  unsigned short crc;
+} p2sMsg5F;
+
+// S2P_GET_NAME_RESP	0X60
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char deviceName[32];
+  unsigned char count;
+  socketName *socketName;
+  unsigned short crc;
+} s2pMsg60;
+
+// P2S_GET_POWER_LOG_REQ	 0X63
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  int beginTime;  //开始时间 （秒）
+  int endTime;    //开始时间 （秒）
+  int interval;  //间隔时间，返回查询数量是(endtime-begintime)/ interval
+  unsigned short crc;
+} p2sMsg63;
+
+//电量信息，时间和功率
+typedef struct {
+  int time;
+  int power;  //功率,单位(1/100)瓦
+} elecInfo;
+
+// S2P_GET_POWER_LOG_RESP 0X64
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char state;  // 0表示成功
+  char count;  //结果数量
+  elecInfo *elecInfo;
+  unsigned short crc;
+} s2pMsg64;
+
+// P2S_GET_CITY_REQ	 0X65
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];  //设备/手机MAC地址
+  char type;  // 0 为获取设备当地的城市 1为获取换手机当地的城市
+  unsigned short crc;
+} p2sMsg65;
+
+// S2P_GET_ CITY_RESP 0X66
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];  //设备MAC地址
+  char state;            // 0成功
+  char city[10];
+  unsigned short crc;
+} s2pMsg66;
+
+// P2S_GET_CITY_WEATHER_REQ	 0X67
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char type;  // 0 为获取设备当地的天气 1为获取换手机当地的天气
+  // 3为获取指定城市的天气
+  char cityName[20];  //城市名称
+  unsigned short crc;
+} p2sMSg67;
+
+// S2P_GET_ CITY_WEATHER _RESP 0X68
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char state;                 // 0表示成功
+  char city[10];              //城市
+  char temperature[10];       //温度
+  char humidity[10];          //湿度
+  char weather[20];           //天气
+  char wind[20];              //风速
+  char pm2point5[5];          // pm2.5
+  char dayPictureUrl[100];    //白天图片
+  char nightPictureUrl[100];  //晚上图片
+  unsigned short crc;
+} s2pMsg68;
+
+// P2D_SET_PASSWD_REQ	  0X69
+typedef struct {
+  msgHeader header;
+  char oldPassword[6];
+  char newPassword[6];
+  unsigned short crc;
+} p2dMSg69;
+
+// D2P_SET_PASSWD_RESP	0X6A
+typedef struct {
+  msgHeader header;
+  unsigned char mac[6];
+  char state;  // 0表示成功
+  unsigned short crc;
+} d2pMSg6A;
 
 #pragma pack()
 #pragma mark - method implementation 将信息转换为Data ，用于发送
@@ -561,7 +701,7 @@ typedef struct {
 }
 
 // P2D_CONTROL_REQ	0X11
-+ (NSData *)getP2dMsg11:(BOOL)on {
++ (NSData *)getP2dMsg11:(BOOL)on socketId:(int)socketId {
   p2dMsg11 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x11;
@@ -837,7 +977,7 @@ typedef struct {
   Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
-  msg.state = isLock;
+  msg.lock = isLock;
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
@@ -1080,11 +1220,11 @@ typedef struct {
     timerTask t = msg->timerList[i];
     CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
     task.week = t.week;
-    charArray2int(t.startTime, task.startTime);
-    charArray2int(t.endTime, task.endTime);
-    task.timeDetail = t.timeDetail;
+    // TODO: 用到时再来修改
+    //    charArray2int(t.startTime, task.startTime);
+    //    charArray2int(t.endTime, task.endTime);
+    //    task.timeDetail = t.timeDetail;
     [message.timerTaskList addObject:task];
-    ;
   }
 
   message.crc = msg->crc;
@@ -1116,7 +1256,7 @@ typedef struct {
                                  msg->mac[1], msg->mac[2], msg->mac[3],
                                  msg->mac[4], msg->mac[5]];
   message.state = msg->state;
-  message.power = msg->power;
+  message.power = msg->pulse;
   return message;
 }
 

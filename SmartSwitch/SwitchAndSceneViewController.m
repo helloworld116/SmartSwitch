@@ -9,6 +9,7 @@
 #import "SwitchAndSceneViewController.h"
 #import "SwitchTableView.h"
 #import "SceneTableView.h"
+#import "UdpRequest.h"
 
 @interface SwitchAndSceneViewController ()<SwitchTableViewDelegate,
                                            UIScrollViewDelegate>
@@ -19,6 +20,9 @@
 @property(strong, nonatomic) SceneTableView *tableViewOfScene;
 @property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
+
+@property(strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
+@property(strong, nonatomic) NSTimer *updateTimer;
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
 
@@ -58,6 +62,8 @@
         setLeftPanel:kSharedAppliction.leftViewController];
     [self.sidePanelController showLeftPanelAnimated:YES];
   }
+  //查询开关状态
+  [self updateSwitchStatus];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -168,5 +174,60 @@
   if (i < 0) {
     [self showMenu:nil];
   }
+}
+
+#pragma mark -
+//更新设备状态
+- (void)updateSwitchStatus {
+  if (self.updateTimer) {
+    [self.updateTimer invalidate];
+
+    _updateTimer = nil;
+  }
+
+  self.updateTimer = [NSTimer timerWithTimeInterval:REFRESH_DEV_TIME
+                                             target:self
+                                           selector:@selector(sendStateInquiry)
+                                           userInfo:nil
+                                            repeats:YES];
+  [self.updateTimer fire];
+  [[NSRunLoop currentRunLoop] addTimer:self.updateTimer
+                               forMode:NSRunLoopCommonModes];
+}
+//扫描设备
+- (void)sendStateInquiry {
+  //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
+  [[UdpRequest sharedInstance] sendMsg0BMode:ActiveMode
+      success:^(CC3xMessage *msg) { NSLog(@"msg is %@", msg); }
+      noResponse:^(int count) { NSLog(@"try count is %d", count); }
+      noSend:^(long tag) { NSLog(@"tag is %ld", tag); }];
+
+  //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
+  //                 GLOBAL_QUEUE, ^{
+  //      NSArray *macs = [self.switchDict allKeys];
+  //      int j = 0;
+  //      for (int i = 0; i < macs.count; i++) {
+  //        NSString *mac = [[self.switchDict allKeys] objectAtIndex:i];
+  //        CC3xSwitch *aSwitch = [self.switchDict objectForKey:mac];
+  //        if (aSwitch.status != SWITCH_LOCAL &&
+  //            aSwitch.status != SWITCH_LOCAL_LOCK) {
+  //          [[MessageUtil shareInstance] sendMsg0D:self.udpSocket
+  //                                             mac:mac
+  //                                        sendMode:ActiveMode];
+  //          double delayInSeconds = 0.5 * j +
+  //          kCheckPublicPrivateResponseInterval;
+  //          //外网每个延迟0.5秒发送请求
+  //          dispatch_time_t delayInNanoSeconds =
+  //              dispatch_time(DISPATCH_TIME_NOW, delayInSeconds *
+  //              NSEC_PER_SEC);
+  //          dispatch_after(delayInNanoSeconds, GLOBAL_QUEUE, ^{
+  //              [[MessageUtil shareInstance] sendMsg0D:self.udpSocket
+  //                                                 mac:mac
+  //                                            sendMode:ActiveMode];
+  //          });
+  //          j++;
+  //        }
+  //      }
+  //  });
 }
 @end

@@ -3381,6 +3381,7 @@ enum GCDAsyncUdpSocketConfig {
              tag:(long)tag {
   LogTrace();
 
+  NSLog(@"gcd send to %@ and data is %@", host, data);
   if ([data length] == 0) {
     LogWarn(@"Ignoring attempt to send nil/empty data.");
     return;

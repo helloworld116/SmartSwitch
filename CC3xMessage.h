@@ -33,7 +33,13 @@ enum {
   P2S_SET_DELAY_REQ_4F,
   P2D_GET_DELAY_REQ_53,
   P2S_GET_DELAY_REQ_55,
-  P2S_PHONE_INIT_REQ_59
+  P2S_PHONE_INIT_REQ_59,
+  P2D_GET_NAME_REQ_5D,
+  P2S_GET_NAME_REQ_5F,
+  P2S_GET_POWER_LOG_REQ_63,
+  P2S_GET_CITY_REQ_65,
+  P2S_GET_CITY_WEATHER_REQ_67,
+  P2D_SET_PASSWD_REQ_69
 };
 
 @class CC3xMessage;
@@ -52,16 +58,27 @@ enum {
 + (NSData *)getP2dMsg0B;
 + (NSData *)getP2SMsg0D:(NSString *)mac;
 + (NSData *)getP2dMsg11:(BOOL)on;
++ (NSData *)getP2dMsg11:(BOOL)on socketId:(int)socketId;
 + (NSData *)getP2sMsg13:(NSString *)mac aSwitch:(BOOL)on;
++ (NSData *)getP2sMsg13:(NSString *)mac aSwitch:(BOOL)on socketId:(int)socketId;
 + (NSData *)getP2dMsg17;
++ (NSData *)getP2dMsg17:(int)socketId;
 + (NSData *)getP2SMsg19:(NSString *)mac;
++ (NSData *)getP2SMsg19:(NSString *)mac socketId:(int)socketId;
 + (NSData *)getP2dMsg25;
 + (NSData *)getP2SMsg27:(NSString *)mac;
 + (NSData *)getP2dMsg1D:(NSUInteger)currentTime
                timerNum:(NSUInteger)num
               timerList:(NSArray *)timerList;
++ (NSData *)getP2dMsg1D:(NSUInteger)currentTime
+               socketId:(int)socketId
+              timerList:(NSArray *)timerList;
 + (NSData *)getP2SMsg1F:(NSUInteger)currentTime
                timerNum:(NSUInteger)num
+              timerList:(NSArray *)timerList
+                    mac:(NSString *)aMac;
++ (NSData *)getP2SMsg1F:(NSUInteger)currentTime
+               socketId:(int)socketId
               timerList:(NSArray *)timerList
                     mac:(NSString *)aMac;
 + (NSData *)getP2DMsg33;
@@ -69,15 +86,35 @@ enum {
 + (NSData *)getP2dMsg39:(BOOL)on;
 + (NSData *)getP2SMsg3B:(NSString *)mac on:(BOOL)on;
 + (NSData *)getP2dMsg3F:(NSString *)name;
++ (NSData *)getP2dMsg3F:(NSString *)name type:(int)type;
 + (NSData *)getP2sMsg41:(NSString *)mac name:(NSString *)name;
++ (NSData *)getP2sMsg41:(NSString *)mac name:(NSString *)name type:(int)type;
 + (NSData *)getP2dMsg47:(BOOL)isLock;
 + (NSData *)getP2sMsg49:(NSString *)mac lock:(BOOL)isLock;
 + (NSData *)getP2dMsg4D:(NSInteger)delay on:(BOOL)on;
++ (NSData *)getP2dMsg4D:(NSInteger)delay on:(BOOL)on socketId:(int)socketId;
 + (NSData *)getP2SMsg4F:(NSString *)mac delay:(NSInteger)delay on:(BOOL)on;
++ (NSData *)getP2SMsg4F:(NSString *)mac
+                  delay:(NSInteger)delay
+                     on:(BOOL)on
+               socketId:(int)socketId;
 + (NSData *)getP2dMsg53;
++ (NSData *)getP2dMsg53:(int)socketId;
 + (NSData *)getP2SMsg55:(NSString *)mac;
++ (NSData *)getP2SMsg55:(NSString *)mac socketId:(int)socketId;
 + (NSData *)getP2SMsg59:(NSString *)mac;
-
++ (NSData *)getP2DMsg5D;
++ (NSData *)getP2SMsg5F:(NSString *)mac;
++ (NSData *)getP2SMsg63:(NSString *)mac
+              beginTime:(int)beginTime
+                endTime:(int)endTime
+               interval:(int)interval;
++ (NSData *)getP2SMsg65:(NSString *)mac type:(int)type;
++ (NSData *)getP2SMsg67:(NSString *)mac
+                   type:(int)type
+               cityName:(NSString *)cityName;
++ (NSData *)getP2DMsg69:(NSString *)oldPassword
+            newPassword:(NSString *)newPassword;
 @end
 
 @interface CC3xMessage : NSObject

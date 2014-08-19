@@ -10,11 +10,11 @@
 #import "SwitchListCell.h"
 #import "SwitchExpandCell.h"
 #import "SwitchDetailViewController.h"
+#import "SwitchDataCeneter.h"
 
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
                               SwitchListCellDelegate, SwitchExpandCellDelegate,
                               EGORefreshTableHeaderDelegate>
-@property(strong, nonatomic) NSMutableArray *switchs;
 @property(assign, nonatomic) BOOL isOpen;  //是否展开
 @property(strong, nonatomic)
     NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
@@ -35,6 +35,24 @@
   self.refreshHeaderView.delegate = self;
   [self addSubview:self.refreshHeaderView];
   [self.refreshHeaderView refreshLastUpdatedDate];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(switchUpdate:)
+                                               name:kSwitchUpdate
+                                             object:nil];
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:kSwitchUpdate
+                                                object:nil];
+}
+
+#pragma mark - NotificationCenter
+- (void)switchUpdate:(NSNotification *)notification {
+  if (notification.object == [SwitchDataCeneter sharedInstance]) {
+    [self reloadData];
+  }
 }
 
 #pragma mark - UITableViewDataSource
@@ -50,14 +68,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return 10;
+  return [[SwitchDataCeneter sharedInstance].switchs count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *CellId = @"SwitchListCell";
   static NSString *cellForExpandId = @"SwitchExpandCell";
-  UITableViewCell *cell;
+  SwitchListCell *cell;
+  SDZGSwitch *aSwitch =
+      [[SwitchDataCeneter sharedInstance].switchs objectAtIndex:indexPath.row];
   if (self.selectedIndexPath && indexPath.row == self.selectedIndexPath.row &&
       self.isOpen) {
     SwitchExpandCell *expandCell = (SwitchExpandCell *)
@@ -69,13 +89,13 @@
         CGAffineTransformMakeRotation(-90 * (M_PI / 180.0f));
     cell = expandCell;
   } else {
-    SwitchListCell *listCell =
+    cell =
         (SwitchListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
-    listCell.cellDelegate = self;
-    listCell.isExpand = NO;
-    listCell.btnExpand.transform = CGAffineTransformMakeRotation(0);
-    cell = listCell;
+    cell.cellDelegate = self;
+    cell.isExpand = NO;
+    cell.btnExpand.transform = CGAffineTransformMakeRotation(0);
   }
+  [cell setCellInfo:aSwitch];
   return cell;
 }
 

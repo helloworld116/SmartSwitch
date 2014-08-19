@@ -61,6 +61,8 @@
 		15A7AC94199C567900EED480 /* CycleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC93199C567900EED480 /* CycleViewController.m */; };
 		15A7AC99199CA38900EED480 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 15A7AC9B199CA38900EED480 /* Localizable.strings */; };
 		15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC9D199CAE3100EED480 /* DelayViewController.m */; };
+		15B7A30A19A2F69B00C00342 /* SwitchDataCeneter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */; };
+		15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A31219A31E6600C00342 /* SDZGSwitch.m */; };
 		15BB6B281994DFF5004D447A /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BB6B271994DFF5004D447A /* InsetsTextField.m */; };
 		15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E6119989E73006516D8 /* SwitchDetailViewController.m */; };
 		15BC9E651998BD61006516D8 /* SocketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E641998BD61006516D8 /* SocketView.m */; };
@@ -186,6 +188,10 @@
 		15A7AC9A199CA38900EED480 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		15A7AC9C199CAE3000EED480 /* DelayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayViewController.h; sourceTree = "<group>"; };
 		15A7AC9D199CAE3100EED480 /* DelayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayViewController.m; sourceTree = "<group>"; };
+		15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataCeneter.h; sourceTree = "<group>"; };
+		15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataCeneter.m; sourceTree = "<group>"; };
+		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSwitch.h; sourceTree = "<group>"; };
+		15B7A31219A31E6600C00342 /* SDZGSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSwitch.m; sourceTree = "<group>"; };
 		15BB6B261994DFF5004D447A /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		15BB6B271994DFF5004D447A /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
 		15BC9E6019989E73006516D8 /* SwitchDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDetailViewController.h; sourceTree = "<group>"; };
@@ -369,6 +375,8 @@
 				152952A21990899400924FC3 /* CC3xSwitch.m */,
 				152952A31990899400924FC3 /* CC3xTimerTask.h */,
 				152952A41990899400924FC3 /* CC3xTimerTask.m */,
+				15B7A31119A31E6600C00342 /* SDZGSwitch.h */,
+				15B7A31219A31E6600C00342 /* SDZGSwitch.m */,
 			);
 			name = CC3x;
 			sourceTree = "<group>";
@@ -472,6 +480,8 @@
 				15A7AC9D199CAE3100EED480 /* DelayViewController.m */,
 				156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */,
 				156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */,
+				15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */,
+				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
 			);
 			name = "开关";
 			sourceTree = "<group>";
@@ -647,6 +657,7 @@
 				1587F44519920B460061EB86 /* AddModelViewController.m in Sources */,
 				1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */,
 				1587F4531992292E0061EB86 /* RegisterViewController.m in Sources */,
+				15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */,
 				1587F43F199208690061EB86 /* AboutViewController.m in Sources */,
 				1587F450199229210061EB86 /* LoginViewController.m in Sources */,
 				152952C819908B7200924FC3 /* SendResponseHandler.m in Sources */,
@@ -668,6 +679,7 @@
 				1587F462199315760061EB86 /* SceneListCell.m in Sources */,
 				152952A71990899400924FC3 /* CC3xServerInfo.m in Sources */,
 				152952A91990899400924FC3 /* CC3xTimerTask.m in Sources */,
+				15B7A30A19A2F69B00C00342 /* SwitchDataCeneter.m in Sources */,
 				1587F439199208570061EB86 /* HelpViewController.m in Sources */,
 				1587F44819920B590061EB86 /* BuyViewController.m in Sources */,
 				15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */,

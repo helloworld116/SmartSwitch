@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CC3xMessage.m"
-            timestampString = "429170759.372737"
+            timestampString = "430136992.272339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1166"
-            endingLineNumber = "1166"
+            startingLineNumber = "1283"
+            endingLineNumber = "1283"
             landmarkName = "+parseMessage:"
             landmarkType = "5">
          </BreakpointContent>

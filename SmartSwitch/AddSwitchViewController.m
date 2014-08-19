@@ -215,9 +215,9 @@ preparation before navigation
 - (void)responseMsgId2:(CC3xMessage *)msg address:(NSData *)address {
   self.count++;
   if (self.count == 1) {
-    [[MessageUtil shareInstance] sendMsg05:self.udpSocket
-                                   address:address
-                                  sendMode:ActiveMode];
+    //    [[MessageUtil shareInstance] sendMsg05:self.udpSocket
+    //                                   address:address
+    //                                  sendMode:ActiveMode];
   }
 }
 

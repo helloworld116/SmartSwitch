@@ -44,6 +44,15 @@
   // Configure the view for the selected state
 }
 
+- (void)setCellInfo:(SDZGSwitch *)aSwitch {
+  self.lblName.text = aSwitch.name;
+  if (aSwitch.lockStatus == LockStatusOn) {
+    self.imgViewOfState.image = [UIImage imageNamed:@"lock"];
+  } else if (aSwitch.lockStatus == LockStatusOff) {
+    self.imgViewOfState.image = nil;
+  }
+}
+
 - (IBAction)doExpand:(id)sender {
   if ([self.cellDelegate respondsToSelector:@selector(cellDoExpand:)]) {
     [self.cellDelegate cellDoExpand:self];

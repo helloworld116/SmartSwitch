@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_OPTIONS(NSUInteger, switchStatus) {
-    SWITCH_UNKNOWN, SWITCH_LOCAL,       SWITCH_LOCAL_LOCK, SWITCH_OFFLINE,
-    SWITCH_REMOTE,  SWITCH_REMOTE_LOCK, SWITCH_NEW,
-};
+// typedef NS_OPTIONS(NSUInteger, switchStatus) {
+//    SWITCH_UNKNOWN, SWITCH_LOCAL,       SWITCH_LOCAL_LOCK, SWITCH_OFFLINE,
+//    SWITCH_REMOTE,  SWITCH_REMOTE_LOCK, SWITCH_NEW,
+//};
 
 @interface CC3xSwitch : NSObject
 
 @property(nonatomic, strong) NSString *switchName;
-@property(nonatomic, assign) switchStatus status;
+//@property(nonatomic, assign) switchStatus status;
 @property(nonatomic, strong) NSString *macAddress;
 @property(nonatomic, strong) NSString *ip;
 @property(nonatomic, assign) unsigned short port;
@@ -37,34 +37,34 @@ typedef NS_OPTIONS(NSUInteger, switchStatus) {
 
 @property(nonatomic, assign) long tag;  //记录udp请求发送时的tag
 
-- (instancetype)initWithName:(NSString *)name
-                  macAddress:(NSString *)aMacAddress
-                      status:(switchStatus)aStatus
-                          ip:(NSString *)aIp
-                        port:(unsigned short)aPort
-                    isLocked:(BOOL)isLocked
-                        isOn:(BOOL)isOn
-                   timerList:(NSMutableArray *)aTimerList
-                   imageName:(NSString *)imageName
-              pmTwoPointFive:(NSInteger)pmTwoPointFive
-                 temperature:(float)temperature
-                    humidity:(NSInteger)humidity
-                       power:(float)power
-                     airDesc:(NSString *)airDesc;
-
-- (instancetype)initWithName:(NSString *)name
-                  macAddress:(NSString *)aMacAddress
-                      status:(switchStatus)aStatus
-                          ip:(NSString *)aIp
-                        port:(unsigned short)aPort
-                    isLocked:(BOOL)isLocked
-                        isOn:(BOOL)isOn
-                   timerList:(NSMutableArray *)aTimerList
-                   imageName:(NSString *)imageName;
-
-- (instancetype)initWithName:(NSString *)name
-                  macAddress:(NSString *)aMacAddress
-                      status:(switchStatus)aStatus;
+//- (instancetype)initWithName:(NSString *)name
+//                  macAddress:(NSString *)aMacAddress
+//                      status:(switchStatus)aStatus
+//                          ip:(NSString *)aIp
+//                        port:(unsigned short)aPort
+//                    isLocked:(BOOL)isLocked
+//                        isOn:(BOOL)isOn
+//                   timerList:(NSMutableArray *)aTimerList
+//                   imageName:(NSString *)imageName
+//              pmTwoPointFive:(NSInteger)pmTwoPointFive
+//                 temperature:(float)temperature
+//                    humidity:(NSInteger)humidity
+//                       power:(float)power
+//                     airDesc:(NSString *)airDesc;
+//
+//- (instancetype)initWithName:(NSString *)name
+//                  macAddress:(NSString *)aMacAddress
+//                      status:(switchStatus)aStatus
+//                          ip:(NSString *)aIp
+//                        port:(unsigned short)aPort
+//                    isLocked:(BOOL)isLocked
+//                        isOn:(BOOL)isOn
+//                   timerList:(NSMutableArray *)aTimerList
+//                   imageName:(NSString *)imageName;
+//
+//- (instancetype)initWithName:(NSString *)name
+//                  macAddress:(NSString *)aMacAddress
+//                      status:(switchStatus)aStatus;
 
 - (UIImage *)getImageByImageName:(NSString *)imageName;
 @end

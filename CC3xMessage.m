@@ -679,7 +679,6 @@ typedef struct {
   msg.header.msgId = 0xB;
   msg.header.msgDir = 0xAD;
   msg.header.msgLength = ntohs(sizeof(msg));
-  // NSLog(@"msg11 = %d",msg.header.msgLength);
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
@@ -706,6 +705,7 @@ typedef struct {
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x11;
   msg.header.msgDir = 0xAD;
+  msg.socketId = socketId;
   msg.on = on;
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
@@ -1108,7 +1108,6 @@ typedef struct {
   CC3xMessage *message = nil;
   d2pMsg0A msg;
   [aData getBytes:&msg length:sizeof(msg)];
-
   message = [[CC3xMessage alloc] init];
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
@@ -1124,7 +1123,7 @@ typedef struct {
                                                 length:sizeof(msg.deviceName)
                                               encoding:NSUTF8StringEncoding];
   message.version = msg.FWVersion;
-  message.isLocked = msg.isLocked;
+  message.lockStatus = msg.isLocked;
   message.crc = msg.crc;
   return message;
 }
@@ -1133,45 +1132,23 @@ typedef struct {
   CC3xMessage *message = nil;
   d2pMsg0C msg;
   [aData getBytes:&msg length:sizeof(msg)];
-
   message = [[CC3xMessage alloc] init];
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
+  message.state = msg.state;
   message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
-
   message.ip = [NSString stringWithFormat:@"%d.%d.%d.%d", msg.ip[0], msg.ip[1],
                                           msg.ip[2], msg.ip[3]];
   message.port = msg.port;
-
   NSString *deviceName = [[NSString alloc] initWithBytes:msg.deviceName
                                                   length:sizeof(msg.deviceName)
                                                 encoding:NSUTF8StringEncoding];
-
-  deviceName =
-      [deviceName stringByTrimmingCharactersInSet:
-                      [NSCharacterSet whitespaceAndNewlineCharacterSet]];
   message.deviceName = deviceName;
   message.version = msg.FWVersion;
-  message.isLocked = msg.deviceLockState & (1 << 0);
-  message.isOn = msg.deviceLockState & (1 << 1);
-  message.state = msg.state;
-
-  //有电量、空气质量数据才处理
-  if ([aData length] == 61) {
-    //    //赋值过程中，高低位互换了，后续查明原因
-    //    message.pmTwoPointFive = (msg.pm >> 8 | msg.pm << 8);
-    //    message.temperature =
-    //        ((msg.temperatureHigh & 0x7f) * 256 + msg.temperatureLow) / 10.0f;
-    //    if (msg.temperatureHigh & (1 << 7)) {
-    //      message.temperature = -message.temperature;
-    //    }
-    //    message.humidity = msg.humidity;
-    //    unsigned short power = (msg.power >> 8 | msg.power << 8);
-    //    message.power = power == 0 ? 0.f : 53035.5f / power;
-    //    message.airTag = msg.airTag;
-  }
+  message.lockStatus = msg.deviceLockState;
+  message.onStatus = msg.deviceLockState;
   message.crc = msg.crc;
   return message;
 }
@@ -1274,7 +1251,7 @@ typedef struct {
   //高低字节互换了
   message.delay =
       msg.delay / 256;  //这个地方不知道什么原因导致左移两位，放大了256倍
-  message.isOn = msg.on;
+  message.onStatus = msg.on;
   message.crc = msg.crc;
   return message;
 }

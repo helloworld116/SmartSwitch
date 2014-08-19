@@ -123,19 +123,19 @@ enum {
 @property(nonatomic, assign) unsigned char msgDir;
 @property(nonatomic, assign) unsigned short msgLength;
 
-@property(nonatomic, copy) NSString *mac;
-@property(nonatomic, copy) NSString *ip;
+@property(nonatomic, strong) NSString *mac;
+@property(nonatomic, strong) NSString *ip;
 @property(nonatomic, assign) unsigned short port;
 
-@property(nonatomic, copy) NSString *deviceName;
-@property(nonatomic, assign) NSInteger state;  // 0表示成功；-1表示无控制权
-@property(nonatomic, assign) NSInteger version;
-@property(nonatomic, assign) BOOL isOn;
-@property(nonatomic, assign) BOOL isLocked;
-@property(nonatomic, assign) NSUInteger currentTime;
-@property(nonatomic, assign) NSUInteger timerTaskNumber;
-@property(nonatomic, retain) NSMutableArray *timerTaskList;
-@property(nonatomic, assign) NSInteger delay;
+@property(nonatomic, strong) NSString *deviceName;
+@property(nonatomic, assign) char state;  // 0表示成功；-1表示无控制权
+@property(nonatomic, assign) char version;
+@property(nonatomic, assign) char onStatus;
+@property(nonatomic, assign) char lockStatus;
+@property(nonatomic, assign) unsigned int currentTime;
+@property(nonatomic, assign) char timerTaskNumber;
+@property(nonatomic, strong) NSMutableArray *timerTaskList;
+@property(nonatomic, assign) short delay;
 
 @property(nonatomic, assign) NSInteger update;
 @property(nonatomic, assign) NSString *updateUrl;

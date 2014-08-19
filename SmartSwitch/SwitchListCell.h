@@ -20,5 +20,5 @@
 @property(nonatomic, assign) id<SwitchListCellDelegate> cellDelegate;
 @property(nonatomic, assign) BOOL isExpand;
 - (IBAction)doExpand:(id)sender;
-
+- (void)setCellInfo:(SDZGSwitch *)aSwitch;
 @end

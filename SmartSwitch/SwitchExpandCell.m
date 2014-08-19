@@ -34,7 +34,7 @@
 
 - (IBAction)socketTouched:(id)sender {
   if ([self.expandCellDelegate respondsToSelector:@selector(socketAction:)]) {
-    [self.expandCellDelegate socketAction:(UIButton *)self];
+    [self.expandCellDelegate socketAction:(UIButton *)sender];
   }
 }
 @end

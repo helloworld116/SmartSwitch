@@ -10,19 +10,23 @@
 #import "SwitchTableView.h"
 #import "SceneTableView.h"
 #import "UdpRequest.h"
+#import "SwitchDataCeneter.h"
 
 @interface SwitchAndSceneViewController ()<SwitchTableViewDelegate,
                                            UIScrollViewDelegate>
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
-//@property(strong, nonatomic) IBOutlet SwitchTableView *switchTableView;
 
 @property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
 @property(strong, nonatomic) SceneTableView *tableViewOfScene;
 @property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property(strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
 @property(strong, nonatomic) NSTimer *updateTimer;
+@property(strong, nonatomic) successBlock msg0BsuccessBlock;
+@property(strong, nonatomic) noResponseBlock msg0BnoResponseBlock;
+@property(strong, nonatomic) noRequestBlock msg0BnoRequestBlock;
+@property(strong, nonatomic) errorBlock msg0BerrorBlock;
+
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
 
@@ -53,6 +57,8 @@
   self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
   self.tableViewOfSwitch.switchTableViewDelegate = self;
   [self.scrollView addSubview:switchTableView];
+
+  [self setBlock];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -197,10 +203,16 @@
 //扫描设备
 - (void)sendStateInquiry {
   //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
-  [[UdpRequest sharedInstance] sendMsg0BMode:ActiveMode
-      success:^(CC3xMessage *msg) { NSLog(@"msg is %@", msg); }
-      noResponse:^(int count) { NSLog(@"try count is %d", count); }
-      noSend:^(long tag) { NSLog(@"tag is %ld", tag); }];
+  //  [[UdpRequest sharedInstance] sendMsg0BMode:ActiveMode
+  //      success:^(CC3xMessage *msg) { NSLog(@"msg is %@", msg); }
+  //      noResponse:^(int count) { NSLog(@"try count is %d", count); }
+  //      noSend:^(long tag) { NSLog(@"tag is %ld", tag); }];
+
+  [[UdpRequest sharedInstance] sendMsg0B:ActiveMode
+                            successBlock:self.msg0BsuccessBlock
+                         noResponseBlock:self.msg0BnoResponseBlock
+                          noRequestBlock:self.msg0BnoRequestBlock
+                              errorBlock:self.msg0BerrorBlock];
 
   //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
   //                 GLOBAL_QUEUE, ^{
@@ -229,5 +241,51 @@
   //        }
   //      }
   //  });
+}
+
+#pragma mark - block
+- (void)setBlock {
+  SwitchAndSceneViewController __weak *weakself = self;
+  self.msg0BsuccessBlock = ^(CC3xMessage *message) {
+      message.state;
+      SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
+      aSwitch.mac = message.mac;
+      aSwitch.ip = message.ip;
+      aSwitch.port = message.port;
+      aSwitch.name = message.deviceName;
+      aSwitch.version = message.version;
+      if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
+        if (aSwitch.lockStatus == LockStatusOn) {
+          aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
+        } else {
+          aSwitch.switchStatus = SWITCH_LOCAL;
+        }
+      } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
+                 (aSwitch.switchStatus == SWITCH_UNKNOWN ||
+                  aSwitch.switchStatus == SWITCH_OFFLINE)) {
+        if (aSwitch.lockStatus == LockStatusOn) {
+          aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
+        } else {
+          aSwitch.switchStatus = SWITCH_REMOTE;
+        }
+      } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
+        aSwitch.switchStatus = SWITCH_OFFLINE;
+      }
+      message.onStatus;
+      [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+  };
+  self.msg0BnoResponseBlock = ^(int count) {
+      if (count <= kTryCount) {
+        [[UdpRequest sharedInstance] sendMsg0B:PassiveMode
+                                  successBlock:weakself.msg0BsuccessBlock
+                               noResponseBlock:weakself.msg0BnoResponseBlock
+                                noRequestBlock:weakself.msg0BnoRequestBlock
+                                    errorBlock:weakself.msg0BerrorBlock];
+      } else {
+        // TODO: 提示错误消息
+      }
+  };
+  self.msg0BnoRequestBlock = ^(long tag) {};
+  self.msg0BerrorBlock = ^(NSString *errorMsg) {};
 }
 @end

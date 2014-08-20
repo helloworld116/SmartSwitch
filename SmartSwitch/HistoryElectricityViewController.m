@@ -7,6 +7,7 @@
 //
 
 #import "HistoryElectricityViewController.h"
+#import "SwitchDataCeneter.h"
 #import <PNChart.h>
 #import <NSDate+Calendar.h>
 #define kBarWidth 25
@@ -20,6 +21,7 @@
 @property(strong, nonatomic) NSArray *times;
 @property(strong, nonatomic) NSArray *values;
 
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
 @end
 
 @implementation HistoryElectricityViewController
@@ -36,6 +38,8 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
+      objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
   self.navigationItem.title = @"历史电量";
   self.navigationItem.leftBarButtonItem =
       [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fh"]
@@ -69,6 +73,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
+  [self senMsg63];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -112,6 +117,18 @@
 
 - (void)viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
+}
+
+- (void)senMsg63 {
+  [[UdpRequest sharedInstance] sendMsg63:self.aSwitch
+                               beginTime:1406822400
+                                 endTime:1409500799
+                                interval:3600 * 24
+                                sendMode:ActiveMode
+                            successBlock:^(CC3xMessage *message) {}
+                         noResponseBlock:nil
+                          noRequestBlock:nil
+                              errorBlock:nil];
 }
 
 /*

@@ -10,14 +10,36 @@
 #define kNotReachable @"网络不可用"
 #define kNotViaWiFi @"不在WIFI网络条件"
 
+@interface UDPSingleton : NSObject
+@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
++ (instancetype)sharedInstance;
+@end
+
+@implementation UDPSingleton
++ (instancetype)sharedInstance {
+  static UDPSingleton *instance;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{ instance = [[UDPSingleton alloc] init]; });
+  return instance;
+}
+
+- (id)init {
+  self = [super init];
+  if (self) {
+  }
+  return self;
+}
+@end
+
 @interface UdpRequest ()<GCDAsyncUdpSocketDelegate>
 #pragma mark -
 #pragma mark 发送请求计数变量
 @property(atomic, assign) int msg5SendCount;
 @property(atomic, assign) int msg9SendCount;
 @property(atomic, assign) int msgBSendCount;
+@property(atomic, assign) int msgDSendCount;  //指定设备查询
 @property(atomic, strong)
-    NSMutableDictionary *msgDSendCountDict;  //{"mac":"cout"}
+    NSMutableDictionary *msgDSendCountDict;  //所有设备查询，{"mac":"cout"}
 @property(atomic, assign) int msg11SendCount;
 @property(atomic, assign) int msg13SendCount;
 @property(atomic, assign) int msg17SendCount;
@@ -51,7 +73,9 @@
 @property(atomic, strong) NSData *responseData6;
 @property(atomic, strong) NSData *responseDataA;
 @property(atomic, strong) NSData *responseDataC;
-@property(atomic, strong) NSMutableDictionary *responseDictE;  //{@"mac":"data"}
+@property(atomic, strong) NSData *responseDataE;  //指定设备查询
+@property(atomic, strong)
+    NSMutableDictionary *responseDictE;  //所有设备查询，{@"mac":"data"}
 @property(atomic, strong) NSData *responseData12;
 @property(atomic, strong) NSData *responseData14;
 @property(atomic, strong) NSData *responseData18;
@@ -81,7 +105,7 @@
 @property(atomic, strong) NSData *responseData6A;
 
 #pragma mark -
-@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
+@property(atomic, strong) GCDAsyncUdpSocket *udpSocket;
 @property(atomic, strong) successBlock successBlock;
 // block的参数列表为空的话，相当于可变参数（不是void）
 @property(atomic, strong) void (^noResposneBlock)();
@@ -109,6 +133,7 @@
   static UdpRequest *request;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{ request = [[self alloc] init]; });
+  //  UdpRequest *request = [[UdpRequest alloc] init];
   return request;
 }
 
@@ -190,6 +215,28 @@
   });
 }
 
+- (void)sendMsg0B:(SDZGSwitch *)aSwitch
+           sendMode:(SENDMODE)mode
+       successBlock:(successBlock)successBlock
+    noResponseBlock:(noResponseBlock)noResponseBlock
+     noRequestBlock:(noRequestBlock)noRequestBlock
+         errorBlock:(errorBlock)errorBlock {
+  if (mode == ActiveMode) {
+    self.msgBSendCount = 0;
+  } else if (mode == PassiveMode) {
+    self.msgBSendCount++;
+  }
+  self.msg = [CC3xMessageUtil getP2dMsg0B];
+  self.host = aSwitch.ip;
+  self.port = aSwitch.port;
+  self.tag = P2D_STATE_INQUIRY_0B;
+  self.successBlock = successBlock;
+  self.noResposneBlock = noResponseBlock;
+  self.noRequestBlock = noRequestBlock;
+  self.errorBlock = errorBlock;
+  [self sendDataToHost];
+}
+
 - (void)sendMsg0D:(NSString *)mac
            sendMode:(SENDMODE)mode
                 tag:(long)tag
@@ -219,6 +266,28 @@
         [self sendDataToHost];
       }
   });
+}
+
+- (void)sendMsg0D:(SDZGSwitch *)aSwitch
+           sendMode:(SENDMODE)mode
+       successBlock:(successBlock)successBlock
+    noResponseBlock:(noResponseBlock)noResponseBlock
+     noRequestBlock:(noRequestBlock)noRequestBlock
+         errorBlock:(errorBlock)errorBlock {
+  if (mode == ActiveMode) {
+    self.msgDSendCount = 0;
+  } else if (mode == PassiveMode) {
+    self.msgDSendCount++;
+  }
+  self.msg = [CC3xMessageUtil getP2dMsg0B];
+  self.host = aSwitch.ip;
+  self.port = aSwitch.port;
+  self.tag = P2S_STATE_INQUIRY_0D;
+  self.successBlock = successBlock;
+  self.noResposneBlock = noResponseBlock;
+  self.noRequestBlock = noRequestBlock;
+  self.errorBlock = errorBlock;
+  [self sendDataToHost];
 }
 
 - (void)sendMsg11WithSwitch:(SDZGSwitch *)aSwitch
@@ -427,19 +496,20 @@
 //  [self sendDataToHost];
 //}
 
-- (void)sendMsg33WithSendMode:(SENDMODE)mode
-                 successBlock:(successBlock)successBlock
-              noResponseBlock:(noResponseBlock)noResponseBlock
-               noRequestBlock:(noRequestBlock)noRequestBlock
-                   errorBlock:(errorBlock)errorBlock {
+- (void)sendMsg33WithSwitch:(SDZGSwitch *)aSwitch
+                   sendMode:(SENDMODE)mode
+               successBlock:(successBlock)successBlock
+            noResponseBlock:(noResponseBlock)noResponseBlock
+             noRequestBlock:(noRequestBlock)noRequestBlock
+                 errorBlock:(errorBlock)errorBlock {
   if (mode == ActiveMode) {
     self.msg33SendCount = 0;
   } else if (mode == PassiveMode) {
     self.msg33SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2DMsg33];
-  self.host = BROADCAST_ADDRESS;
-  self.port = DEVICE_PORT;
+  self.host = aSwitch.ip;
+  self.port = aSwitch.port;
   self.tag = P2D_GET_POWER_INFO_REQ_33;
   self.successBlock = successBlock;
   self.noResposneBlock = noResponseBlock;
@@ -731,19 +801,20 @@
   });
 }
 
-- (void)sendMsg5DWithSendMode:(SENDMODE)mode
-                 successBlock:(successBlock)successBlock
-              noResponseBlock:(noResponseBlock)noResponseBlock
-               noRequestBlock:(noRequestBlock)noRequestBlock
-                   errorBlock:(errorBlock)errorBlock {
+- (void)sendMsg5DWithSwitch:(SDZGSwitch *)aSwitch
+                   sendMode:(SENDMODE)mode
+               successBlock:(successBlock)successBlock
+            noResponseBlock:(noResponseBlock)noResponseBlock
+             noRequestBlock:(noRequestBlock)noRequestBlock
+                 errorBlock:(errorBlock)errorBlock {
   if (mode == ActiveMode) {
     self.msg5DSendCount = 0;
   } else if (mode == PassiveMode) {
     self.msg5DSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2DMsg5D];
-  self.host = BROADCAST_ADDRESS;
-  self.port = DEVICE_PORT;
+  self.host = aSwitch.ip;
+  self.port = aSwitch.port;
   self.tag = P2D_GET_NAME_REQ_5D;
   self.successBlock = successBlock;
   self.noResposneBlock = noResponseBlock;
@@ -899,31 +970,44 @@
 }
 
 #pragma mark - 处理内外网请求
-//- (void)sendMsg0BOr0D:(GCDAsyncUdpSocket *)udpSocket
-//              aSwitch:(SDZGSwitch *)aSwitch
-//             sendMode:(SENDMODE)mode {
-//  dispatch_async(GLOBAL_QUEUE, ^{
-//      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
-//        //根据不同的网络环境，发送 本地/远程 消息
-//        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-//            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
-//          [self sendMsg0B:udpSocket aSwitch:aSwitch sendMode:mode];
-//        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-//                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
-//          [self sendMsg0D:udpSocket aSwitch:aSwitch sendMode:mode];
-//        }
-//      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
-//        [self sendMsg0D:udpSocket aSwitch:aSwitch sendMode:mode];
-//      } else if (kSharedAppliction.networkStatus == NotReachable) {
-//        [[NSNotificationCenter defaultCenter]
-//            postNotificationName:kNotReachableNotification
-//                          object:self
-//                        userInfo:@{
-//                          @"NetworkStatus" : @(NotReachable)
-//                        }];
-//      }
-//  });
-//}
+- (void)sendMsg0BOr0D:(SDZGSwitch *)aSwitch
+             sendMode:(SENDMODE)mode
+         successBlock:(successBlock)successBlock
+      noResponseBlock:(noResponseBlock)noResponseBlock
+       noRequestBlock:(noRequestBlock)noRequestBlock
+           errorBlock:(errorBlock)errorBlock {
+  dispatch_async(GLOBAL_QUEUE, ^{
+      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
+        //根据不同的网络环境，发送 本地/远程 消息
+        if (aSwitch.switchStatus == SWITCH_LOCAL ||
+            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+          [self sendMsg0B:aSwitch
+                     sendMode:mode
+                 successBlock:successBlock
+              noResponseBlock:noResponseBlock
+               noRequestBlock:noRequestBlock
+                   errorBlock:errorBlock];
+        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
+                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+          [self sendMsg0D:aSwitch
+                     sendMode:mode
+                 successBlock:successBlock
+              noResponseBlock:noResponseBlock
+               noRequestBlock:noRequestBlock
+                   errorBlock:errorBlock];
+        }
+      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
+        [self sendMsg0D:aSwitch
+                   sendMode:mode
+               successBlock:successBlock
+            noResponseBlock:noResponseBlock
+             noRequestBlock:noRequestBlock
+                 errorBlock:errorBlock];
+      } else if (kSharedAppliction.networkStatus == NotReachable) {
+        self.errorBlock(kNotReachable);
+      }
+  });
+}
 
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
@@ -1095,11 +1179,12 @@
         //根据不同的网络环境，发送 本地/远程 消息
         if (aSwitch.switchStatus == SWITCH_LOCAL ||
             aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
-          [self sendMsg33WithSendMode:mode
-                         successBlock:successBlock
-                      noResponseBlock:noResponseBlock
-                       noRequestBlock:noRequestBlock
-                           errorBlock:errorBlock];
+          [self sendMsg33WithSwitch:aSwitch
+                           sendMode:mode
+                       successBlock:successBlock
+                    noResponseBlock:noResponseBlock
+                     noRequestBlock:noRequestBlock
+                         errorBlock:errorBlock];
         } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
                    aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg35WithSwitch:aSwitch
@@ -1356,11 +1441,12 @@
         //根据不同的网络环境，发送 本地/远程 消息
         if (aSwitch.switchStatus == SWITCH_LOCAL ||
             aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
-          [self sendMsg5DWithSendMode:mode
-                         successBlock:successBlock
-                      noResponseBlock:noResponseBlock
-                       noRequestBlock:noRequestBlock
-                           errorBlock:errorBlock];
+          [self sendMsg5DWithSwitch:aSwitch
+                           sendMode:mode
+                       successBlock:successBlock
+                    noResponseBlock:noResponseBlock
+                     noRequestBlock:noRequestBlock
+                         errorBlock:errorBlock];
         } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
                    aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg5FWithSwitch:aSwitch
@@ -1462,6 +1548,10 @@
         }
         break;
       case P2S_STATE_INQUIRY_0D:
+        if (self.msgDSendCount <= kTryCount) {
+          NSLog(@"tag %ld 重新发送%d次", tag, self.msgDSendCount + 1);
+          self.noResposneBlock(self.msgDSendCount + 1);
+        }
         break;
       case P2D_CONTROL_REQ_11:
         if (!self.responseData12) {
@@ -1746,6 +1836,7 @@
       self.responseDataC = nil;
       break;
     case P2S_STATE_INQUIRY_0D:
+      self.responseDataE = nil;
       break;
     case P2D_CONTROL_REQ_11:
       self.responseData12 = nil;
@@ -1873,6 +1964,7 @@
         self.responseDataC = data;
         break;
       case 0xe:
+        self.responseDataE = data;
         [self.responseDictE setObject:data forKey:msg.mac];
         break;
       case 0x12:

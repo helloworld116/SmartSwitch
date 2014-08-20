@@ -52,14 +52,14 @@ typedef struct {
   unsigned short crc;
 } d2pMsg02;
 
-typedef struct { char name[32]; } socketName;
+typedef struct { unsigned char name[32]; } socketName;
 
 // P2D_SERVER_INFO 0x05
 typedef struct {
   msgHeader header;
   unsigned char ip[4];
   unsigned short port;
-  char deviceName[32];
+  unsigned char deviceName[32];
   unsigned char count;
   socketName *socketName;
   unsigned short crc;
@@ -291,9 +291,9 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;   // 0表示成功
-  short pulse;  //电量脉冲的周期值x，单位为ms 功率W=（53035.5/x）
-                //保留2位小数
+  char state;            // 0表示成功
+  unsigned short pulse;  //电量脉冲的周期值x，单位为ms 功率W=（53035.5/x）
+                         //保留2位小数
   unsigned short crc;
 } d2pMsg34;
 
@@ -738,6 +738,17 @@ typedef struct {
   return B2D(msg);
 }
 
++ (NSData *)getP2dMsg17:(int)socketId {
+  p2dMsg17 msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgId = 0x17;
+  msg.header.msgDir = 0xAD;
+  msg.header.msgLength = ntohs(sizeof(msg));
+  msg.socketId = socketId;
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
+
 // P2S_GET_TIMER_REQ	0X19
 + (NSData *)getP2SMsg19:(NSString *)mac {
   p2sMsg19 msg;
@@ -749,6 +760,20 @@ typedef struct {
   memcpy(msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
 
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
+
++ (NSData *)getP2SMsg19:(NSString *)mac socketId:(int)socketId {
+  p2sMsg19 msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgLength = ntohs(sizeof(msg));
+  msg.header.msgId = 0x19;
+  msg.header.msgDir = 0xA5;
+  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
+  memcpy(msg.mac, macBytes, sizeof(msg.mac));
+  free(macBytes);
+  msg.socketId = socketId;
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
@@ -1015,18 +1040,19 @@ typedef struct {
 }
 
 // P2D_GET_DELAY_REQ 0x53
-+ (NSData *)getP2dMsg53 {
++ (NSData *)getP2dMsg53:(int)socketId {
   p2dMsg53 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x53;
   msg.header.msgDir = 0xAD;
   msg.header.msgLength = ntohs(sizeof(msg));
+  msg.socketId = socketId;
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
 // P2S_GET_DELAY_REQ 0x55
-+ (NSData *)getP2SMsg55:(NSString *)mac {
++ (NSData *)getP2SMsg55:(NSString *)mac socketId:(int)socketId {
   p2sMsg55 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x55;
@@ -1035,6 +1061,7 @@ typedef struct {
   Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
+  msg.socketId = socketId;
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
@@ -1063,6 +1090,51 @@ typedef struct {
     strcpy(msg.systemName, systemName);
   }
   strcpy(msg.appVersion, "2.0");
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
+
+// P2D_GET_NAME_REQ	0X5D
++ (NSData *)getP2DMsg5D {
+  p2dMsg5D msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgId = 0x5D;
+  msg.header.msgDir = 0xAD;
+  msg.header.msgLength = ntohs(sizeof(msg));
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
+
+// P2S_GET_NAME_REQ 	0X5F
++ (NSData *)getP2SMsg5F:(NSString *)mac {
+  p2sMsg5F msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgId = 0x5F;
+  msg.header.msgDir = 0xA5;
+  msg.header.msgLength = ntohs(sizeof(msg));
+  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
+  memcpy(&msg.mac, macBytes, sizeof(msg.mac));
+  free(macBytes);
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
+
++ (NSData *)getP2SMsg63:(NSString *)mac
+              beginTime:(int)beginTime
+                endTime:(int)endTime
+               interval:(int)interval {
+  p2sMsg63 msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgId = 0x63;
+  msg.header.msgDir = 0xA5;
+  msg.header.msgLength = ntohs(sizeof(msg));
+  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
+  memcpy(&msg.mac, macBytes, sizeof(msg.mac));
+  free(macBytes);
+  msg.beginTime = beginTime;
+  msg.endTime = endTime;
+  msg.interval = interval;
+  //  msg.crc = ntohs(CRC16((unsigned char *)&msg, sizeof(msg) - 2));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
@@ -1211,29 +1283,38 @@ typedef struct {
 
 + (CC3xMessage *)parseD2P34:(NSData *)aData {
   CC3xMessage *message = nil;
-  d2pMsg34 *msg;
+  d2pMsg34 msg;
   [aData getBytes:&msg length:sizeof(msg)];
   message = [[CC3xMessage alloc] init];
-  message.msgId = msg->header.msgId;
-  message.msgDir = msg->header.msgDir;
-  message.msgLength = msg->header.msgLength;
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.msgLength = msg.header.msgLength;
+  message.state = msg.state;
+  if (msg.pulse == 0) {
+    message.power = 0;
+  } else {
+    message.power = 53035.5f / msg.pulse;
+  }
   return message;
 }
 
 + (CC3xMessage *)parseS2P36:(NSData *)aData {
   CC3xMessage *message = nil;
-  s2pMsg36 *msg;
+  s2pMsg36 msg;
   [aData getBytes:&msg length:sizeof(msg)];
   message = [[CC3xMessage alloc] init];
-  message.msgId = msg->header.msgId;
-  message.msgDir = msg->header.msgDir;
-  message.msgLength = msg->header.msgLength;
-  message.mac =
-      [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x", msg->mac[0],
-                                 msg->mac[1], msg->mac[2], msg->mac[3],
-                                 msg->mac[4], msg->mac[5]];
-  message.state = msg->state;
-  message.power = msg->pulse;
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.msgLength = msg.header.msgLength;
+  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+                                           msg.mac[0], msg.mac[1], msg.mac[2],
+                                           msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.state = msg.state;
+  if (msg.pulse == 0) {
+    message.power = 0;
+  } else {
+    message.power = 53035.5f / msg.pulse;
+  }
   return message;
 }
 
@@ -1248,6 +1329,7 @@ typedef struct {
   message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.socketId = msg.socketId;
   //高低字节互换了
   message.delay =
       msg.delay / 256;  //这个地方不知道什么原因导致左移两位，放大了256倍
@@ -1267,6 +1349,40 @@ typedef struct {
   message.update = msg->update;
   message.updateUrl =
       [NSString stringWithCString:msg->updateUrl encoding:NSUTF8StringEncoding];
+  return message;
+}
+
++ (CC3xMessage *)parseD2P5E:(NSData *)aData {
+  CC3xMessage *message = nil;
+  d2pMsg5E msg;
+  [aData getBytes:&msg length:sizeof(msg)];
+  message = [[CC3xMessage alloc] init];
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.msgLength = msg.header.msgLength;
+  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+                                           msg.mac[0], msg.mac[1], msg.mac[2],
+                                           msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.deviceName = [[NSString alloc] initWithBytes:msg.deviceName
+                                                length:sizeof(msg.deviceName)
+                                              encoding:NSUTF8StringEncoding];
+  int socketCount = msg.count;
+  socketName socketName[socketCount];
+  NSLog(@"%ld is", sizeof(msg.socketName));
+  return message;
+}
+
++ (CC3xMessage *)parseS2P64:(NSData *)aData {
+  CC3xMessage *message = nil;
+  s2pMsg64 msg;
+  [aData getBytes:&msg length:sizeof(msg)];
+  message = [[CC3xMessage alloc] init];
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.msgLength = msg.header.msgLength;
+  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+                                           msg.mac[0], msg.mac[1], msg.mac[2],
+                                           msg.mac[3], msg.mac[4], msg.mac[5]];
   return message;
 }
 
@@ -1322,6 +1438,13 @@ typedef struct {
       break;
     case 0x36:
       result = [CC3xMessageUtil parseS2P36:data];
+      break;
+    case 0x5e:
+    case 0x60:
+      result = [CC3xMessageUtil parseD2P5E:data];
+      break;
+    case 0x64:
+      result = [CC3xMessageUtil parseS2P64:data];
       break;
     default:
       break;

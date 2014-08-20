@@ -10,8 +10,8 @@
 #define kSwitchUpdate @"SwitchUpdateNotification"
 
 @interface SwitchDataCeneter : NSObject
-@property(strong, nonatomic) NSArray *switchs;
-@property(assign, nonatomic) NSUInteger selectedIndex;
+@property(strong, atomic) NSArray *switchs;
+@property(strong, nonatomic) NSIndexPath *selectedIndexPath;
 + (instancetype)sharedInstance;
 
 - (void)updateSwitch:(SDZGSwitch *)aSwitch;

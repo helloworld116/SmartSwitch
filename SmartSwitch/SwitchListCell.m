@@ -46,6 +46,7 @@
 
 - (void)setCellInfo:(SDZGSwitch *)aSwitch {
   self.lblName.text = aSwitch.name;
+  self.lblMac.text = aSwitch.mac;
   if (aSwitch.lockStatus == LockStatusOn) {
     self.imgViewOfState.image = [UIImage imageNamed:@"lock"];
   } else if (aSwitch.lockStatus == LockStatusOff) {

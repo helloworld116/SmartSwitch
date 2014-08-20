@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 @protocol SwitchTableViewDelegate<NSObject>
-- (void)showSwitchDetail;
+@required
+- (void)showSwitchDetail:(NSIndexPath *)indexPath;
+- (void)socketAction:(int)socketId;
 @end
 
 @interface SwitchTableView : UITableView

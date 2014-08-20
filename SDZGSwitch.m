@@ -11,3 +11,11 @@
 @implementation SDZGSwitch
 
 @end
+
+@implementation SDZGSocket
+
+@end
+
+@implementation SDZGTimerTask
+
+@end

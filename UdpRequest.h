@@ -42,7 +42,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
          errorBlock:(errorBlock)errorBlock;
 
 /**
- *  手机向内网查询设备的开关状态
+ *  手机向内网查询所有设备的开关状态
  *
  *  @param udpSocket
  *  @param mode
@@ -54,7 +54,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
          errorBlock:(errorBlock)errorBlock;
 
 /**
- *  手机向外网查询设备的开关状态
+ *  手机向外网查询所有设备的开关状态
  *
  *  @param udpSocket
  *  @param mode
@@ -66,6 +66,19 @@ typedef void (^errorBlock)(NSString *errorMsg);
     noResponseBlock:(noResponseBlock)noResponseBlock
      noRequestBlock:(noRequestBlock)noRequestBlock
          errorBlock:(errorBlock)errorBlock;
+
+/**
+ *  手机向查询指定设备的开关状态
+ *
+ *  @param udpSocket
+ *  @param mode
+ */
+- (void)sendMsg0BOr0D:(SDZGSwitch *)aSwitch
+             sendMode:(SENDMODE)mode
+         successBlock:(successBlock)successBlock
+      noResponseBlock:(noResponseBlock)noResponseBlock
+       noRequestBlock:(noRequestBlock)noRequestBlock
+           errorBlock:(errorBlock)errorBlock;
 
 /**
  *  手机控制开关“开或关”

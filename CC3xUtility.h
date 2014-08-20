@@ -22,7 +22,8 @@
 #define KEY_TAG 103
 #define DEVICE_NAME_TAG 104
 
-#define SERVER_IP @"server.itouchco.com"
+//#define SERVER_IP @"server.itouchco.com"
+#define SERVER_IP @"192.168.0.89"
 //"183.63.35.203:18080"
 // 115.28.178.252
 #define SERVER_PORT 20001

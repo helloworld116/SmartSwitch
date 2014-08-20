@@ -9,7 +9,6 @@
 #import "SwitchAndSceneViewController.h"
 #import "SwitchTableView.h"
 #import "SceneTableView.h"
-#import "UdpRequest.h"
 #import "SwitchDataCeneter.h"
 
 @interface SwitchAndSceneViewController ()<SwitchTableViewDelegate,
@@ -22,10 +21,13 @@
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
 @property(strong, nonatomic) NSTimer *updateTimer;
-@property(strong, nonatomic) successBlock msg0BsuccessBlock;
-@property(strong, nonatomic) noResponseBlock msg0BnoResponseBlock;
-@property(strong, nonatomic) noRequestBlock msg0BnoRequestBlock;
-@property(strong, nonatomic) errorBlock msg0BerrorBlock;
+@property(strong, nonatomic) successBlock msg0BsuccessBlock,
+    msg11Or13successBlock;
+@property(strong, nonatomic) noResponseBlock msg0BnoResponseBlock,
+    msg11Or13noResponseBlock;
+@property(strong, nonatomic) noRequestBlock msg0BnoRequestBlock,
+    msg11Or13noRequestBlock;
+@property(strong, nonatomic) errorBlock msg0BerrorBlock, msg11Or13errorBlock;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -83,9 +85,10 @@
   //        NSStringFromUIEdgeInsets(self.scrollView.contentInset));
 }
 
-//- (void)viewWillLayoutSubviews {
-//  [super viewWillLayoutSubviews];
-//}
+- (void)viewWillDisappear:(BOOL)animated {
+  [self.updateTimer invalidate];
+  [super viewWillDisappear:animated];
+}
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
@@ -158,10 +161,13 @@
 }
 
 #pragma mark - SwitchTableViewDelegate
-- (void)showSwitchDetail {
+- (void)showSwitchDetail:(NSIndexPath *)indexPath {
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"SwitchDetailViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+- (void)socketAction:(int)socketId {
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -187,13 +193,11 @@
 - (void)updateSwitchStatus {
   if (self.updateTimer) {
     [self.updateTimer invalidate];
-
     _updateTimer = nil;
   }
-
   self.updateTimer = [NSTimer timerWithTimeInterval:REFRESH_DEV_TIME
                                              target:self
-                                           selector:@selector(sendStateInquiry)
+                                           selector:@selector(sendMsg0BOr0D)
                                            userInfo:nil
                                             repeats:YES];
   [self.updateTimer fire];
@@ -201,13 +205,8 @@
                                forMode:NSRunLoopCommonModes];
 }
 //扫描设备
-- (void)sendStateInquiry {
+- (void)sendMsg0BOr0D {
   //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
-  //  [[UdpRequest sharedInstance] sendMsg0BMode:ActiveMode
-  //      success:^(CC3xMessage *msg) { NSLog(@"msg is %@", msg); }
-  //      noResponse:^(int count) { NSLog(@"try count is %d", count); }
-  //      noSend:^(long tag) { NSLog(@"tag is %ld", tag); }];
-
   [[UdpRequest sharedInstance] sendMsg0B:ActiveMode
                             successBlock:self.msg0BsuccessBlock
                          noResponseBlock:self.msg0BnoResponseBlock
@@ -243,9 +242,20 @@
   //  });
 }
 
+- (void)sendMsg11Or13:(SDZGSwitch *)aSwitch socketId:(int)socketId {
+  [[UdpRequest sharedInstance] sendMsg11Or13:aSwitch
+                                    socketId:socketId
+                                    sendMode:ActiveMode
+                                successBlock:self.msg11Or13successBlock
+                             noResponseBlock:self.msg11Or13noResponseBlock
+                              noRequestBlock:self.msg11Or13noRequestBlock
+                                  errorBlock:self.msg11Or13errorBlock];
+}
+
 #pragma mark - block
 - (void)setBlock {
   SwitchAndSceneViewController __weak *weakself = self;
+  // msg0B
   self.msg0BsuccessBlock = ^(CC3xMessage *message) {
       message.state;
       SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
@@ -271,7 +281,20 @@
       } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
         aSwitch.switchStatus = SWITCH_OFFLINE;
       }
-      message.onStatus;
+      if (aSwitch.sockets) {
+      } else {
+        aSwitch.sockets = [@[] mutableCopy];
+      }
+      SDZGSocket *socket1 = [[SDZGSocket alloc] init];
+      socket1.socketId = 1;
+      socket1.socketStatus = message.onStatus << 0 & 1;
+      [aSwitch.sockets addObject:socket1];
+
+      SDZGSocket *socket2 = [[SDZGSocket alloc] init];
+      socket2.socketId = 2;
+      socket2.socketStatus = message.onStatus << 1 & 1;
+      [aSwitch.sockets addObject:socket2];
+
       [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
   };
   self.msg0BnoResponseBlock = ^(int count) {
@@ -287,5 +310,21 @@
   };
   self.msg0BnoRequestBlock = ^(long tag) {};
   self.msg0BerrorBlock = ^(NSString *errorMsg) {};
+
+  // msg11Or13
+  self.msg11Or13successBlock = ^(CC3xMessage *message) { message.state; };
+  self.msg11Or13noResponseBlock = ^(int count) {
+      if (count <= kTryCount) {
+        [[UdpRequest sharedInstance] sendMsg0B:PassiveMode
+                                  successBlock:weakself.msg11Or13successBlock
+                               noResponseBlock:weakself.msg11Or13noResponseBlock
+                                noRequestBlock:weakself.msg11Or13noRequestBlock
+                                    errorBlock:weakself.msg11Or13errorBlock];
+      } else {
+        // TODO: 提示错误消息
+      }
+  };
+  self.msg11Or13noRequestBlock = ^(long tag) {};
+  self.msg11Or13errorBlock = ^(NSString *errorMsg) {};
 }
 @end

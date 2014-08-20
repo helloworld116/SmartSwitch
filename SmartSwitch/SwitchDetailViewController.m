@@ -7,6 +7,7 @@
 //
 
 #import "SwitchDetailViewController.h"
+#import "SwitchDataCeneter.h"
 
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate>
@@ -15,6 +16,8 @@
 
 @property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property(assign, nonatomic) BOOL reloading;
+
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
 @end
 
 @implementation SwitchDetailViewController
@@ -31,7 +34,10 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.navigationItem.title = @"开关名称";
+  self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
+      objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
+
+  self.navigationItem.title = self.aSwitch.name;
   self.navigationItem.leftBarButtonItem =
       [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fh"]
                                        style:UIBarButtonItemStylePlain
@@ -56,6 +62,11 @@
   [self.refreshHeaderView refreshLastUpdatedDate];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+  [super viewWillAppear:animated];
+  [self firstSend];
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
@@ -63,6 +74,81 @@
 
 - (void)viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
+}
+
+- (void)firstSend {
+  //  [self sendMsg0BOr0D];
+  //  [self send17Or19];
+  //  [self sendMsg33Or35];
+  //  [self send53Or55];
+  [self send5DOr5F];
+}
+
+//开关状态
+- (void)sendMsg0BOr0D {
+  [[UdpRequest sharedInstance] sendMsg0BOr0D:self.aSwitch
+                                    sendMode:ActiveMode
+                                successBlock:^(CC3xMessage *message) {}
+                             noResponseBlock:nil
+                              noRequestBlock:nil
+                                  errorBlock:nil];
+}
+
+//控制插孔开关
+- (void)sendMsg11Or13:(int)socketId {
+  [[UdpRequest sharedInstance] sendMsg11Or13:self.aSwitch
+                                    socketId:1
+                                    sendMode:ActiveMode
+                                successBlock:^(CC3xMessage *message) {}
+                             noResponseBlock:nil
+                              noRequestBlock:nil
+                                  errorBlock:nil];
+}
+
+//定时列表
+- (void)send17Or19 {
+  for (SDZGSocket *socket in self.aSwitch.sockets) {
+    [[UdpRequest sharedInstance] sendMsg17Or19:self.aSwitch
+                                      socketId:socket.socketId
+                                      sendMode:ActiveMode
+                                  successBlock:^(CC3xMessage *message) {}
+                               noResponseBlock:nil
+                                noRequestBlock:nil
+                                    errorBlock:nil];
+  }
+}
+
+//实时电量
+- (void)sendMsg33Or35 {
+  [[UdpRequest sharedInstance] sendMsg33Or35:self.aSwitch
+                                    sendMode:ActiveMode
+                                successBlock:^(CC3xMessage *message) {}
+                             noResponseBlock:nil
+                              noRequestBlock:nil
+                                  errorBlock:nil];
+}
+
+//延时任务
+- (void)send53Or55 {
+  for (SDZGSocket *socket in self.aSwitch.sockets) {
+    [[UdpRequest sharedInstance] sendMsg53Or55:self.aSwitch
+                                      socketId:socket.socketId
+                                      sendMode:ActiveMode
+                                  successBlock:^(CC3xMessage *message) {}
+                               noResponseBlock:nil
+                                noRequestBlock:nil
+                                    errorBlock:nil];
+  }
+}
+
+//查询设备名称
+- (void)send5DOr5F {
+  [[UdpRequest sharedInstance] sendMsg5DOr5F:self.aSwitch
+                                    sendMode:ActiveMode
+                                successBlock:^(CC3xMessage *message) {}
+                             noResponseBlock:nil
+                              noRequestBlock:nil
+                                  errorBlock:nil];
 }
 
 /*

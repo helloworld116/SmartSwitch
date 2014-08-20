@@ -35,10 +35,18 @@
 }
 
 - (void)updateSwitch:(SDZGSwitch *)aSwitch {
+  NSDictionary *userInfo;
+  if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
+    //修改
+    userInfo = @{ @"type" : @0, @"mac" : aSwitch.mac };
+  } else {
+    //新增一条记录
+    userInfo = @{ @"type" : @1 };
+  }
   [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
   self.switchs = [self.switchsDict allValues];
   [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
                                                       object:self
-                                                    userInfo:nil];
+                                                    userInfo:userInfo];
 }
 @end

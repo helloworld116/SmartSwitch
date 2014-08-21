@@ -213,6 +213,7 @@
 		15E7F61219933A4300C46854 /* libFTC_RELEASE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFTC_RELEASE.a; sourceTree = "<group>"; };
 		4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpRequest.h; sourceTree = "<group>"; };
 		4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpRequest.m; sourceTree = "<group>"; };
+		47B77F1B19A63B1C005EFDFD /* MacroUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroUtils.h; sourceTree = "<group>"; };
 		CABB3F26A985482997979951 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F3A51A2AE54D4395A7991CCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -413,6 +414,7 @@
 				4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */,
 				150B315B19A5F0B0005794F3 /* UdpPort.h */,
 				150B315C19A5F0B0005794F3 /* UdpPort.m */,
+				47B77F1B19A63B1C005EFDFD /* MacroUtils.h */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -848,6 +850,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -878,6 +881,7 @@
 					"$(PROJECT_DIR)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

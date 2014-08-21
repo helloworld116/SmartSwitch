@@ -13,22 +13,22 @@
 
 @interface SwitchAndSceneViewController ()<
     SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property(strong, nonatomic) SceneTableView *tableViewOfScene;
-@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property(strong, nonatomic) IBOutlet UIButton *btnScene;
+@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property (strong, nonatomic) SceneTableView *tableViewOfScene;
+@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property (strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property(strong, nonatomic) NSTimer *updateTimer;
-@property(strong, nonatomic) successBlock msg0BsuccessBlock,
-    msg11Or13successBlock;
-@property(strong, nonatomic) noResponseBlock msg0BnoResponseBlock,
-    msg11Or13noResponseBlock;
-@property(strong, nonatomic) noRequestBlock msg0BnoRequestBlock,
-    msg11Or13noRequestBlock;
-@property(strong, nonatomic) errorBlock msg0BerrorBlock, msg11Or13errorBlock;
-@property(strong, atomic) UdpRequest *request;
+@property (strong, nonatomic) NSTimer *updateTimer;
+//@property (strong, nonatomic) successBlock msg0BsuccessBlock,
+//    msg11Or13successBlock;
+//@property (strong, nonatomic) noResponseBlock msg0BnoResponseBlock,
+//    msg11Or13noResponseBlock;
+//@property (strong, nonatomic) noRequestBlock msg0BnoRequestBlock,
+//    msg11Or13noRequestBlock;
+//@property (strong, nonatomic) errorBlock msg0BerrorBlock, msg11Or13errorBlock;
+@property (strong, atomic) UdpRequest *request;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -210,12 +210,9 @@
 - (void)sendMsg0BOr0D {
   //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
   UdpRequest *request = [[UdpRequest alloc] init];
+  request.delegate = self;
   self.request = request;
-  [request sendMsg0B:ActiveMode
-         successBlock:self.msg0BsuccessBlock
-      noResponseBlock:self.msg0BnoResponseBlock
-       noRequestBlock:self.msg0BnoRequestBlock
-           errorBlock:self.msg0BerrorBlock];
+  [request sendMsg0B:ActiveMode];
 
   //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
   //                 GLOBAL_QUEUE, ^{
@@ -246,96 +243,138 @@
   //  });
 }
 
-- (void)test {
-  NSLog(@"......");
-}
-
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch socketId:(int)socketId {
-  [[UdpRequest sharedInstance] sendMsg11Or13:aSwitch
-                                    socketId:socketId
-                                    sendMode:ActiveMode
-                                successBlock:^(CC3xMessage *message) {}
-                             noResponseBlock:self.msg11Or13noResponseBlock
-                              noRequestBlock:self.msg11Or13noRequestBlock
-                                  errorBlock:self.msg11Or13errorBlock];
+  [[UdpRequest manager] sendMsg11Or13:aSwitch
+                             socketId:socketId
+                             sendMode:ActiveMode];
 }
 
 #pragma mark - block
 - (void)setBlock {
-  SwitchAndSceneViewController __weak *weakself = self;
-  // msg0B
-  self.msg0BsuccessBlock = ^(CC3xMessage *message) {
-      if (message.version == 2) {
-        message.state;
-        SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
-        aSwitch.mac = message.mac;
-        aSwitch.ip = message.ip;
-        aSwitch.port = message.port;
-        aSwitch.name = message.deviceName;
-        aSwitch.version = message.version;
-        if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
-          if (aSwitch.lockStatus == LockStatusOn) {
-            aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
-          } else {
-            aSwitch.switchStatus = SWITCH_LOCAL;
-          }
-        } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
-                   (aSwitch.switchStatus == SWITCH_UNKNOWN ||
-                    aSwitch.switchStatus == SWITCH_OFFLINE)) {
-          if (aSwitch.lockStatus == LockStatusOn) {
-            aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
-          } else {
-            aSwitch.switchStatus = SWITCH_REMOTE;
-          }
-        } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
-          aSwitch.switchStatus = SWITCH_OFFLINE;
-        }
-        if (aSwitch.sockets) {
-        } else {
-          aSwitch.sockets = [@[] mutableCopy];
-        }
-        SDZGSocket *socket1 = [[SDZGSocket alloc] init];
-        socket1.socketId = 1;
-        socket1.socketStatus = SocketStatusOn;
-        //      message.onStatus << 0 & 1;
-        [aSwitch.sockets addObject:socket1];
+  //  SwitchAndSceneViewController __weak *weakself = self;
+  //  // msg0B
+  //  self.msg0BsuccessBlock = ^(CC3xMessage *message) {
+  //      if (message.version == 2) {
+  //        message.state;
+  //        SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
+  //        aSwitch.mac = message.mac;
+  //        aSwitch.ip = message.ip;
+  //        aSwitch.port = message.port;
+  //        aSwitch.name = message.deviceName;
+  //        aSwitch.version = message.version;
+  //        if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
+  //          if (aSwitch.lockStatus == LockStatusOn) {
+  //            aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
+  //          } else {
+  //            aSwitch.switchStatus = SWITCH_LOCAL;
+  //          }
+  //        } else if (message.msgId == 0xe && aSwitch.switchStatus !=
+  //        SWITCH_NEW &&
+  //                   (aSwitch.switchStatus == SWITCH_UNKNOWN ||
+  //                    aSwitch.switchStatus == SWITCH_OFFLINE)) {
+  //          if (aSwitch.lockStatus == LockStatusOn) {
+  //            aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
+  //          } else {
+  //            aSwitch.switchStatus = SWITCH_REMOTE;
+  //          }
+  //        } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
+  //          aSwitch.switchStatus = SWITCH_OFFLINE;
+  //        }
+  //        if (aSwitch.sockets) {
+  //        } else {
+  //          aSwitch.sockets = [@[] mutableCopy];
+  //        }
+  //        SDZGSocket *socket1 = [[SDZGSocket alloc] init];
+  //        socket1.socketId = 1;
+  //        socket1.socketStatus = SocketStatusOn;
+  //        //      message.onStatus << 0 & 1;
+  //        [aSwitch.sockets addObject:socket1];
+  //
+  //        SDZGSocket *socket2 = [[SDZGSocket alloc] init];
+  //        socket2.socketId = 2;
+  //        socket2.socketStatus = message.onStatus << 1 & 1;
+  //        [aSwitch.sockets addObject:socket2];
+  //
+  //        [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+  //      }
+  //  };
+  //  self.msg0BnoResponseBlock = ^(int count) {
+  //      if (count <= kTryCount) {
+  //        [[UdpRequest manager] sendMsg0B:PassiveMode];
+  //      } else {
+  //        // TODO: 提示错误消息
+  //      }
+  //  };
+  //  self.msg0BnoRequestBlock = ^(long tag) {};
+  //  self.msg0BerrorBlock = ^(NSString *errorMsg) {};
+  //
+  //  // msg11Or13
+  //  self.msg11Or13successBlock = ^(CC3xMessage *message) { message.state; };
+  //  self.msg11Or13noResponseBlock = ^(int count) {
+  //      if (count <= kTryCount) {
+  //        [[UdpRequest manager] sendMsg0B:PassiveMode];
+  //      } else {
+  //        // TODO: 提示错误消息
+  //      }
+  //  };
+  //  self.msg11Or13noRequestBlock = ^(long tag) {};
+  //  self.msg11Or13errorBlock = ^(NSString *errorMsg) {};
+}
 
-        SDZGSocket *socket2 = [[SDZGSocket alloc] init];
-        socket2.socketId = 2;
-        socket2.socketStatus = message.onStatus << 1 & 1;
-        [aSwitch.sockets addObject:socket2];
+#pragma mark - UdpRequestDelegate
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    case 0xc:
+      [self responseMsgC:message];
+      break;
 
-        [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
-      }
-  };
-  self.msg0BnoResponseBlock = ^(int count) {
-      if (count <= kTryCount) {
-        [[UdpRequest sharedInstance] sendMsg0B:PassiveMode
-                                  successBlock:weakself.msg0BsuccessBlock
-                               noResponseBlock:weakself.msg0BnoResponseBlock
-                                noRequestBlock:weakself.msg0BnoRequestBlock
-                                    errorBlock:weakself.msg0BerrorBlock];
+    default:
+      break;
+  }
+}
+
+- (void)responseMsgC:(CC3xMessage *)message {
+  if (message.version == 2) {
+    message.state;
+    SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
+    aSwitch.mac = message.mac;
+    aSwitch.ip = message.ip;
+    aSwitch.port = message.port;
+    aSwitch.name = message.deviceName;
+    aSwitch.version = message.version;
+    if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
+      if (aSwitch.lockStatus == LockStatusOn) {
+        aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
       } else {
-        // TODO: 提示错误消息
+        aSwitch.switchStatus = SWITCH_LOCAL;
       }
-  };
-  self.msg0BnoRequestBlock = ^(long tag) {};
-  self.msg0BerrorBlock = ^(NSString *errorMsg) {};
-
-  // msg11Or13
-  self.msg11Or13successBlock = ^(CC3xMessage *message) { message.state; };
-  self.msg11Or13noResponseBlock = ^(int count) {
-      if (count <= kTryCount) {
-        [[UdpRequest sharedInstance] sendMsg0B:PassiveMode
-                                  successBlock:weakself.msg11Or13successBlock
-                               noResponseBlock:weakself.msg11Or13noResponseBlock
-                                noRequestBlock:weakself.msg11Or13noRequestBlock
-                                    errorBlock:weakself.msg11Or13errorBlock];
+    } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
+               (aSwitch.switchStatus == SWITCH_UNKNOWN ||
+                aSwitch.switchStatus == SWITCH_OFFLINE)) {
+      if (aSwitch.lockStatus == LockStatusOn) {
+        aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
       } else {
-        // TODO: 提示错误消息
+        aSwitch.switchStatus = SWITCH_REMOTE;
       }
-  };
-  self.msg11Or13noRequestBlock = ^(long tag) {};
-  self.msg11Or13errorBlock = ^(NSString *errorMsg) {};
+    } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
+      aSwitch.switchStatus = SWITCH_OFFLINE;
+    }
+    if (aSwitch.sockets) {
+    } else {
+      aSwitch.sockets = [@[] mutableCopy];
+    }
+    SDZGSocket *socket1 = [[SDZGSocket alloc] init];
+    socket1.socketId = 1;
+    socket1.socketStatus = SocketStatusOn;
+    //      message.onStatus << 0 & 1;
+    [aSwitch.sockets addObject:socket1];
+
+    SDZGSocket *socket2 = [[SDZGSocket alloc] init];
+    socket2.socketId = 2;
+    socket2.socketStatus = message.onStatus << 1 & 1;
+    [aSwitch.sockets addObject:socket2];
+
+    [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+  }
 }
 @end

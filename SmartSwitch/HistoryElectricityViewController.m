@@ -13,15 +13,15 @@
 #define kBarWidth 25
 
 @interface HistoryElectricityViewController ()
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
-@property(strong, nonatomic) IBOutlet UIView *viewImgContainer;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
+@property (strong, nonatomic) IBOutlet UIView *viewImgContainer;
 
-@property(strong, nonatomic) NSArray *times;
-@property(strong, nonatomic) NSArray *values;
+@property (strong, nonatomic) NSArray *times;
+@property (strong, nonatomic) NSArray *values;
 
-@property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property (strong, nonatomic) SDZGSwitch *aSwitch;
 @end
 
 @implementation HistoryElectricityViewController
@@ -119,15 +119,11 @@
 }
 
 - (void)senMsg63 {
-  [[UdpRequest sharedInstance] sendMsg63:self.aSwitch
-                               beginTime:1406822400
-                                 endTime:1409500799
-                                interval:3600 * 24
-                                sendMode:ActiveMode
-                            successBlock:^(CC3xMessage *message) {}
-                         noResponseBlock:nil
-                          noRequestBlock:nil
-                              errorBlock:nil];
+  [[UdpRequest manager] sendMsg63:self.aSwitch
+                        beginTime:1406822400
+                          endTime:1409500799
+                         interval:3600 * 24
+                         sendMode:ActiveMode];
 }
 
 /*

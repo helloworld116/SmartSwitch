@@ -28,6 +28,11 @@ PODS:
     - CocoaLumberjack/Core
   - EAIntroView (2.6.3)
   - EGOTableViewPullRefresh (0.1.0)
+  - FMDB (2.3):
+    - FMDB/standard
+  - FMDB/common (2.3)
+  - FMDB/standard (2.3):
+    - FMDB/common
   - HexColors (2.2.1)
   - JASidePanels (1.3.2)
   - KxMenu (1)
@@ -46,6 +51,7 @@ DEPENDENCIES:
   - CocoaLumberjack
   - EAIntroView (~> 2.6.0)
   - EGOTableViewPullRefresh
+  - FMDB
   - HexColors
   - JASidePanels
   - KxMenu (~> 1)
@@ -66,6 +72,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 94accd5749f5c5d15134c8d50f34a973aed8ef69
   EAIntroView: 45924b81c153d1206ee24f4fa654e9d9dae79e93
   EGOTableViewPullRefresh: 04bb7d115f660c91a036ebade5e6678c7ef26c59
+  FMDB: 31ec26773c7f7b7890a6038235a1f2bbd933a7cb
   HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
   JASidePanels: ca943907d88a0738c80755204c6098969d43e4e9
   KxMenu: e281f1699a2181287de6eb1ebec2ea60a86559fa

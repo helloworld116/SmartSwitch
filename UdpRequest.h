@@ -8,19 +8,55 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^successBlock)(CC3xMessage *message);
-typedef void (^noResponseBlock)(int count);
-typedef void (^noResponseWithMacBlock)(int count, NSString *mac);
-typedef void (^noRequestBlock)(long tag);
-typedef void (^errorBlock)(NSString *errorMsg);
+// typedef void (^successBlock)(CC3xMessage *message);
+// typedef void (^noResponseBlock)(int count);
+// typedef void (^noResponseWithMacBlock)(int count, NSString *mac);
+// typedef void (^noRequestBlock)(long tag);
+// typedef void (^errorBlock)(NSString *errorMsg);
 
 @protocol UdpRequestDelegate<NSObject>
-- (void)test;
+
+@required
+#pragma mark - 请求响应后的处理
+/**
+ *  为设备配置wifi后的响应
+ *
+ *  @param message 响应报文经过包装后的对象
+ *  @param address 路由器的地址
+ */
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address;
+
+@optional
+#pragma mark - 请求没响应后的处理
+/**
+ *  UDP请求后未响应的处理
+ *
+ *  @param tag        UDP请求的tag
+ *  @param triedCount 未响应后已经尝试的次数
+ */
+- (void)noResponseMsgtag:(long)tag triedCount:(int)triedCount;
+
+#pragma mark - 请求没有发送的处理
+/**
+ *  UDP请求未发送后的处理
+ *
+ *  @param tag        udp请求的tag
+ *  @param triedCount 失败后已经尝试的次数
+ */
+- (void)noSendMsgtag:(long)tag triedCount:(int)triedCount;
+
+#pragma mark - 其他错误时的处理
+/**
+ *  出现错误后的处理
+ *
+ *  @param msg 错误信息
+ */
+- (void)errorMsg:(NSString *)msg;
 @end
 
 @interface UdpRequest : NSObject
-@property(nonatomic, assign) id<UdpRequestDelegate> delegate;
-+ (instancetype)sharedInstance;
+@property (nonatomic, assign) id<UdpRequestDelegate> delegate;
++ (instancetype)manager;
 ///**
 // *  P2D_SERVER_INFO
 // *
@@ -40,11 +76,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param udpSocket
  *  @param mode
  */
-- (void)sendMsg09:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg09:(SENDMODE)mode;
 
 /**
  *  手机向内网查询所有设备的开关状态
@@ -52,11 +84,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param udpSocket
  *  @param mode
  */
-- (void)sendMsg0B:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg0B:(SENDMODE)mode;
 
 /**
  *  手机向外网查询所有设备的开关状态
@@ -64,13 +92,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param udpSocket
  *  @param mode
  */
-- (void)sendMsg0D:(NSString *)mac
-           sendMode:(SENDMODE)mode
-                tag:(long)tag
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg0D:(NSString *)mac sendMode:(SENDMODE)mode tag:(long)tag;
 
 /**
  *  手机向查询指定设备的开关状态
@@ -78,12 +100,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param udpSocket
  *  @param mode
  */
-- (void)sendMsg0BOr0D:(SDZGSwitch *)aSwitch
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg0BOr0D:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode;
 
 /**
  *  手机控制开关“开或关”
@@ -95,11 +112,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  */
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 /**
  *  手机获取设备定时列表
  *
@@ -109,11 +122,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  */
 - (void)sendMsg17Or19:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 /**
  *  手机设置设备定时列表
  *
@@ -125,11 +134,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
 - (void)sendMsg1DOr1F:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
              timeList:(NSArray *)timeList
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 /**
  *  手机获取设备控制权限
  *
@@ -141,12 +146,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
 //              aSwitch:(SDZGSwitch *)aSwitch
 //             sendMode:(SENDMODE)mode;
 
-- (void)sendMsg33Or35:(SDZGSwitch *)aSwitch
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg33Or35:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode;
 
 /**
  *  设备定位，即使设备灯闪烁
@@ -156,13 +156,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param on        定位标识，目前只有1，表示定位
  *  @param mode
  */
-- (void)sendMsg39Or3B:(SDZGSwitch *)aSwitch
-                   on:(BOOL)on
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg39Or3B:(SDZGSwitch *)aSwitch on:(BOOL)on sendMode:(SENDMODE)mode;
 /**
  *  设置设备名称
  *
@@ -174,11 +168,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
 - (void)sendMsg3FOr41:(SDZGSwitch *)aSwitch
                  type:(int)type
                  name:(NSString *)name
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 /**
  *  设备加锁
  *
@@ -187,12 +177,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param isLock    设备当前的锁定状态，即发送指令前的状态
  *  @param mode
  */
-- (void)sendMsg47Or49:(SDZGSwitch *)aSwitch
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg47Or49:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode;
 /**
  *  设置设备延时任务
  *
@@ -206,11 +191,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
              socketId:(int)socketId
             delayTime:(NSInteger)delayTime
              switchOn:(BOOL)on
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 /**
  *  查询设备延时任务
  *
@@ -220,11 +201,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  */
 - (void)sendMsg53Or55:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+             sendMode:(SENDMODE)mode;
 
 /**
  *  查询设备名字
@@ -233,12 +210,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param aSwitch
  *  @param mode
  */
-- (void)sendMsg5DOr5F:(SDZGSwitch *)aSwitch
-             sendMode:(SENDMODE)mode
-         successBlock:(successBlock)successBlock
-      noResponseBlock:(noResponseBlock)noResponseBlock
-       noRequestBlock:(noRequestBlock)noRequestBlock
-           errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg5DOr5F:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode;
 
 /**
  *  查询历史电量
@@ -249,14 +221,10 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param interval 间隔时间，返回查询数量是(Endtimet-begintimet)/ interval
  */
 - (void)sendMsg63:(SDZGSwitch *)aSwitch
-          beginTime:(int)beginTime
-            endTime:(int)endTime
-           interval:(int)interval
-           sendMode:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+        beginTime:(int)beginTime
+          endTime:(int)endTime
+         interval:(int)interval
+         sendMode:(SENDMODE)mode;
 
 /**
  *  查询终端城市
@@ -265,13 +233,7 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param type 0 为获取设备当地的城市 1为获取换手机当地的城市
  *  @param mode
  */
-- (void)sendMsg65:(NSString *)mac
-               type:(int)type
-           sendMode:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+- (void)sendMsg65:(NSString *)mac type:(int)type sendMode:(SENDMODE)mode;
 
 /**
  *  查询当地天气
@@ -282,13 +244,9 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *3为获取指定城市的天气
  */
 - (void)sendMsg67:(NSString *)mac
-               type:(int)type
-           cityName:(NSString *)cityName
-           sendMode:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+             type:(int)type
+         cityName:(NSString *)cityName
+         sendMode:(SENDMODE)mode;
 
 /**
  *  设置密码
@@ -298,10 +256,6 @@ typedef void (^errorBlock)(NSString *errorMsg);
  *  @param mode
  */
 - (void)sendMsg69:(NSString *)oldPassword
-        newPassword:(NSString *)newPassword
-           sendMode:(SENDMODE)mode
-       successBlock:(successBlock)successBlock
-    noResponseBlock:(noResponseBlock)noResponseBlock
-     noRequestBlock:(noRequestBlock)noRequestBlock
-         errorBlock:(errorBlock)errorBlock;
+      newPassword:(NSString *)newPassword
+         sendMode:(SENDMODE)mode;
 @end

@@ -13,16 +13,16 @@
 
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate>
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property(strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
-@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property(assign, nonatomic) BOOL reloading;
+@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property (assign, nonatomic) BOOL reloading;
 
-@property(strong, nonatomic) SDZGSwitch *aSwitch;
-@property(strong, nonatomic) NSTimer *timerElec;
-@property(strong, nonatomic) NSTimer *timerSwitch;
-@property(strong, atomic) UdpRequest *request0BOr0D, *request33Or35,
+@property (strong, nonatomic) SDZGSwitch *aSwitch;
+@property (strong, nonatomic) NSTimer *timerElec;
+@property (strong, nonatomic) NSTimer *timerSwitch;
+@property (strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
     *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
 
 @end
@@ -89,27 +89,13 @@
 
 - (void)firstSend {
   dispatch_queue_t queue =
-      dispatch_queue_create("com.itouchco.www", DISPATCH_QUEUE_CONCURRENT);
-  dispatch_barrier_async(queue, ^{
-      [NSThread sleepForTimeInterval:1];
-      [self sendMsg0BOr0D];
-  });
-  dispatch_barrier_async(queue, ^{
-      [NSThread sleepForTimeInterval:1];
-      [self send17Or19];
-  });
-  dispatch_barrier_async(queue, ^{
-      [NSThread sleepForTimeInterval:1];
-      [self sendMsg33Or35];
-  });
-  dispatch_barrier_async(queue, ^{
-      [NSThread sleepForTimeInterval:1];
-      [self send53Or55];
-  });
-  dispatch_barrier_async(queue, ^{
-      [NSThread sleepForTimeInterval:1];
-      [self send5DOr5F];
-  });
+      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
+
+  dispatch_async(queue, ^{ [self sendMsg0BOr0D]; });
+  dispatch_async(queue, ^{ [self send17Or19]; });
+  dispatch_async(queue, ^{ [self sendMsg33Or35]; });
+  dispatch_async(queue, ^{ [self send53Or55]; });
+  dispatch_async(queue, ^{ [self send5DOr5F]; });
 
   //  [self setTimer];
 }
@@ -149,75 +135,48 @@
 #pragma mark - 发送UDP
 //开关状态
 - (void)sendMsg0BOr0D {
-  self.request0BOr0D = [UdpRequest sharedInstance];
-  [self.request0BOr0D sendMsg0BOr0D:self.aSwitch
-                           sendMode:ActiveMode
-                       successBlock:^(CC3xMessage *message) {}
-                    noResponseBlock:nil
-                     noRequestBlock:nil
-                         errorBlock:nil];
+  self.request0BOr0D = [UdpRequest manager];
+  [self.request0BOr0D sendMsg0BOr0D:self.aSwitch sendMode:ActiveMode];
 }
 
 //控制插孔开关
 - (void)sendMsg11Or13:(int)socketId {
-  self.request11Or13 = [UdpRequest sharedInstance];
+  self.request11Or13 = [UdpRequest manager];
   [self.request11Or13 sendMsg11Or13:self.aSwitch
                            socketId:1
-                           sendMode:ActiveMode
-                       successBlock:^(CC3xMessage *message) {}
-                    noResponseBlock:nil
-                     noRequestBlock:nil
-                         errorBlock:nil];
+                           sendMode:ActiveMode];
 }
 
 //定时列表
 - (void)send17Or19 {
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    self.request17Or19 = [UdpRequest sharedInstance];
+    self.request17Or19 = [UdpRequest manager];
     [self.request17Or19 sendMsg17Or19:self.aSwitch
                              socketId:socket.socketId
-                             sendMode:ActiveMode
-                         successBlock:^(CC3xMessage *message) {}
-                      noResponseBlock:nil
-                       noRequestBlock:nil
-                           errorBlock:nil];
+                             sendMode:ActiveMode];
   }
 }
 
 //实时电量
 - (void)sendMsg33Or35 {
-  self.request33Or35 = [UdpRequest sharedInstance];
-  [self.request33Or35 sendMsg33Or35:self.aSwitch
-                           sendMode:ActiveMode
-                       successBlock:^(CC3xMessage *message) {}
-                    noResponseBlock:nil
-                     noRequestBlock:nil
-                         errorBlock:nil];
+  self.request33Or35 = [UdpRequest manager];
+  [self.request33Or35 sendMsg33Or35:self.aSwitch sendMode:ActiveMode];
 }
 
 //延时任务
 - (void)send53Or55 {
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    self.request53Or55 = [UdpRequest sharedInstance];
+    self.request53Or55 = [UdpRequest manager];
     [self.request53Or55 sendMsg53Or55:self.aSwitch
                              socketId:socket.socketId
-                             sendMode:ActiveMode
-                         successBlock:^(CC3xMessage *message) {}
-                      noResponseBlock:nil
-                       noRequestBlock:nil
-                           errorBlock:nil];
+                             sendMode:ActiveMode];
   }
 }
 
 //查询设备名称
 - (void)send5DOr5F {
-  self.request5DOr5F = [UdpRequest sharedInstance];
-  [self.request5DOr5F sendMsg5DOr5F:self.aSwitch
-                           sendMode:ActiveMode
-                       successBlock:^(CC3xMessage *message) {}
-                    noResponseBlock:nil
-                     noRequestBlock:nil
-                         errorBlock:nil];
+  self.request5DOr5F = [UdpRequest manager];
+  [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
 }
 
 /*
@@ -330,11 +289,11 @@ preparation before navigation
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading;  // should return if data source model is reloading
+  return _reloading; // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date];  // should return date data source was last changed
+  return [NSDate date]; // should return date data source was last changed
 }
 @end

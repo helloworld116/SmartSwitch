@@ -176,11 +176,15 @@
 }
 
 #pragma mark - SwitchExpandCellDelegate
-- (void)socketAction:(UIButton *)btnSocket {
-  int socketId = btnSocket.tag - 1000;
+- (void)socketAction:(UITableViewCell *)cell socketId:(int)socketId {
   if ([self.switchTableViewDelegate
-          respondsToSelector:@selector(socketAction:)]) {
-    [self.switchTableViewDelegate socketAction:socketId];
+          respondsToSelector:@selector(socketAction:socketId:)]) {
+    NSIndexPath *indexPath = [self indexPathForCell:cell];
+    if (indexPath) {
+      SDZGSwitch *aSwitch = [[SwitchDataCeneter sharedInstance].switchs
+          objectAtIndex:indexPath.row];
+      [self.switchTableViewDelegate socketAction:aSwitch socketId:socketId];
+    }
   }
 }
 

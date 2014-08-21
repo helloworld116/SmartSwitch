@@ -8,6 +8,8 @@
 
 #import "SwitchDetailViewController.h"
 #import "SwitchDataCeneter.h"
+#define kElecRefreshInterval 2
+#define kSwitchRefreshInterval 2
 
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate>
@@ -18,10 +20,14 @@
 @property(assign, nonatomic) BOOL reloading;
 
 @property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) NSTimer *timerElec;
+@property(strong, nonatomic) NSTimer *timerSwitch;
+@property(strong, atomic) UdpRequest *request0BOr0D, *request33Or35,
+    *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
+
 @end
 
 @implementation SwitchDetailViewController
-
 - (id)initWithNibName:(NSString *)nibNameOrNil
                bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -67,6 +73,11 @@
   [self firstSend];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+  [self invalidateTimer];
+  [super viewWillDisappear:animated];
+}
+
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
@@ -77,78 +88,136 @@
 }
 
 - (void)firstSend {
-  //  [self sendMsg0BOr0D];
-  //  [self send17Or19];
-  //  [self sendMsg33Or35];
-  //  [self send53Or55];
-  [self send5DOr5F];
+  dispatch_queue_t queue =
+      dispatch_queue_create("com.itouchco.www", DISPATCH_QUEUE_CONCURRENT);
+  dispatch_barrier_async(queue, ^{
+      [NSThread sleepForTimeInterval:1];
+      [self sendMsg0BOr0D];
+  });
+  dispatch_barrier_async(queue, ^{
+      [NSThread sleepForTimeInterval:1];
+      [self send17Or19];
+  });
+  dispatch_barrier_async(queue, ^{
+      [NSThread sleepForTimeInterval:1];
+      [self sendMsg33Or35];
+  });
+  dispatch_barrier_async(queue, ^{
+      [NSThread sleepForTimeInterval:1];
+      [self send53Or55];
+  });
+  dispatch_barrier_async(queue, ^{
+      [NSThread sleepForTimeInterval:1];
+      [self send5DOr5F];
+  });
+
+  //  [self setTimer];
 }
 
+#pragma mark - Timer
+- (void)setTimer {
+  self.timerElec = [NSTimer timerWithTimeInterval:kElecRefreshInterval
+                                           target:self
+                                         selector:@selector(sendMsg33Or35)
+                                         userInfo:nil
+                                          repeats:YES];
+  [self.timerElec fire];
+  [[NSRunLoop currentRunLoop] addTimer:self.timerElec
+                               forMode:NSRunLoopCommonModes];
+
+  self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
+                                             target:self
+                                           selector:@selector(sendMsg0BOr0D)
+                                           userInfo:nil
+                                            repeats:YES];
+  [self.timerSwitch fire];
+  [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
+                               forMode:NSRunLoopCommonModes];
+}
+
+- (void)invalidateTimer {
+  if (self.timerSwitch) {
+    [self.timerSwitch invalidate];
+    self.timerSwitch = nil;
+  }
+  if (self.timerElec) {
+    [self.timerElec invalidate];
+    self.timerElec = nil;
+  }
+}
+
+#pragma mark - 发送UDP
 //开关状态
 - (void)sendMsg0BOr0D {
-  [[UdpRequest sharedInstance] sendMsg0BOr0D:self.aSwitch
-                                    sendMode:ActiveMode
-                                successBlock:^(CC3xMessage *message) {}
-                             noResponseBlock:nil
-                              noRequestBlock:nil
-                                  errorBlock:nil];
+  self.request0BOr0D = [UdpRequest sharedInstance];
+  [self.request0BOr0D sendMsg0BOr0D:self.aSwitch
+                           sendMode:ActiveMode
+                       successBlock:^(CC3xMessage *message) {}
+                    noResponseBlock:nil
+                     noRequestBlock:nil
+                         errorBlock:nil];
 }
 
 //控制插孔开关
 - (void)sendMsg11Or13:(int)socketId {
-  [[UdpRequest sharedInstance] sendMsg11Or13:self.aSwitch
-                                    socketId:1
-                                    sendMode:ActiveMode
-                                successBlock:^(CC3xMessage *message) {}
-                             noResponseBlock:nil
-                              noRequestBlock:nil
-                                  errorBlock:nil];
+  self.request11Or13 = [UdpRequest sharedInstance];
+  [self.request11Or13 sendMsg11Or13:self.aSwitch
+                           socketId:1
+                           sendMode:ActiveMode
+                       successBlock:^(CC3xMessage *message) {}
+                    noResponseBlock:nil
+                     noRequestBlock:nil
+                         errorBlock:nil];
 }
 
 //定时列表
 - (void)send17Or19 {
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    [[UdpRequest sharedInstance] sendMsg17Or19:self.aSwitch
-                                      socketId:socket.socketId
-                                      sendMode:ActiveMode
-                                  successBlock:^(CC3xMessage *message) {}
-                               noResponseBlock:nil
-                                noRequestBlock:nil
-                                    errorBlock:nil];
+    self.request17Or19 = [UdpRequest sharedInstance];
+    [self.request17Or19 sendMsg17Or19:self.aSwitch
+                             socketId:socket.socketId
+                             sendMode:ActiveMode
+                         successBlock:^(CC3xMessage *message) {}
+                      noResponseBlock:nil
+                       noRequestBlock:nil
+                           errorBlock:nil];
   }
 }
 
 //实时电量
 - (void)sendMsg33Or35 {
-  [[UdpRequest sharedInstance] sendMsg33Or35:self.aSwitch
-                                    sendMode:ActiveMode
-                                successBlock:^(CC3xMessage *message) {}
-                             noResponseBlock:nil
-                              noRequestBlock:nil
-                                  errorBlock:nil];
+  self.request33Or35 = [UdpRequest sharedInstance];
+  [self.request33Or35 sendMsg33Or35:self.aSwitch
+                           sendMode:ActiveMode
+                       successBlock:^(CC3xMessage *message) {}
+                    noResponseBlock:nil
+                     noRequestBlock:nil
+                         errorBlock:nil];
 }
 
 //延时任务
 - (void)send53Or55 {
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    [[UdpRequest sharedInstance] sendMsg53Or55:self.aSwitch
-                                      socketId:socket.socketId
-                                      sendMode:ActiveMode
-                                  successBlock:^(CC3xMessage *message) {}
-                               noResponseBlock:nil
-                                noRequestBlock:nil
-                                    errorBlock:nil];
+    self.request53Or55 = [UdpRequest sharedInstance];
+    [self.request53Or55 sendMsg53Or55:self.aSwitch
+                             socketId:socket.socketId
+                             sendMode:ActiveMode
+                         successBlock:^(CC3xMessage *message) {}
+                      noResponseBlock:nil
+                       noRequestBlock:nil
+                           errorBlock:nil];
   }
 }
 
 //查询设备名称
 - (void)send5DOr5F {
-  [[UdpRequest sharedInstance] sendMsg5DOr5F:self.aSwitch
-                                    sendMode:ActiveMode
-                                successBlock:^(CC3xMessage *message) {}
-                             noResponseBlock:nil
-                              noRequestBlock:nil
-                                  errorBlock:nil];
+  self.request5DOr5F = [UdpRequest sharedInstance];
+  [self.request5DOr5F sendMsg5DOr5F:self.aSwitch
+                           sendMode:ActiveMode
+                       successBlock:^(CC3xMessage *message) {}
+                    noResponseBlock:nil
+                     noRequestBlock:nil
+                         errorBlock:nil];
 }
 
 /*

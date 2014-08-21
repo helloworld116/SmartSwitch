@@ -11,8 +11,8 @@
 #import "SceneTableView.h"
 #import "SwitchDataCeneter.h"
 
-@interface SwitchAndSceneViewController ()<SwitchTableViewDelegate,
-                                           UIScrollViewDelegate>
+@interface SwitchAndSceneViewController ()<
+    SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
@@ -28,6 +28,7 @@
 @property(strong, nonatomic) noRequestBlock msg0BnoRequestBlock,
     msg11Or13noRequestBlock;
 @property(strong, nonatomic) errorBlock msg0BerrorBlock, msg11Or13errorBlock;
+@property(strong, atomic) UdpRequest *request;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -167,7 +168,8 @@
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
-- (void)socketAction:(int)socketId {
+- (void)socketAction:(SDZGSwitch *)aSwitch socketId:(int)socketId {
+  [self sendMsg11Or13:aSwitch socketId:socketId];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -207,11 +209,13 @@
 //扫描设备
 - (void)sendMsg0BOr0D {
   //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
-  [[UdpRequest sharedInstance] sendMsg0B:ActiveMode
-                            successBlock:self.msg0BsuccessBlock
-                         noResponseBlock:self.msg0BnoResponseBlock
-                          noRequestBlock:self.msg0BnoRequestBlock
-                              errorBlock:self.msg0BerrorBlock];
+  UdpRequest *request = [[UdpRequest alloc] init];
+  self.request = request;
+  [request sendMsg0B:ActiveMode
+         successBlock:self.msg0BsuccessBlock
+      noResponseBlock:self.msg0BnoResponseBlock
+       noRequestBlock:self.msg0BnoRequestBlock
+           errorBlock:self.msg0BerrorBlock];
 
   //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
   //                 GLOBAL_QUEUE, ^{
@@ -242,11 +246,15 @@
   //  });
 }
 
+- (void)test {
+  NSLog(@"......");
+}
+
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch socketId:(int)socketId {
   [[UdpRequest sharedInstance] sendMsg11Or13:aSwitch
                                     socketId:socketId
                                     sendMode:ActiveMode
-                                successBlock:self.msg11Or13successBlock
+                                successBlock:^(CC3xMessage *message) {}
                              noResponseBlock:self.msg11Or13noResponseBlock
                               noRequestBlock:self.msg11Or13noRequestBlock
                                   errorBlock:self.msg11Or13errorBlock];
@@ -257,45 +265,48 @@
   SwitchAndSceneViewController __weak *weakself = self;
   // msg0B
   self.msg0BsuccessBlock = ^(CC3xMessage *message) {
-      message.state;
-      SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
-      aSwitch.mac = message.mac;
-      aSwitch.ip = message.ip;
-      aSwitch.port = message.port;
-      aSwitch.name = message.deviceName;
-      aSwitch.version = message.version;
-      if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
-        if (aSwitch.lockStatus == LockStatusOn) {
-          aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
-        } else {
-          aSwitch.switchStatus = SWITCH_LOCAL;
+      if (message.version == 2) {
+        message.state;
+        SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
+        aSwitch.mac = message.mac;
+        aSwitch.ip = message.ip;
+        aSwitch.port = message.port;
+        aSwitch.name = message.deviceName;
+        aSwitch.version = message.version;
+        if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
+          if (aSwitch.lockStatus == LockStatusOn) {
+            aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
+          } else {
+            aSwitch.switchStatus = SWITCH_LOCAL;
+          }
+        } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
+                   (aSwitch.switchStatus == SWITCH_UNKNOWN ||
+                    aSwitch.switchStatus == SWITCH_OFFLINE)) {
+          if (aSwitch.lockStatus == LockStatusOn) {
+            aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
+          } else {
+            aSwitch.switchStatus = SWITCH_REMOTE;
+          }
+        } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
+          aSwitch.switchStatus = SWITCH_OFFLINE;
         }
-      } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
-                 (aSwitch.switchStatus == SWITCH_UNKNOWN ||
-                  aSwitch.switchStatus == SWITCH_OFFLINE)) {
-        if (aSwitch.lockStatus == LockStatusOn) {
-          aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
+        if (aSwitch.sockets) {
         } else {
-          aSwitch.switchStatus = SWITCH_REMOTE;
+          aSwitch.sockets = [@[] mutableCopy];
         }
-      } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
-        aSwitch.switchStatus = SWITCH_OFFLINE;
-      }
-      if (aSwitch.sockets) {
-      } else {
-        aSwitch.sockets = [@[] mutableCopy];
-      }
-      SDZGSocket *socket1 = [[SDZGSocket alloc] init];
-      socket1.socketId = 1;
-      socket1.socketStatus = message.onStatus << 0 & 1;
-      [aSwitch.sockets addObject:socket1];
+        SDZGSocket *socket1 = [[SDZGSocket alloc] init];
+        socket1.socketId = 1;
+        socket1.socketStatus = SocketStatusOn;
+        //      message.onStatus << 0 & 1;
+        [aSwitch.sockets addObject:socket1];
 
-      SDZGSocket *socket2 = [[SDZGSocket alloc] init];
-      socket2.socketId = 2;
-      socket2.socketStatus = message.onStatus << 1 & 1;
-      [aSwitch.sockets addObject:socket2];
+        SDZGSocket *socket2 = [[SDZGSocket alloc] init];
+        socket2.socketId = 2;
+        socket2.socketStatus = message.onStatus << 1 & 1;
+        [aSwitch.sockets addObject:socket2];
 
-      [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+        [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+      }
   };
   self.msg0BnoResponseBlock = ^(int count) {
       if (count <= kTryCount) {

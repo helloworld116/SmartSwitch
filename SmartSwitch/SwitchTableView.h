@@ -10,7 +10,7 @@
 @protocol SwitchTableViewDelegate<NSObject>
 @required
 - (void)showSwitchDetail:(NSIndexPath *)indexPath;
-- (void)socketAction:(int)socketId;
+- (void)socketAction:(SDZGSwitch *)aSwitch socketId:(int)socketId;
 @end
 
 @interface SwitchTableView : UITableView

@@ -52,7 +52,7 @@ typedef struct {
   unsigned short crc;
 } d2pMsg02;
 
-typedef struct { unsigned char name[32]; } socketName;
+typedef struct { unsigned char name[32]; } socketInfo;
 
 // P2D_SERVER_INFO 0x05
 typedef struct {
@@ -61,7 +61,7 @@ typedef struct {
   unsigned short port;
   unsigned char deviceName[32];
   unsigned char count;
-  socketName *socketName;
+  socketInfo *socketName;
   unsigned short crc;
 } p2dMsg05;
 
@@ -519,7 +519,7 @@ typedef struct {
   unsigned char mac[6];
   char deviceName[32];
   unsigned char count;
-  socketName *socketName;
+  socketInfo *socketName;
   unsigned short crc;
 } d2pMsg5E;
 
@@ -536,7 +536,7 @@ typedef struct {
   unsigned char mac[6];
   char deviceName[32];
   unsigned char count;
-  socketName *socketName;
+  socketInfo *socketName;
   unsigned short crc;
 } s2pMsg60;
 
@@ -1366,9 +1366,13 @@ typedef struct {
   message.deviceName = [[NSString alloc] initWithBytes:msg.deviceName
                                                 length:sizeof(msg.deviceName)
                                               encoding:NSUTF8StringEncoding];
-  int socketCount = msg.count;
-  socketName socketName[socketCount];
-  NSLog(@"%ld is", sizeof(msg.socketName));
+  NSString *socketName = [[NSString alloc] initWithBytes:&msg.socketName
+                                                  length:sizeof(socketInfo)
+                                                encoding:NSUTF8StringEncoding];
+  //  int socketCount = msg.count;
+  //  socketInfo socketName[socketCount];
+  NSLog(@"socket count is %@", socketName);
+  NSLog(@"%ld is", sizeof(*msg.socketName));
   return message;
 }
 

@@ -14,7 +14,12 @@ typedef void (^noResponseWithMacBlock)(int count, NSString *mac);
 typedef void (^noRequestBlock)(long tag);
 typedef void (^errorBlock)(NSString *errorMsg);
 
+@protocol UdpRequestDelegate<NSObject>
+- (void)test;
+@end
+
 @interface UdpRequest : NSObject
+@property(nonatomic, assign) id<UdpRequestDelegate> delegate;
 + (instancetype)sharedInstance;
 ///**
 // *  P2D_SERVER_INFO

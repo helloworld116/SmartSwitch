@@ -26,9 +26,12 @@
 #define SERVER_IP @"192.168.0.89"
 //"183.63.35.203:18080"
 // 115.28.178.252
-#define SERVER_PORT 20001
+#define SERVER_PORT 20002
 // 21845
-#define APP_PORT 43690
+#define APP_PORT 43691
+
+#define APP_PORT_MIN 43691
+#define APP_PORT_MAX 43700
 
 #define DEVICE_PORT 56797
 
@@ -108,6 +111,8 @@ enum {
 + (UIImage *)blurryImage:(UIImage *)image withBlurLevel:(CGFloat)blur;
 
 + (void)setupUdpSocket:(GCDAsyncUdpSocket *)socket port:(uint16_t)aPort;
+
+//+ (uint16_t)setupUdpSocket:(GCDAsyncUdpSocket *)socket;
 
 + (void)networkNotReachableAlert;
 

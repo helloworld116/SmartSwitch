@@ -28,13 +28,33 @@
 
   // Configure the view for the selected state
 }
+
+- (void)setCellInfo:(SDZGSwitch *)aSwitch {
+  [super setCellInfo:aSwitch];
+  SDZGSocket *socket1 = [aSwitch.sockets objectAtIndex:0];
+  if (socket1.socketStatus == SocketStatusOn) {
+    self.btnSocket1.selected = YES;
+  } else {
+    self.btnSocket1.selected = NO;
+  }
+  SDZGSocket *socket2 = [aSwitch.sockets objectAtIndex:1];
+  if (socket2.socketStatus == SocketStatusOn) {
+    self.btnSocket2.selected = YES;
+  } else {
+    self.btnSocket2.selected = NO;
+  }
+}
+
 - (IBAction)doExpand:(id)sender {
   [super doExpand:sender];
 }
 
 - (IBAction)socketTouched:(id)sender {
-  if ([self.expandCellDelegate respondsToSelector:@selector(socketAction:)]) {
-    [self.expandCellDelegate socketAction:(UIButton *)sender];
+  if ([self.expandCellDelegate
+          respondsToSelector:@selector(socketAction:socketId:)]) {
+    UIButton *btn = (UIButton *)sender;
+    int socketId = btn.tag - 1000;
+    [self.expandCellDelegate socketAction:self socketId:socketId];
   }
 }
 @end

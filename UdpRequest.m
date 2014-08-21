@@ -10,112 +10,93 @@
 #define kNotReachable @"网络不可用"
 #define kNotViaWiFi @"不在WIFI网络条件"
 
-@interface UDPSingleton : NSObject
-@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
-+ (instancetype)sharedInstance;
-@end
-
-@implementation UDPSingleton
-+ (instancetype)sharedInstance {
-  static UDPSingleton *instance;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{ instance = [[UDPSingleton alloc] init]; });
-  return instance;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-  }
-  return self;
-}
-@end
-
 @interface UdpRequest ()<GCDAsyncUdpSocketDelegate>
 #pragma mark -
 #pragma mark 发送请求计数变量
-@property(atomic, assign) int msg5SendCount;
-@property(atomic, assign) int msg9SendCount;
-@property(atomic, assign) int msgBSendCount;
-@property(atomic, assign) int msgDSendCount;  //指定设备查询
-@property(atomic, strong)
+@property(nonatomic, assign) int msg5SendCount;
+@property(nonatomic, assign) int msg9SendCount;
+@property(nonatomic, assign) int msgBSendCount;
+@property(nonatomic, assign) int msgDSendCount;  //指定设备查询
+@property(nonatomic, strong)
     NSMutableDictionary *msgDSendCountDict;  //所有设备查询，{"mac":"cout"}
-@property(atomic, assign) int msg11SendCount;
-@property(atomic, assign) int msg13SendCount;
-@property(atomic, assign) int msg17SendCount;
-@property(atomic, assign) int msg19SendCount;
-@property(atomic, assign) int msg1DSendCount;
-@property(atomic, assign) int msg1FSendCount;
-@property(atomic, assign) int msg25SendCount;
-@property(atomic, assign) int msg27SendCount;
-@property(atomic, assign) int msg33SendCount;
-@property(atomic, assign) int msg35SendCount;
-@property(atomic, assign) int msg39SendCount;
-@property(atomic, assign) int msg3BSendCount;
-@property(atomic, assign) int msg3FSendCount;
-@property(atomic, assign) int msg41SendCount;
-@property(atomic, assign) int msg47SendCount;
-@property(atomic, assign) int msg49SendCount;
-@property(atomic, assign) int msg4DSendCount;
-@property(atomic, assign) int msg4FSendCount;
-@property(atomic, assign) int msg53SendCount;
-@property(atomic, assign) int msg55SendCount;
-@property(atomic, assign) int msg59SendCount;
-@property(atomic, assign) int msg5DSendCount;
-@property(atomic, assign) int msg5FSendCount;
-@property(atomic, assign) int msg63SendCount;
-@property(atomic, assign) int msg65SendCount;
-@property(atomic, assign) int msg67SendCount;
-@property(atomic, assign) int msg69SendCount;
+@property(nonatomic, assign) int msg11SendCount;
+@property(nonatomic, assign) int msg13SendCount;
+@property(nonatomic, assign) int msg17SendCount;
+@property(nonatomic, assign) int msg19SendCount;
+@property(nonatomic, assign) int msg1DSendCount;
+@property(nonatomic, assign) int msg1FSendCount;
+@property(nonatomic, assign) int msg25SendCount;
+@property(nonatomic, assign) int msg27SendCount;
+@property(nonatomic, assign) int msg33SendCount;
+@property(nonatomic, assign) int msg35SendCount;
+@property(nonatomic, assign) int msg39SendCount;
+@property(nonatomic, assign) int msg3BSendCount;
+@property(nonatomic, assign) int msg3FSendCount;
+@property(nonatomic, assign) int msg41SendCount;
+@property(nonatomic, assign) int msg47SendCount;
+@property(nonatomic, assign) int msg49SendCount;
+@property(nonatomic, assign) int msg4DSendCount;
+@property(nonatomic, assign) int msg4FSendCount;
+@property(nonatomic, assign) int msg53SendCount;
+@property(nonatomic, assign) int msg55SendCount;
+@property(nonatomic, assign) int msg59SendCount;
+@property(nonatomic, assign) int msg5DSendCount;
+@property(nonatomic, assign) int msg5FSendCount;
+@property(nonatomic, assign) int msg63SendCount;
+@property(nonatomic, assign) int msg65SendCount;
+@property(nonatomic, assign) int msg67SendCount;
+@property(nonatomic, assign) int msg69SendCount;
 
 #pragma mark -
 #pragma mark 请求响应数据
-@property(atomic, strong) NSData *responseData6;
-@property(atomic, strong) NSData *responseDataA;
-@property(atomic, strong) NSData *responseDataC;
-@property(atomic, strong) NSData *responseDataE;  //指定设备查询
-@property(atomic, strong)
+@property(nonatomic, strong) NSData *responseData6;
+@property(nonatomic, strong) NSData *responseDataA;
+@property(nonatomic, strong) NSData *responseDataC;
+@property(nonatomic, strong) NSData *responseDataE;  //指定设备查询
+@property(nonatomic, strong)
     NSMutableDictionary *responseDictE;  //所有设备查询，{@"mac":"data"}
-@property(atomic, strong) NSData *responseData12;
-@property(atomic, strong) NSData *responseData14;
-@property(atomic, strong) NSData *responseData18;
-@property(atomic, strong) NSData *responseData1A;
-@property(atomic, strong) NSData *responseData1E;
-@property(atomic, strong) NSData *responseData20;
-@property(atomic, strong) NSData *responseData26;
-@property(atomic, strong) NSData *responseData28;
-@property(atomic, strong) NSData *responseData34;
-@property(atomic, strong) NSData *responseData36;
-@property(atomic, strong) NSData *responseData3A;
-@property(atomic, strong) NSData *responseData3C;
-@property(atomic, strong) NSData *responseData40;
-@property(atomic, strong) NSData *responseData42;
-@property(atomic, strong) NSData *responseData48;
-@property(atomic, strong) NSData *responseData4A;
-@property(atomic, strong) NSData *responseData4E;
-@property(atomic, strong) NSData *responseData50;
-@property(atomic, strong) NSData *responseData54;
-@property(atomic, strong) NSData *responseData56;
-@property(atomic, strong) NSData *responseData5A;
-@property(atomic, strong) NSData *responseData5E;
-@property(atomic, strong) NSData *responseData60;
-@property(atomic, strong) NSData *responseData64;
-@property(atomic, strong) NSData *responseData66;
-@property(atomic, strong) NSData *responseData68;
-@property(atomic, strong) NSData *responseData6A;
+@property(nonatomic, strong) NSData *responseData12;
+@property(nonatomic, strong) NSData *responseData14;
+@property(nonatomic, strong) NSData *responseData18;
+@property(nonatomic, strong) NSData *responseData1A;
+@property(nonatomic, strong) NSData *responseData1E;
+@property(nonatomic, strong) NSData *responseData20;
+@property(nonatomic, strong) NSData *responseData26;
+@property(nonatomic, strong) NSData *responseData28;
+@property(nonatomic, strong) NSData *responseData34;
+@property(nonatomic, strong) NSData *responseData36;
+@property(nonatomic, strong) NSData *responseData3A;
+@property(nonatomic, strong) NSData *responseData3C;
+@property(nonatomic, strong) NSData *responseData40;
+@property(nonatomic, strong) NSData *responseData42;
+@property(nonatomic, strong) NSData *responseData48;
+@property(nonatomic, strong) NSData *responseData4A;
+@property(nonatomic, strong) NSData *responseData4E;
+@property(nonatomic, strong) NSData *responseData50;
+@property(nonatomic, strong) NSData *responseData54;
+@property(nonatomic, strong) NSData *responseData56;
+@property(nonatomic, strong) NSData *responseData5A;
+@property(nonatomic, strong) NSData *responseData5E;
+@property(nonatomic, strong) NSData *responseData60;
+@property(nonatomic, strong) NSData *responseData64;
+@property(nonatomic, strong) NSData *responseData66;
+@property(nonatomic, strong) NSData *responseData68;
+@property(nonatomic, strong) NSData *responseData6A;
 
 #pragma mark -
-@property(atomic, strong) GCDAsyncUdpSocket *udpSocket;
-@property(atomic, strong) successBlock successBlock;
+@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
+@property(nonatomic, strong) successBlock successBlock;
 // block的参数列表为空的话，相当于可变参数（不是void）
-@property(atomic, strong) void (^noResposneBlock)();
-@property(atomic, strong) noRequestBlock noRequestBlock;
-@property(atomic, strong) errorBlock errorBlock;
-@property(atomic, strong) NSData *msg;
-@property(atomic, strong) NSString *host;
-@property(atomic, strong) NSData *address;
-@property(atomic, assign) uint16_t port;
-@property(atomic, assign) long tag;
+@property(nonatomic, strong) void (^noResposneBlock)();
+@property(nonatomic, strong) noRequestBlock noRequestBlock;
+@property(nonatomic, strong) errorBlock errorBlock;
+@property(nonatomic, strong) NSData *msg;
+@property(nonatomic, strong) NSString *host;
+@property(nonatomic, strong) NSData *address;
+@property(nonatomic, assign) uint16_t port;
+@property(nonatomic, assign) long tag;
+
+@property(nonatomic, assign) uint16_t availablePort;  // udpsocket用到的端口
 @end
 
 @implementation UdpRequest
@@ -124,23 +105,28 @@
   if (self) {
     self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
                                                    delegateQueue:GLOBAL_QUEUE];
-    [CC3xUtility setupUdpSocket:self.udpSocket port:APP_PORT];
+    //    self.availablePort = [[UdpPortCenter sharedInstance] availablePort];
+    //    NSLog(@"availablePort is %d", self.availablePort);
+    [CC3xUtility setupUdpSocket:self.udpSocket port:0];
   }
   return self;
 }
 
 + (instancetype)sharedInstance {
-  static UdpRequest *request;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{ request = [[self alloc] init]; });
-  //  UdpRequest *request = [[UdpRequest alloc] init];
+  UdpRequest *request;
+  request = [[UdpRequest alloc] init];
   return request;
+}
+
+- (void)dealloc {
+  [self.udpSocket close];
+  [[UdpPortCenter sharedInstance] unUsedPort:0];
 }
 
 #pragma mark - UDP发送请求
 - (void)sendDataToHost {
   if (self.udpSocket.isClosed) {
-    [CC3xUtility setupUdpSocket:self.udpSocket port:APP_PORT];
+    [CC3xUtility setupUdpSocket:self.udpSocket port:0];
   }
   [self.udpSocket sendData:self.msg
                     toHost:self.host
@@ -151,7 +137,7 @@
 
 - (void)sendDataToAddress {
   if (self.udpSocket.isClosed) {
-    [CC3xUtility setupUdpSocket:self.udpSocket port:APP_PORT];
+    [CC3xUtility setupUdpSocket:self.udpSocket port:self.availablePort];
   }
   [self.udpSocket sendData:self.msg
                  toAddress:self.address
@@ -302,7 +288,7 @@
   } else if (mode == PassiveMode) {
     self.msg11SendCount++;
   }
-  SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId];
+  SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
   self.msg =
       [CC3xMessageUtil getP2dMsg11:!socket.socketStatus socketId:socketId];
   self.host = aSwitch.ip;
@@ -327,7 +313,7 @@
   } else if (mode == PassiveMode) {
     self.msg13SendCount++;
   }
-  SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId];
+  SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
   self.msg = [CC3xMessageUtil getP2sMsg13:aSwitch.mac
                                   aSwitch:!socket.socketStatus
                                  socketId:socketId];
@@ -1821,7 +1807,7 @@
  * Called when the datagram with the given tag has been sent.
  **/
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag {
-  //  NSLog(@"didSendDataWithTag :%ld", tag);
+  NSLog(@"didSendDataWithTag :%ld", tag);
   //需要执行的操作：
   // 1、清空响应数据
   // 2、指定时间后检查数据是否为空，为空说明未响应，触发请求重发

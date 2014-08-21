@@ -10,7 +10,7 @@
 #import "SwitchListCell.h"
 
 @protocol SwitchExpandCellDelegate<NSObject>
-- (void)socketAction:(UIButton *)btnSocket;
+- (void)socketAction:(UITableViewCell *)cell socketId:(int)socketId;
 @end
 
 @interface SwitchExpandCell : SwitchListCell

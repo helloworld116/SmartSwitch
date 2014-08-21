@@ -52,6 +52,12 @@
   } else if (aSwitch.lockStatus == LockStatusOff) {
     self.imgViewOfState.image = nil;
   }
+  if (aSwitch.switchStatus == SWITCH_LOCAL ||
+      aSwitch.switchStatus == SWITCH_REMOTE) {
+    self.imgViewOfSwitch.image = [UIImage imageNamed:@"kg01"];
+  } else {
+    self.imgViewOfSwitch.image = [UIImage imageNamed:@"kg03"];
+  }
 }
 
 - (IBAction)doExpand:(id)sender {

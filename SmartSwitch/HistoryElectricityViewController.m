@@ -87,7 +87,6 @@
   barChart.backgroundColor = [UIColor clearColor];
   barChart.barBackgroundColor =
       [UIColor colorWithHexString:@"#99ccff" alpha:0.1];
-  //    [UIColor colorWithHex:0x99ccff alpha:0.1];
   barChart.yLabelFormatter = ^(CGFloat yValue) {
       CGFloat yValueParsed = yValue;
       NSString *labelText = [NSString stringWithFormat:@"%1.fw", yValueParsed];

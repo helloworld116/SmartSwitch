@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		150B315D19A5F0B0005794F3 /* UdpPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 150B315C19A5F0B0005794F3 /* UdpPort.m */; };
 		1529525D199071EF00924FC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529525C199071EF00924FC3 /* Foundation.framework */; };
 		1529525F199071EF00924FC3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529525E199071EF00924FC3 /* CoreGraphics.framework */; };
 		15295261199071EF00924FC3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15295260199071EF00924FC3 /* UIKit.framework */; };
@@ -86,6 +87,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		150B315B19A5F0B0005794F3 /* UdpPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpPort.h; sourceTree = "<group>"; };
+		150B315C19A5F0B0005794F3 /* UdpPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpPort.m; sourceTree = "<group>"; };
 		15295259199071EF00924FC3 /* SmartSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1529525C199071EF00924FC3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1529525E199071EF00924FC3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -408,6 +411,8 @@
 				152952C719908B7200924FC3 /* ViewUtil.m */,
 				4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */,
 				4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */,
+				150B315B19A5F0B0005794F3 /* UdpPort.h */,
+				150B315C19A5F0B0005794F3 /* UdpPort.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -662,6 +667,7 @@
 				1587F450199229210061EB86 /* LoginViewController.m in Sources */,
 				152952C819908B7200924FC3 /* SendResponseHandler.m in Sources */,
 				15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */,
+				150B315D19A5F0B0005794F3 /* UdpPort.m in Sources */,
 				152952B3199089B100924FC3 /* CRC.c in Sources */,
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,

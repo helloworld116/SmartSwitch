@@ -36,6 +36,7 @@
     #import "XMLUtil.h"
     #import "PassValueDelegate.h"
     #import "ViewUtil.h"
+    #import "UdpPort.h"
 #endif
 
 #if TARGET_OS_IPHONE

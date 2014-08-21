@@ -404,6 +404,7 @@
                                             <state key="normal" image="kg02">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <state key="selected" image="kg04"/>
                                             <connections>
                                                 <action selector="socketTouched:" destination="vbH-Zy-fPy" eventType="touchUpInside" id="KTn-h5-GZP"/>
                                             </connections>
@@ -414,6 +415,7 @@
                                             <state key="normal" image="kg02">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
+                                            <state key="selected" image="kg04"/>
                                             <connections>
                                                 <action selector="socketTouched:" destination="vbH-Zy-fPy" eventType="touchUpInside" id="HQD-va-C9E"/>
                                             </connections>
@@ -900,7 +902,7 @@
                                                 <rect key="frame" x="0.0" y="82" width="60" height="41"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="dc03" translatesAutoresizingMaskIntoConstraints="NO" id="uSq-XE-unG">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dc03" translatesAutoresizingMaskIntoConstraints="NO" id="uSq-XE-unG">
                                                         <rect key="frame" x="-3" y="8" width="25" height="25"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <constraints>
@@ -908,7 +910,7 @@
                                                             <constraint firstAttribute="height" constant="25" id="fa4-l5-iZY"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaU-39-nRY">
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CaU-39-nRY">
                                                         <rect key="frame" x="17" y="18" width="44" height="15"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -984,7 +986,7 @@
                                                 <rect key="frame" x="0.0" y="205" width="60" height="41"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="dc06" translatesAutoresizingMaskIntoConstraints="NO" id="JoU-EJ-vXx">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dc06" translatesAutoresizingMaskIntoConstraints="NO" id="JoU-EJ-vXx">
                                                         <rect key="frame" x="-3" y="8" width="25" height="25"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <constraints>
@@ -992,7 +994,7 @@
                                                             <constraint firstAttribute="width" constant="25" id="hH2-gi-nze"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-xp-YoX">
+                                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1zE-xp-YoX">
                                                         <rect key="frame" x="17" y="18" width="44" height="15"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -2875,6 +2877,7 @@
         <image name="kg" width="25" height="25"/>
         <image name="kg01" width="100" height="100"/>
         <image name="kg02" width="72" height="72"/>
+        <image name="kg04" width="72" height="72"/>
         <image name="logo" width="175" height="30"/>
         <image name="mc" width="145" height="25"/>
         <image name="mima" width="25" height="25"/>

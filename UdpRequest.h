@@ -55,20 +55,16 @@
 @end
 
 @interface UdpRequest : NSObject
-@property (nonatomic, assign) id<UdpRequestDelegate> delegate;
+@property(nonatomic, assign) id<UdpRequestDelegate> delegate;
 + (instancetype)manager;
-///**
-// *  P2D_SERVER_INFO
-// *
-// *  @param udpSocket
-// *  @param address   发往的地址
-// *  @param mode
-// */
-//- (void)sendMsg05:(GCDAsyncUdpSocket *)udpSocket
-//          address:(NSData *)address
-//         sendMode:(SENDMODE)mode
-//          success:(successBlock)success
-//           failre:(noResponseBlock)failure;
+/**
+ *  P2D_SERVER_INFO
+ *
+ *  @param udpSocket
+ *  @param address   发往的地址
+ *  @param mode
+ */
+- (void)sendMsg05:(NSString *)ip port:(uint16_t)port mode:(SENDMODE)mode;
 
 /**
  *  手机添加设备

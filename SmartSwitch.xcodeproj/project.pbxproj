@@ -64,6 +64,7 @@
 		15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC9D199CAE3100EED480 /* DelayViewController.m */; };
 		15B7A30A19A2F69B00C00342 /* SwitchDataCeneter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */; };
 		15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A31219A31E6600C00342 /* SDZGSwitch.m */; };
+		15B941B119A6E0D8007339F8 /* UdpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B941B019A6E0D8007339F8 /* UdpViewController.m */; };
 		15BB6B281994DFF5004D447A /* InsetsTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BB6B271994DFF5004D447A /* InsetsTextField.m */; };
 		15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E6119989E73006516D8 /* SwitchDetailViewController.m */; };
 		15BC9E651998BD61006516D8 /* SocketView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E641998BD61006516D8 /* SocketView.m */; };
@@ -195,6 +196,8 @@
 		15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataCeneter.m; sourceTree = "<group>"; };
 		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSwitch.h; sourceTree = "<group>"; };
 		15B7A31219A31E6600C00342 /* SDZGSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSwitch.m; sourceTree = "<group>"; };
+		15B941AF19A6E0D8007339F8 /* UdpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpViewController.h; sourceTree = "<group>"; };
+		15B941B019A6E0D8007339F8 /* UdpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpViewController.m; sourceTree = "<group>"; };
 		15BB6B261994DFF5004D447A /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
 		15BB6B271994DFF5004D447A /* InsetsTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InsetsTextField.m; sourceTree = "<group>"; };
 		15BC9E6019989E73006516D8 /* SwitchDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDetailViewController.h; sourceTree = "<group>"; };
@@ -315,6 +318,8 @@
 				1587F44719920B590061EB86 /* BuyViewController.m */,
 				156CB954199DF84A007A9C35 /* WelcomeViewController.h */,
 				156CB955199DF84A007A9C35 /* WelcomeViewController.m */,
+				15B941AF19A6E0D8007339F8 /* UdpViewController.h */,
+				15B941B019A6E0D8007339F8 /* UdpViewController.m */,
 			);
 			path = SmartSwitch;
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,
 				1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */,
+				15B941B119A6E0D8007339F8 /* UdpViewController.m in Sources */,
 				156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */,
 				1587F4351991DB6F0061EB86 /* AddSwitchViewController.m in Sources */,
 				4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */,

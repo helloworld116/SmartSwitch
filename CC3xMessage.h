@@ -85,19 +85,26 @@ enum {
 + (NSData *)getP2SMsg35:(NSString *)mac;
 + (NSData *)getP2dMsg39:(BOOL)on;
 + (NSData *)getP2SMsg3B:(NSString *)mac on:(BOOL)on;
-+ (NSData *)getP2dMsg3F:(NSString *)name;
-+ (NSData *)getP2dMsg3F:(NSString *)name type:(int)type;
-+ (NSData *)getP2sMsg41:(NSString *)mac name:(NSString *)name;
-+ (NSData *)getP2sMsg41:(NSString *)mac name:(NSString *)name type:(int)type;
-+ (NSData *)getP2dMsg47:(BOOL)isLock;
-+ (NSData *)getP2sMsg49:(NSString *)mac lock:(BOOL)isLock;
-+ (NSData *)getP2dMsg4D:(NSInteger)delay on:(BOOL)on;
-+ (NSData *)getP2dMsg4D:(NSInteger)delay on:(BOOL)on socketId:(int)socketId;
-+ (NSData *)getP2SMsg4F:(NSString *)mac delay:(NSInteger)delay on:(BOOL)on;
++ (NSData *)getP2dMsg3F:(NSString *)name
+                   type:(int)type
+               password:(NSString *)password;
++ (NSData *)getP2sMsg41:(NSString *)mac
+                   name:(NSString *)name
+                   type:(int)type
+               password:(NSString *)password;
++ (NSData *)getP2dMsg47:(BOOL)isLock password:(NSString *)password;
++ (NSData *)getP2sMsg49:(NSString *)mac
+                   lock:(BOOL)isLock
+               password:(NSString *)password;
++ (NSData *)getP2dMsg4D:(NSInteger)delay
+                     on:(BOOL)on
+               socketId:(int)socketId
+               password:(NSString *)password;
 + (NSData *)getP2SMsg4F:(NSString *)mac
                   delay:(NSInteger)delay
                      on:(BOOL)on
-               socketId:(int)socketId;
+               socketId:(int)socketId
+               password:(NSString *)password;
 + (NSData *)getP2dMsg53;
 + (NSData *)getP2dMsg53:(int)socketId;
 + (NSData *)getP2SMsg55:(NSString *)mac;

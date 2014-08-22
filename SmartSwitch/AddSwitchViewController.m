@@ -8,7 +8,7 @@
 
 #import "AddSwitchViewController.h"
 
-@interface AddSwitchViewController ()<UITextFieldDelegate, UDPDelegate>
+@interface AddSwitchViewController ()<UITextFieldDelegate, UdpRequestDelegate>
 @property(strong, nonatomic) IBOutlet UIView *contentView;
 @property(strong, nonatomic) IBOutlet UITextField *textWIFI;
 @property(strong, nonatomic) IBOutlet UITextField *textPassword;
@@ -16,7 +16,6 @@
 @property(assign, nonatomic) BOOL isShowPassword;
 
 @property(strong, nonatomic) FirstTimeConfig *config;
-@property(strong, atomic) GCDAsyncUdpSocket *udpSocket;
 @property(strong, nonatomic) NSString *wifi;
 @property(strong, nonatomic) NSString *password;
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
@@ -46,7 +45,6 @@
   [self.sidePanelController setLeftPanel:nil];
   self.textWIFI.delegate = self;
   self.textPassword.delegate = self;
-  self.udpSocket = [UdpSocketUtil shareInstance].udpSocket;
   if (is4Inch) {
     CGRect rect = self.contentView.frame;
     rect.size = CGSizeMake(rect.size.width, rect.size.width + 88.f);
@@ -56,7 +54,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [UdpSocketUtil shareInstance].delegate = self;
 //  [[NSNotificationCenter defaultCenter]
 //      addObserver:self
 //         selector:@selector(reachabilityChanged:)
@@ -77,7 +74,6 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-  [UdpSocketUtil shareInstance].delegate = nil;
   [super viewWillDisappear:animated];
 }
 

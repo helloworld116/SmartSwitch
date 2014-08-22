@@ -41,7 +41,9 @@
 
 #define REFRESH_DEV_TIME 15
 
-#define DEFAULT_NAME NSLocalizedString(@"Smart switch", nil)
+#define DEFAULT_SWITCH_NAME NSLocalizedString(@"Smart Switch", nil)
+#define DEFAULT_SOCKET1_NAME NSLocalizedString(@"Socket1", nil)
+#define DEFAULT_SOCKET2_NAME NSLocalizedString(@"Socket2", nil)
 #define DEFAULT_IMAGENAME @"icon_plug"
 
 #define BROADCAST_ADDRESS @"255.255.255.255"

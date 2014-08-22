@@ -12,85 +12,85 @@
 @interface UdpRequest ()<GCDAsyncUdpSocketDelegate>
 
 #pragma mark - 发送请求计数变量
-@property (nonatomic, assign) int msg5SendCount;
-@property (nonatomic, assign) int msg9SendCount;
-@property (nonatomic, assign) int msgBSendCount;
-@property (nonatomic, assign) int msgDSendCount; //指定设备查询
-@property (nonatomic, strong)
-    NSMutableDictionary *msgDSendCountDict; //所有设备查询，{"mac":"count"}
-@property (nonatomic, assign) int msg11SendCount;
-@property (nonatomic, assign) int msg13SendCount;
-@property (nonatomic, assign) int msg17SendCount;
-@property (nonatomic, assign) int msg19SendCount;
-@property (nonatomic, assign) int msg1DSendCount;
-@property (nonatomic, assign) int msg1FSendCount;
-@property (nonatomic, assign) int msg25SendCount;
-@property (nonatomic, assign) int msg27SendCount;
-@property (nonatomic, assign) int msg33SendCount;
-@property (nonatomic, assign) int msg35SendCount;
-@property (nonatomic, assign) int msg39SendCount;
-@property (nonatomic, assign) int msg3BSendCount;
-@property (nonatomic, assign) int msg3FSendCount;
-@property (nonatomic, assign) int msg41SendCount;
-@property (nonatomic, assign) int msg47SendCount;
-@property (nonatomic, assign) int msg49SendCount;
-@property (nonatomic, assign) int msg4DSendCount;
-@property (nonatomic, assign) int msg4FSendCount;
-@property (nonatomic, assign) int msg53SendCount;
-@property (nonatomic, assign) int msg55SendCount;
-@property (nonatomic, assign) int msg59SendCount;
-@property (nonatomic, assign) int msg5DSendCount;
-@property (nonatomic, assign) int msg5FSendCount;
-@property (nonatomic, assign) int msg63SendCount;
-@property (nonatomic, assign) int msg65SendCount;
-@property (nonatomic, assign) int msg67SendCount;
-@property (nonatomic, assign) int msg69SendCount;
+@property(nonatomic, assign) int msg5SendCount;
+@property(nonatomic, assign) int msg9SendCount;
+@property(nonatomic, assign) int msgBSendCount;
+@property(nonatomic, assign) int msgDSendCount;  //指定设备查询
+@property(nonatomic, strong)
+    NSMutableDictionary *msgDSendCountDict;  //所有设备查询，{"mac":"count"}
+@property(nonatomic, assign) int msg11SendCount;
+@property(nonatomic, assign) int msg13SendCount;
+@property(nonatomic, assign) int msg17SendCount;
+@property(nonatomic, assign) int msg19SendCount;
+@property(nonatomic, assign) int msg1DSendCount;
+@property(nonatomic, assign) int msg1FSendCount;
+@property(nonatomic, assign) int msg25SendCount;
+@property(nonatomic, assign) int msg27SendCount;
+@property(nonatomic, assign) int msg33SendCount;
+@property(nonatomic, assign) int msg35SendCount;
+@property(nonatomic, assign) int msg39SendCount;
+@property(nonatomic, assign) int msg3BSendCount;
+@property(nonatomic, assign) int msg3FSendCount;
+@property(nonatomic, assign) int msg41SendCount;
+@property(nonatomic, assign) int msg47SendCount;
+@property(nonatomic, assign) int msg49SendCount;
+@property(nonatomic, assign) int msg4DSendCount;
+@property(nonatomic, assign) int msg4FSendCount;
+@property(nonatomic, assign) int msg53SendCount;
+@property(nonatomic, assign) int msg55SendCount;
+@property(nonatomic, assign) int msg59SendCount;
+@property(nonatomic, assign) int msg5DSendCount;
+@property(nonatomic, assign) int msg5FSendCount;
+@property(nonatomic, assign) int msg63SendCount;
+@property(nonatomic, assign) int msg65SendCount;
+@property(nonatomic, assign) int msg67SendCount;
+@property(nonatomic, assign) int msg69SendCount;
 #pragma mark - 请求响应数据
-@property (nonatomic, strong) NSData *responseData6;
-@property (nonatomic, strong) NSData *responseDataA;
-@property (nonatomic, strong) NSData *responseDataC;
-@property (nonatomic, strong) NSData *responseDataE; //指定设备查询
-@property (nonatomic, strong)
-    NSMutableDictionary *responseDictE; //所有设备查询，{@"mac":"data"}
-@property (nonatomic, strong) NSData *responseData12;
-@property (nonatomic, strong) NSData *responseData14;
-@property (nonatomic, strong) NSData *responseData18;
-@property (nonatomic, strong) NSData *responseData1A;
-@property (nonatomic, strong) NSData *responseData1E;
-@property (nonatomic, strong) NSData *responseData20;
-@property (nonatomic, strong) NSData *responseData26;
-@property (nonatomic, strong) NSData *responseData28;
-@property (nonatomic, strong) NSData *responseData34;
-@property (nonatomic, strong) NSData *responseData36;
-@property (nonatomic, strong) NSData *responseData3A;
-@property (nonatomic, strong) NSData *responseData3C;
-@property (nonatomic, strong) NSData *responseData40;
-@property (nonatomic, strong) NSData *responseData42;
-@property (nonatomic, strong) NSData *responseData48;
-@property (nonatomic, strong) NSData *responseData4A;
-@property (nonatomic, strong) NSData *responseData4E;
-@property (nonatomic, strong) NSData *responseData50;
-@property (nonatomic, strong) NSData *responseData54;
-@property (nonatomic, strong) NSData *responseData56;
-@property (nonatomic, strong) NSData *responseData5A;
-@property (nonatomic, strong) NSData *responseData5E;
-@property (nonatomic, strong) NSData *responseData60;
-@property (nonatomic, strong) NSData *responseData64;
-@property (nonatomic, strong) NSData *responseData66;
-@property (nonatomic, strong) NSData *responseData68;
-@property (nonatomic, strong) NSData *responseData6A;
+@property(nonatomic, strong) NSData *responseData6;
+@property(nonatomic, strong) NSData *responseDataA;
+@property(nonatomic, strong) NSData *responseDataC;
+@property(nonatomic, strong) NSData *responseDataE;  //指定设备查询
+@property(nonatomic, strong)
+    NSMutableDictionary *responseDictE;  //所有设备查询，{@"mac":"data"}
+@property(nonatomic, strong) NSData *responseData12;
+@property(nonatomic, strong) NSData *responseData14;
+@property(nonatomic, strong) NSData *responseData18;
+@property(nonatomic, strong) NSData *responseData1A;
+@property(nonatomic, strong) NSData *responseData1E;
+@property(nonatomic, strong) NSData *responseData20;
+@property(nonatomic, strong) NSData *responseData26;
+@property(nonatomic, strong) NSData *responseData28;
+@property(nonatomic, strong) NSData *responseData34;
+@property(nonatomic, strong) NSData *responseData36;
+@property(nonatomic, strong) NSData *responseData3A;
+@property(nonatomic, strong) NSData *responseData3C;
+@property(nonatomic, strong) NSData *responseData40;
+@property(nonatomic, strong) NSData *responseData42;
+@property(nonatomic, strong) NSData *responseData48;
+@property(nonatomic, strong) NSData *responseData4A;
+@property(nonatomic, strong) NSData *responseData4E;
+@property(nonatomic, strong) NSData *responseData50;
+@property(nonatomic, strong) NSData *responseData54;
+@property(nonatomic, strong) NSData *responseData56;
+@property(nonatomic, strong) NSData *responseData5A;
+@property(nonatomic, strong) NSData *responseData5E;
+@property(nonatomic, strong) NSData *responseData60;
+@property(nonatomic, strong) NSData *responseData64;
+@property(nonatomic, strong) NSData *responseData66;
+@property(nonatomic, strong) NSData *responseData68;
+@property(nonatomic, strong) NSData *responseData6A;
 #pragma mark -
-@property (nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
+@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
 //@property (nonatomic, strong) successBlock successBlock;
 //// block的参数列表为空的话，相当于可变参数（不是void）
 //@property (nonatomic, strong) void (^noResposneBlock)();
 //@property (nonatomic, strong) noRequestBlock noRequestBlock;
 //@property (nonatomic, strong) errorBlock errorBlock;
-@property (nonatomic, strong) NSData *msg;
-@property (nonatomic, strong) NSString *host;
-@property (nonatomic, strong) NSData *address;
-@property (nonatomic, assign) uint16_t port;
-@property (nonatomic, assign) long tag;
+@property(nonatomic, strong) NSData *msg;
+@property(nonatomic, strong) NSString *host;
+@property(nonatomic, strong) NSData *address;
+@property(nonatomic, assign) uint16_t port;
+@property(nonatomic, assign) long tag;
 @end
 @implementation UdpRequest
 - (id)init {
@@ -134,6 +134,25 @@
                  toAddress:self.address
                withTimeout:kUDPTimeOut
                        tag:self.tag];
+}
+
+- (void)sendMsg05:(NSString *)ip port:(uint16_t)port mode:(SENDMODE)mode {
+  dispatch_async(GLOBAL_QUEUE, ^{
+      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
+        if (mode == ActiveMode) {
+          self.msg5SendCount = 0;
+        } else if (mode == PassiveMode) {
+          self.msg5SendCount++;
+        }
+        self.msg = [CC3xMessageUtil getP2dMsg05];
+        self.host = ip;
+        self.port = port;
+        self.tag = P2D_SERVER_INFO_05;
+        [self sendDataToHost];
+      } else {
+        //不在内网的情况下的处理
+      }
+  });
 }
 
 - (void)sendMsg09:(SENDMODE)mode {
@@ -212,18 +231,20 @@
       }
   });
 }
+
 - (void)sendMsg0D:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msgDSendCount = 0;
   } else if (mode == PassiveMode) {
     self.msgDSendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2dMsg0B];
-  self.host = aSwitch.ip;
-  self.port = aSwitch.port;
+  self.msg = [CC3xMessageUtil getP2SMsg0D:aSwitch.mac];
+  self.host = SERVER_IP;
+  self.port = SERVER_PORT;
   self.tag = P2S_STATE_INQUIRY_0D;
   [self sendDataToHost];
 }
+
 - (void)sendMsg11WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -438,12 +459,14 @@
   } else if (mode == PassiveMode) {
     self.msg3FSendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2dMsg3F:name type:type];
+  self.msg =
+      [CC3xMessageUtil getP2dMsg3F:name type:type password:aSwitch.password];
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_NAME_REQ_3F;
   [self sendDataToHost];
 }
+
 - (void)sendMsg41WithSwitch:(SDZGSwitch *)aSwitch
                        type:(int)type
                        name:(NSString *)name
@@ -453,19 +476,24 @@
   } else if (mode == PassiveMode) {
     self.msg41SendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2sMsg41:aSwitch.mac name:name type:type];
+  self.msg = [CC3xMessageUtil getP2sMsg41:aSwitch.mac
+                                     name:name
+                                     type:type
+                                 password:aSwitch.password];
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_NAME_REQ_41;
   [self sendDataToHost];
 }
+
 - (void)sendMsg47WithSwitch:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msg47SendCount = 0;
   } else if (mode == PassiveMode) {
     self.msg47SendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2dMsg47:!aSwitch.lockStatus];
+  self.msg = [CC3xMessageUtil getP2dMsg47:!aSwitch.lockStatus
+                                 password:aSwitch.password];
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_DEV_LOCK_REQ_47;
@@ -477,7 +505,9 @@
   } else if (mode == PassiveMode) {
     self.msg49SendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2sMsg49:aSwitch.mac lock:!aSwitch.lockStatus];
+  self.msg = [CC3xMessageUtil getP2sMsg49:aSwitch.mac
+                                     lock:!aSwitch.lockStatus
+                                 password:aSwitch.password];
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_DEV_LOCK_REQ_49;
@@ -493,7 +523,10 @@
   } else if (mode == PassiveMode) {
     self.msg4DSendCount++;
   }
-  self.msg = [CC3xMessageUtil getP2dMsg4D:delayTime on:on socketId:socketId];
+  self.msg = [CC3xMessageUtil getP2dMsg4D:delayTime
+                                       on:on
+                                 socketId:socketId
+                                 password:aSwitch.password];
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_DELAY_REQ_4D;
@@ -512,7 +545,8 @@
   self.msg = [CC3xMessageUtil getP2SMsg4F:aSwitch.mac
                                     delay:delayTime
                                        on:on
-                                 socketId:socketId];
+                                 socketId:socketId
+                                 password:aSwitch.password];
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_DELAY_REQ_4F;
@@ -774,31 +808,31 @@
         }
       }
   });
-} //- (void)sendMsg25Or27:(GCDAsyncUdpSocket *)udpSocket
-  //              aSwitch:(SDZGSwitch *)aSwitch
-  //             sendMode:(SENDMODE)mode {
-  //  dispatch_async(GLOBAL_QUEUE, ^{
-  //      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
-  //        //根据不同的网络环境，发送 本地/远程 消息
-  //        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-  //            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
-  //          [self sendMsg25:udpSocket aSwitch:aSwitch sendMode:mode];
-  //        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-  //                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
-  //          [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
-  //        }
-  //      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
-  //        [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
-  //      } else if (kSharedAppliction.networkStatus == NotReachable) {
-  //        [[NSNotificationCenter defaultCenter]
-  //            postNotificationName:kNotReachableNotification
-  //                          object:self
-  //                        userInfo:@{
-  //                          @"NetworkStatus" : @(NotReachable)
-  //                        }];
-  //      }
-  //  });
-  //}
+}  //- (void)sendMsg25Or27:(GCDAsyncUdpSocket *)udpSocket
+   //              aSwitch:(SDZGSwitch *)aSwitch
+   //             sendMode:(SENDMODE)mode {
+   //  dispatch_async(GLOBAL_QUEUE, ^{
+   //      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
+   //        //根据不同的网络环境，发送 本地/远程 消息
+   //        if (aSwitch.switchStatus == SWITCH_LOCAL ||
+   //            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+   //          [self sendMsg25:udpSocket aSwitch:aSwitch sendMode:mode];
+   //        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
+   //                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+   //          [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
+   //        }
+   //      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
+   //        [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
+   //      } else if (kSharedAppliction.networkStatus == NotReachable) {
+   //        [[NSNotificationCenter defaultCenter]
+   //            postNotificationName:kNotReachableNotification
+   //                          object:self
+   //                        userInfo:@{
+   //                          @"NetworkStatus" : @(NotReachable)
+   //                        }];
+   //      }
+   //  });
+   //}
 
 - (void)sendMsg33Or35:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
@@ -1528,7 +1562,7 @@
   debugLog(@"receiveData is %@", [CC3xMessageUtil hexString:data]);
   if (data) {
     CC3xMessage *msg = (CC3xMessage *)filterContext;
-    if ([self.delegate respondsToSelector:@selector(responseMsgId2:address:)]) {
+    if ([self.delegate respondsToSelector:@selector(responseMsg:address:)]) {
       [self.delegate responseMsg:msg address:address];
     }
     switch (msg.msgId) {
@@ -1541,6 +1575,16 @@
         self.responseDataA = data;
         break;
       case 0xc:
+        //        if (msg.version == 2) {
+        //          if ([msg.mac isEqualToString:@"00:19:94:37:a2:95"]) {
+        //            NSLog(
+        //                @"write to file is %d",
+        //                [data
+        //                    writeToFile:[PATH_OF_TEMP
+        //                                    stringByAppendingPathComponent:@"switch95"]
+        //                     atomically:YES]);
+        //          }
+        //        }
         self.responseDataC = data;
         break;
       case 0xe:
@@ -1548,12 +1592,19 @@
         [self.responseDictE setObject:data forKey:msg.mac];
         break;
       case 0x12:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //                              stringByAppendingPathComponent:@"kaiguan95"]
+        //               atomically:YES];
         self.responseData12 = data;
         break;
       case 0x14:
         self.responseData14 = data;
         break;
       case 0x18:
+        //        [data
+        //            writeToFile:[PATH_OF_TEMP
+        //                            stringByAppendingPathComponent:@"dingshiliebiao95"]
+        //             atomically:YES];
         self.responseData18 = data;
         break;
       case 0x1a:
@@ -1572,36 +1623,58 @@
         self.responseData28 = data;
         break;
       case 0x34:
+        //        [data
+        //            writeToFile:[PATH_OF_TEMP
+        //                            stringByAppendingPathComponent:@"shishidianliang95"]
+        //             atomically:YES];
         self.responseData34 = data;
         break;
       case 0x36:
         self.responseData36 = data;
         break;
       case 0x3A:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //                              stringByAppendingPathComponent:@"shansuo95"]
+        //               atomically:YES];
         self.responseData3A = data;
         break;
       case 0x3C:
         self.responseData3C = data;
         break;
       case 0x40:
+        //        [data
+        //            writeToFile:[PATH_OF_TEMP
+        //                            stringByAppendingPathComponent:@"shebeimingcheng95"]
+        //             atomically:YES];
         self.responseData40 = data;
         break;
       case 0x42:
         self.responseData42 = data;
         break;
       case 0x48:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //                              stringByAppendingPathComponent:@"jiasuo95"]
+        //               atomically:YES];
         self.responseData48 = data;
         break;
       case 0x4a:
         self.responseData4A = data;
         break;
       case 0x4e:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //        stringByAppendingPathComponent:
+        //                                            @"shezhishebeiyanshi95"]
+        //               atomically:YES];
         self.responseData4E = data;
         break;
       case 0x50:
         self.responseData50 = data;
         break;
       case 0x54:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //        stringByAppendingPathComponent:
+        //                                            @"chaxunshebeiyanshi95"]
+        //               atomically:YES];
         self.responseData54 = data;
         break;
       case 0x56:
@@ -1611,6 +1684,10 @@
         self.responseData5A = data;
         break;
       case 0x5e:
+        //        [data writeToFile:[PATH_OF_TEMP
+        //        stringByAppendingPathComponent:
+        //                                            @"chaxunshebeimingcheng95"]
+        //               atomically:YES];
         self.responseData5E = data;
         break;
       case 0x60:

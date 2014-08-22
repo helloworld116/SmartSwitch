@@ -11,18 +11,18 @@
 #define kElecRefreshInterval 2
 #define kSwitchRefreshInterval 2
 
-@interface SwitchDetailViewController ()<UIScrollViewDelegate,
-                                         EGORefreshTableHeaderDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
+@interface SwitchDetailViewController ()<
+    UIScrollViewDelegate, EGORefreshTableHeaderDelegate, UdpRequestDelegate>
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIView *contentView;
 
-@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property (assign, nonatomic) BOOL reloading;
+@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property(assign, nonatomic) BOOL reloading;
 
-@property (strong, nonatomic) SDZGSwitch *aSwitch;
-@property (strong, nonatomic) NSTimer *timerElec;
-@property (strong, nonatomic) NSTimer *timerSwitch;
-@property (strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) NSTimer *timerElec;
+@property(strong, nonatomic) NSTimer *timerSwitch;
+@property(strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
     *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
 
 @end
@@ -88,14 +88,33 @@
 }
 
 - (void)firstSend {
-  dispatch_queue_t queue =
-      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
+  //  dispatch_queue_t queue =
+  //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
 
-  dispatch_async(queue, ^{ [self sendMsg0BOr0D]; });
-  dispatch_async(queue, ^{ [self send17Or19]; });
-  dispatch_async(queue, ^{ [self sendMsg33Or35]; });
-  dispatch_async(queue, ^{ [self send53Or55]; });
-  dispatch_async(queue, ^{ [self send5DOr5F]; });
+  dispatch_queue_t queue =
+      dispatch_queue_create("com.itouchco.www", DISPATCH_QUEUE_CONCURRENT);
+  static NSTimeInterval seconds = 0.5;
+
+  dispatch_barrier_async(queue, ^{
+      [self sendMsg0BOr0D];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  dispatch_barrier_async(queue, ^{
+      [self send17Or19];
+      [NSThread sleepForTimeInterval:2 * seconds];
+  });
+  dispatch_barrier_async(queue, ^{
+      [self sendMsg33Or35];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  dispatch_barrier_async(queue, ^{
+      [self send53Or55];
+      [NSThread sleepForTimeInterval:2 * seconds];
+  });
+  dispatch_barrier_async(queue, ^{
+      [self send5DOr5F];
+      [NSThread sleepForTimeInterval:seconds];
+  });
 
   //  [self setTimer];
 }
@@ -136,6 +155,7 @@
 //开关状态
 - (void)sendMsg0BOr0D {
   self.request0BOr0D = [UdpRequest manager];
+  self.request0BOr0D.delegate = self;
   [self.request0BOr0D sendMsg0BOr0D:self.aSwitch sendMode:ActiveMode];
 }
 
@@ -149,11 +169,17 @@
 
 //定时列表
 - (void)send17Or19 {
+  dispatch_queue_t queue =
+      dispatch_queue_create("timer.com.itouchco.www", DISPATCH_QUEUE_SERIAL);
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    self.request17Or19 = [UdpRequest manager];
-    [self.request17Or19 sendMsg17Or19:self.aSwitch
-                             socketId:socket.socketId
-                             sendMode:ActiveMode];
+    dispatch_async(queue, ^{
+        self.request17Or19 = [UdpRequest manager];
+        self.request17Or19.delegate = self;
+        [self.request17Or19 sendMsg17Or19:self.aSwitch
+                                 socketId:socket.socketId
+                                 sendMode:ActiveMode];
+        //        [NSThread sleepForTimeInterval:0.5];
+    });
   }
 }
 
@@ -166,16 +192,23 @@
 //延时任务
 - (void)send53Or55 {
   for (SDZGSocket *socket in self.aSwitch.sockets) {
-    self.request53Or55 = [UdpRequest manager];
-    [self.request53Or55 sendMsg53Or55:self.aSwitch
-                             socketId:socket.socketId
-                             sendMode:ActiveMode];
+    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
+                                                   DISPATCH_QUEUE_CONCURRENT);
+    dispatch_barrier_async(queue, ^{
+        self.request53Or55 = [UdpRequest manager];
+        self.request53Or55.delegate = self;
+        [self.request53Or55 sendMsg53Or55:self.aSwitch
+                                 socketId:socket.socketId
+                                 sendMode:ActiveMode];
+        [NSThread sleepForTimeInterval:0.5];
+    });
   }
 }
 
 //查询设备名称
 - (void)send5DOr5F {
   self.request5DOr5F = [UdpRequest manager];
+  self.request5DOr5F.delegate = self;
   [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
 }
 
@@ -289,11 +322,15 @@ preparation before navigation
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading; // should return if data source model is reloading
+  return _reloading;  // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date]; // should return date data source was last changed
+  return [NSDate date];  // should return date data source was last changed
+}
+
+#pragma mark - UdpRequestDelegate
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
 }
 @end

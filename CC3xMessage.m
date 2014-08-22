@@ -61,7 +61,7 @@ typedef struct {
   unsigned short port;
   unsigned char deviceName[32];
   unsigned char count;
-  socketInfo *socketName;
+  socketInfo socketName[2];
   unsigned short crc;
 } p2dMsg05;
 
@@ -191,7 +191,7 @@ typedef struct {
   unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
-  timerTask *timerList;
+  timerTask timerList[8];
   unsigned short crc;
 } d2pMsg18;
 
@@ -368,7 +368,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
-  char password[4];
+  char password[6];
   char name[32];
   unsigned short crc;
 } p2sMsg41;
@@ -641,26 +641,37 @@ typedef struct {
   if (h != NULL) {
     ipadd = inet_ntoa(*((struct in_addr *)h->h_addr_list[0]));
   }
-  //    NSLog(@"serverIp=%s\n",ipadd);
-
   Byte *bytes = [CC3xMessageUtil
       ip2HexBytes:[NSString stringWithCString:ipadd
                                      encoding:NSUTF8StringEncoding]];
 
   memcpy(msg.ip, bytes, sizeof(msg.ip));
   free(bytes);
-  const char *defaultName = [DEFAULT_NAME UTF8String];
   msg.port = SERVER_PORT;
+
+  const char *defaultSwitchName = [DEFAULT_SWITCH_NAME UTF8String];
   memset(msg.deviceName, 0, 32);
-  memcpy(msg.deviceName, defaultName, strlen(defaultName));
+  memcpy(msg.deviceName, defaultSwitchName, strlen(defaultSwitchName));
+  // socket info
+  msg.count = 2;
+  socketInfo *socket1 = (socketInfo *)malloc(sizeof(socketInfo));
+  memset(socket1, 0, sizeof(socketInfo));
+  const char *defaultSocket1Name = [DEFAULT_SOCKET1_NAME UTF8String];
+  memcpy(socket1, defaultSocket1Name, strlen(defaultSocket1Name));
 
+  socketInfo *socket2 = (socketInfo *)malloc(sizeof(socketInfo));
+  memset(socket2, 0, sizeof(socketInfo));
+  const char *defaultSocket2Name = [DEFAULT_SOCKET2_NAME UTF8String];
+  memcpy(socket2, defaultSocket2Name, strlen(defaultSocket2Name));
+  memcpy(&msg.socketName[0], socket1, sizeof(socketInfo));
+  memcpy(&msg.socketName[1], socket2, sizeof(socketInfo));
+  free(socket1);
+  free(socket2);
+  msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
-
-  NSData *ndMsg = B2D(msg);
-  //    NSLog(@"发送0x05:%@",[self hexString:ndMsg]);
-
-  return ndMsg;
+  return B2D(msg);
 }
+
 // P2D_SCAN_DEV_REQ	0X09
 + (NSData *)getP2dMsg09 {
   p2dMsg09 msg;
@@ -713,7 +724,9 @@ typedef struct {
 }
 
 // P2S_CONTROL_REQ	0X13
-+ (NSData *)getP2sMsg13:(NSString *)mac aSwitch:(BOOL)on {
++ (NSData *)getP2sMsg13:(NSString *)mac
+                aSwitch:(BOOL)on
+               socketId:(int)socketId {
   p2sMsg13 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x13;
@@ -722,6 +735,7 @@ typedef struct {
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
   msg.on = on;
+  msg.socketId = socketId;
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
@@ -780,8 +794,9 @@ typedef struct {
 
 // P2D_SET_TIMER_REQ	0X1D
 + (NSData *)getP2dMsg1D:(NSUInteger)currentTime
-               timerNum:(NSUInteger)num
+               socketId:(int)socketId
               timerList:(NSArray *)timerList {
+  NSUInteger num = [timerList count];
   NSUInteger bufLen = 11 + num * 10;
   //    Byte msgBuf[bufLen];
 
@@ -824,9 +839,10 @@ typedef struct {
 }
 // P2S_SET_TIMER_REQ	0X1F
 + (NSData *)getP2SMsg1F:(NSUInteger)currentTime
-               timerNum:(NSUInteger)num
+               socketId:(int)socketId
               timerList:(NSArray *)timerList
                     mac:(NSString *)aMac {
+  NSUInteger num = [timerList count];
   NSUInteger bufLen = 17 + num * 10;
   //    Byte msgBuf[bufLen];
 
@@ -949,52 +965,63 @@ typedef struct {
 }
 
 // P2D_SET_NAME_REQ 0x3f
-+ (NSData *)getP2dMsg3F:(NSString *)name {
++ (NSData *)getP2dMsg3F:(NSString *)name
+                   type:(int)type
+               password:(NSString *)password {
   p2dMsg3F msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x3f;
   msg.header.msgDir = 0xAD;
   NSData *nameData = [name dataUsingEncoding:NSUTF8StringEncoding];
-
   memcpy(&msg.name, [nameData bytes], [nameData length]);
-
+  msg.type = type;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
 // P2S_SET_NAME_REQ 0x41
-+ (NSData *)getP2sMsg41:(NSString *)mac name:(NSString *)name {
++ (NSData *)getP2sMsg41:(NSString *)mac
+                   name:(NSString *)name
+                   type:(int)type
+               password:(NSString *)password {
   p2sMsg41 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x41;
   msg.header.msgDir = 0xA5;
   Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
-
-  NSData *nameData =
-      [name dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-  memcpy(&msg.name, [nameData bytes], sizeof(msg.name));
   free(macBytes);
+  NSData *nameData = [name dataUsingEncoding:NSUTF8StringEncoding];
+  memcpy(&msg.name, [nameData bytes], [name length]);
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
+  msg.type = type;
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
 // P2D_DEV_LOCK_REQ	 0X47
-+ (NSData *)getP2dMsg47:(BOOL)isLock {
++ (NSData *)getP2dMsg47:(BOOL)isLock password:(NSString *)password {
   p2dMsg47 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x47;
   msg.header.msgDir = 0xAD;
   msg.lock = isLock;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
 // P2S_DEV_LOCK_REQ 	0X49
-+ (NSData *)getP2sMsg49:(NSString *)mac lock:(BOOL)isLock {
++ (NSData *)getP2sMsg49:(NSString *)mac
+                   lock:(BOOL)isLock
+               password:(NSString *)password {
   p2sMsg49 msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x49;
@@ -1003,27 +1030,38 @@ typedef struct {
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
   msg.lock = isLock;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
 // P2D_SET_DELAY_REQ 0x4D
-+ (NSData *)getP2dMsg4D:(NSInteger)delay on:(BOOL)on {
++ (NSData *)getP2dMsg4D:(NSInteger)delay
+                     on:(BOOL)on
+               socketId:(int)socketId
+               password:(NSString *)password {
   p2dMsg4D msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x4D;
   msg.header.msgDir = 0xAD;
   msg.header.msgLength = ntohs(sizeof(msg));
   msg.delay = ntohs(delay);
+  msg.socketId = socketId;
   msg.on = on;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
-
   return B2D(msg);
 }
 
 // P2S_SET_DELAY_REQ 0x4F
-+ (NSData *)getP2SMsg4F:(NSString *)mac delay:(NSInteger)delay on:(BOOL)on {
++ (NSData *)getP2SMsg4F:(NSString *)mac
+                  delay:(NSInteger)delay
+                     on:(BOOL)on
+               socketId:(int)socketId
+               password:(NSString *)password {
   p2sMsg4F msg;
   memset(&msg, 0, sizeof(msg));
   msg.header.msgId = 0x4F;
@@ -1033,9 +1071,11 @@ typedef struct {
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
   msg.delay = ntohs(delay);
+  msg.socketId = socketId;
   msg.on = on;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
-
   return B2D(msg);
 }
 
@@ -1134,11 +1174,23 @@ typedef struct {
   msg.beginTime = beginTime;
   msg.endTime = endTime;
   msg.interval = interval;
-  //  msg.crc = ntohs(CRC16((unsigned char *)&msg, sizeof(msg) - 2));
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
 
++ (NSData *)getP2SMsg65:(NSString *)mac type:(int)type {
+  p2sMsg65 msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgId = 0x65;
+  msg.header.msgDir = 0xA5;
+  msg.header.msgLength = ntohs(sizeof(msg));
+  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
+  memcpy(&msg.mac, macBytes, sizeof(msg.mac));
+  free(macBytes);
+  msg.type = type;
+  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
+  return B2D(msg);
+}
 #pragma mark - response message 解析收到的data数据，转为其他数据类型
 
 + (CC3xMessage *)parseD2P02:(NSData *)aData {
@@ -1267,15 +1319,14 @@ typedef struct {
       [[NSMutableArray alloc] initWithCapacity:message.timerTaskNumber];
   for (int i = 0; i < message.timerTaskNumber; i++) {
     timerTask t = msg->timerList[i];
-    CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
+    //    CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
+    SDZGTimerTask *task = [[SDZGTimerTask alloc] init];
     task.week = t.week;
-    // TODO: 用到时再来修改
-    //    charArray2int(t.startTime, task.startTime);
-    //    charArray2int(t.endTime, task.endTime);
-    //    task.timeDetail = t.timeDetail;
+    charArray2int(t.actionTime, task.actionTime);
+    task.isEffective = t.takeEffect;
+    task.timerActionType = t.actionType;
     [message.timerTaskList addObject:task];
   }
-
   message.crc = msg->crc;
   free(msg);
   return message;

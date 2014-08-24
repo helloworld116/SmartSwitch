@@ -126,6 +126,7 @@
   CGContextDrawPath(context, kCGPathFill);
   CGPathRelease(pathRef);
 
+  //文字
   CGContextSaveGState(context);
   CGContextSetFillColorWithColor(context, kTextColor.CGColor);
   //  [kTextColor set];
@@ -152,12 +153,16 @@
 }
 
 - (void)drawAtPoint:(CGPoint)point withStr:(NSString *)str {
-  [str drawAtPoint:point withFont:[UIFont systemFontOfSize:10]];
-  //  [str drawAtPoint:point
-  //      withAttributes:@{
-  //                       NSFontAttributeName : [UIFont systemFontOfSize:10],
-  //                       NSForegroundColorAttributeName : kTextColor
-  //                     }];
+  if (isEqualOrGreaterToiOS7) {
+    [str drawAtPoint:point
+        withAttributes:@{
+                         NSFontAttributeName : [UIFont systemFontOfSize:10],
+                         NSForegroundColorAttributeName : kTextColor
+                       }];
+
+  } else {
+    [str drawAtPoint:point withFont:[UIFont systemFontOfSize:10]];
+  }
 }
 
 @end

@@ -50,3 +50,5 @@
 #define PATH_OF_DOCUMENT                                                       \
   [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,  \
                                        YES) objectAtIndex:0]
+//在家测试
+#define isHome 1

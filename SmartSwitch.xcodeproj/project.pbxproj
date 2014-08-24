@@ -74,6 +74,8 @@
 		15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E7F60F1993189A00C46854 /* SwitchExpandCell.m */; };
 		15E7F61319933A4300C46854 /* libFTC_DEBUG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E7F61119933A4300C46854 /* libFTC_DEBUG.a */; };
 		4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */; };
+		47109D7519A8E80D00F24B42 /* ElecRealTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */; };
+		47ECC91019A9D4FC0070AFE2 /* HistoryElecView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47ECC90F19A9D4FC0070AFE2 /* HistoryElecView.m */; };
 		A5C618E8CDA540B5B4FD8868 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3A51A2AE54D4395A7991CCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -216,7 +218,11 @@
 		15E7F61219933A4300C46854 /* libFTC_RELEASE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFTC_RELEASE.a; sourceTree = "<group>"; };
 		4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpRequest.h; sourceTree = "<group>"; };
 		4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpRequest.m; sourceTree = "<group>"; };
+		47109D7319A8E80D00F24B42 /* ElecRealTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ElecRealTimeView.h; sourceTree = "<group>"; };
+		47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ElecRealTimeView.m; sourceTree = "<group>"; };
 		47B77F1B19A63B1C005EFDFD /* MacroUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroUtils.h; sourceTree = "<group>"; };
+		47ECC90E19A9D4FC0070AFE2 /* HistoryElecView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElecView.h; sourceTree = "<group>"; };
+		47ECC90F19A9D4FC0070AFE2 /* HistoryElecView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElecView.m; sourceTree = "<group>"; };
 		CABB3F26A985482997979951 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		F3A51A2AE54D4395A7991CCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -468,32 +474,9 @@
 		15BC9E661999B98D006516D8 /* 开关 */ = {
 			isa = PBXGroup;
 			children = (
-				1587F4571993133A0061EB86 /* SwitchTableView.h */,
-				1587F4581993133A0061EB86 /* SwitchTableView.m */,
-				1587F45D199315680061EB86 /* SwitchListCell.h */,
-				1587F45E199315680061EB86 /* SwitchListCell.m */,
-				15E7F60E1993189A00C46854 /* SwitchExpandCell.h */,
-				15E7F60F1993189A00C46854 /* SwitchExpandCell.m */,
-				15BC9E6019989E73006516D8 /* SwitchDetailViewController.h */,
-				15BC9E6119989E73006516D8 /* SwitchDetailViewController.m */,
-				15BC9E631998BD61006516D8 /* SocketView.h */,
-				15BC9E641998BD61006516D8 /* SocketView.m */,
-				15BC9E681999BA03006516D8 /* HistoryElectricityViewController.h */,
-				15BC9E691999BA03006516D8 /* HistoryElectricityViewController.m */,
-				15BC9E6F199B74B8006516D8 /* TimerViewController.h */,
-				15BC9E70199B74B8006516D8 /* TimerViewController.m */,
-				15BC9E72199B74CE006516D8 /* TimerCell.h */,
-				15BC9E73199B74CE006516D8 /* TimerCell.m */,
-				15A7AC8F199C4D7E00EED480 /* TimerEditViewController.h */,
-				15A7AC90199C4D7E00EED480 /* TimerEditViewController.m */,
-				15A7AC92199C567900EED480 /* CycleViewController.h */,
-				15A7AC93199C567900EED480 /* CycleViewController.m */,
-				15A7AC9C199CAE3000EED480 /* DelayViewController.h */,
-				15A7AC9D199CAE3100EED480 /* DelayViewController.m */,
-				156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */,
-				156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */,
-				15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */,
-				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
+				47ECC90D19A98A080070AFE2 /* model */,
+				47ECC90C19A98A010070AFE2 /* controller */,
+				47ECC90B19A989F90070AFE2 /* view */,
 			);
 			name = "开关";
 			sourceTree = "<group>";
@@ -509,6 +492,57 @@
 				1587F44B199225EF0061EB86 /* AddSenceViewController.m */,
 			);
 			name = "场景";
+			sourceTree = "<group>";
+		};
+		47ECC90B19A989F90070AFE2 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				1587F4571993133A0061EB86 /* SwitchTableView.h */,
+				1587F4581993133A0061EB86 /* SwitchTableView.m */,
+				1587F45D199315680061EB86 /* SwitchListCell.h */,
+				1587F45E199315680061EB86 /* SwitchListCell.m */,
+				15E7F60E1993189A00C46854 /* SwitchExpandCell.h */,
+				15E7F60F1993189A00C46854 /* SwitchExpandCell.m */,
+				15BC9E631998BD61006516D8 /* SocketView.h */,
+				15BC9E641998BD61006516D8 /* SocketView.m */,
+				15BC9E72199B74CE006516D8 /* TimerCell.h */,
+				15BC9E73199B74CE006516D8 /* TimerCell.m */,
+				47109D7319A8E80D00F24B42 /* ElecRealTimeView.h */,
+				47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */,
+				47ECC90E19A9D4FC0070AFE2 /* HistoryElecView.h */,
+				47ECC90F19A9D4FC0070AFE2 /* HistoryElecView.m */,
+			);
+			name = view;
+			sourceTree = "<group>";
+		};
+		47ECC90C19A98A010070AFE2 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				15A7AC8F199C4D7E00EED480 /* TimerEditViewController.h */,
+				15A7AC90199C4D7E00EED480 /* TimerEditViewController.m */,
+				15A7AC92199C567900EED480 /* CycleViewController.h */,
+				15A7AC93199C567900EED480 /* CycleViewController.m */,
+				15A7AC9C199CAE3000EED480 /* DelayViewController.h */,
+				15A7AC9D199CAE3100EED480 /* DelayViewController.m */,
+				156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */,
+				156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */,
+				15BC9E681999BA03006516D8 /* HistoryElectricityViewController.h */,
+				15BC9E691999BA03006516D8 /* HistoryElectricityViewController.m */,
+				15BC9E6F199B74B8006516D8 /* TimerViewController.h */,
+				15BC9E70199B74B8006516D8 /* TimerViewController.m */,
+				15BC9E6019989E73006516D8 /* SwitchDetailViewController.h */,
+				15BC9E6119989E73006516D8 /* SwitchDetailViewController.m */,
+			);
+			name = controller;
+			sourceTree = "<group>";
+		};
+		47ECC90D19A98A080070AFE2 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */,
+				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -654,6 +688,7 @@
 				15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */,
 				15BC9E651998BD61006516D8 /* SocketView.m in Sources */,
 				152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */,
+				47ECC91019A9D4FC0070AFE2 /* HistoryElecView.m in Sources */,
 				15A7AC91199C4D7E00EED480 /* TimerEditViewController.m in Sources */,
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
@@ -698,6 +733,7 @@
 				1587F44819920B590061EB86 /* BuyViewController.m in Sources */,
 				15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */,
 				15BB6B281994DFF5004D447A /* InsetsTextField.m in Sources */,
+				47109D7519A8E80D00F24B42 /* ElecRealTimeView.m in Sources */,
 				1587F45C199313570061EB86 /* SceneTableView.m in Sources */,
 				152952CC19908B7200924FC3 /* XMLUtil.m in Sources */,
 				1587F43C199208600061EB86 /* SettingViewController.m in Sources */,

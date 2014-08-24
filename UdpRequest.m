@@ -12,85 +12,82 @@
 @interface UdpRequest ()<GCDAsyncUdpSocketDelegate>
 
 #pragma mark - 发送请求计数变量
-@property(nonatomic, assign) int msg5SendCount;
-@property(nonatomic, assign) int msg9SendCount;
-@property(nonatomic, assign) int msgBSendCount;
-@property(nonatomic, assign) int msgDSendCount;  //指定设备查询
-@property(nonatomic, strong)
-    NSMutableDictionary *msgDSendCountDict;  //所有设备查询，{"mac":"count"}
-@property(nonatomic, assign) int msg11SendCount;
-@property(nonatomic, assign) int msg13SendCount;
-@property(nonatomic, assign) int msg17SendCount;
-@property(nonatomic, assign) int msg19SendCount;
-@property(nonatomic, assign) int msg1DSendCount;
-@property(nonatomic, assign) int msg1FSendCount;
-@property(nonatomic, assign) int msg25SendCount;
-@property(nonatomic, assign) int msg27SendCount;
-@property(nonatomic, assign) int msg33SendCount;
-@property(nonatomic, assign) int msg35SendCount;
-@property(nonatomic, assign) int msg39SendCount;
-@property(nonatomic, assign) int msg3BSendCount;
-@property(nonatomic, assign) int msg3FSendCount;
-@property(nonatomic, assign) int msg41SendCount;
-@property(nonatomic, assign) int msg47SendCount;
-@property(nonatomic, assign) int msg49SendCount;
-@property(nonatomic, assign) int msg4DSendCount;
-@property(nonatomic, assign) int msg4FSendCount;
-@property(nonatomic, assign) int msg53SendCount;
-@property(nonatomic, assign) int msg55SendCount;
-@property(nonatomic, assign) int msg59SendCount;
-@property(nonatomic, assign) int msg5DSendCount;
-@property(nonatomic, assign) int msg5FSendCount;
-@property(nonatomic, assign) int msg63SendCount;
-@property(nonatomic, assign) int msg65SendCount;
-@property(nonatomic, assign) int msg67SendCount;
-@property(nonatomic, assign) int msg69SendCount;
+@property (nonatomic, assign) int msg5SendCount;
+@property (nonatomic, assign) int msg9SendCount;
+@property (nonatomic, assign) int msgBSendCount;
+@property (nonatomic, assign) int msgDSendCount; //指定设备查询
+@property (nonatomic, strong)
+    NSMutableDictionary *msgDSendCountDict; //所有设备查询，{"mac":"count"}
+@property (nonatomic, assign) int msg11SendCount;
+@property (nonatomic, assign) int msg13SendCount;
+@property (nonatomic, assign) int msg17SendCount;
+@property (nonatomic, assign) int msg19SendCount;
+@property (nonatomic, assign) int msg1DSendCount;
+@property (nonatomic, assign) int msg1FSendCount;
+@property (nonatomic, assign) int msg25SendCount;
+@property (nonatomic, assign) int msg27SendCount;
+@property (nonatomic, assign) int msg33SendCount;
+@property (nonatomic, assign) int msg35SendCount;
+@property (nonatomic, assign) int msg39SendCount;
+@property (nonatomic, assign) int msg3BSendCount;
+@property (nonatomic, assign) int msg3FSendCount;
+@property (nonatomic, assign) int msg41SendCount;
+@property (nonatomic, assign) int msg47SendCount;
+@property (nonatomic, assign) int msg49SendCount;
+@property (nonatomic, assign) int msg4DSendCount;
+@property (nonatomic, assign) int msg4FSendCount;
+@property (nonatomic, assign) int msg53SendCount;
+@property (nonatomic, assign) int msg55SendCount;
+@property (nonatomic, assign) int msg59SendCount;
+@property (nonatomic, assign) int msg5DSendCount;
+@property (nonatomic, assign) int msg5FSendCount;
+@property (nonatomic, assign) int msg63SendCount;
+@property (nonatomic, assign) int msg65SendCount;
+@property (nonatomic, assign) int msg67SendCount;
+@property (nonatomic, assign) int msg69SendCount;
 #pragma mark - 请求响应数据
-@property(nonatomic, strong) NSData *responseData6;
-@property(nonatomic, strong) NSData *responseDataA;
-@property(nonatomic, strong) NSData *responseDataC;
-@property(nonatomic, strong) NSData *responseDataE;  //指定设备查询
-@property(nonatomic, strong)
-    NSMutableDictionary *responseDictE;  //所有设备查询，{@"mac":"data"}
-@property(nonatomic, strong) NSData *responseData12;
-@property(nonatomic, strong) NSData *responseData14;
-@property(nonatomic, strong) NSData *responseData18;
-@property(nonatomic, strong) NSData *responseData1A;
-@property(nonatomic, strong) NSData *responseData1E;
-@property(nonatomic, strong) NSData *responseData20;
-@property(nonatomic, strong) NSData *responseData26;
-@property(nonatomic, strong) NSData *responseData28;
-@property(nonatomic, strong) NSData *responseData34;
-@property(nonatomic, strong) NSData *responseData36;
-@property(nonatomic, strong) NSData *responseData3A;
-@property(nonatomic, strong) NSData *responseData3C;
-@property(nonatomic, strong) NSData *responseData40;
-@property(nonatomic, strong) NSData *responseData42;
-@property(nonatomic, strong) NSData *responseData48;
-@property(nonatomic, strong) NSData *responseData4A;
-@property(nonatomic, strong) NSData *responseData4E;
-@property(nonatomic, strong) NSData *responseData50;
-@property(nonatomic, strong) NSData *responseData54;
-@property(nonatomic, strong) NSData *responseData56;
-@property(nonatomic, strong) NSData *responseData5A;
-@property(nonatomic, strong) NSData *responseData5E;
-@property(nonatomic, strong) NSData *responseData60;
-@property(nonatomic, strong) NSData *responseData64;
-@property(nonatomic, strong) NSData *responseData66;
-@property(nonatomic, strong) NSData *responseData68;
-@property(nonatomic, strong) NSData *responseData6A;
+@property (nonatomic, strong) NSData *responseData6;
+@property (nonatomic, strong) NSData *responseDataA;
+@property (nonatomic, strong) NSData *responseDataC;
+@property (nonatomic, strong) NSData *responseDataE; //指定设备查询
+@property (nonatomic, strong)
+    NSMutableDictionary *responseDictE; //所有设备查询，{@"mac":"data"}
+@property (nonatomic, strong) NSData *responseData12;
+@property (nonatomic, strong) NSData *responseData14;
+@property (nonatomic, strong) NSData *responseData18;
+@property (nonatomic, strong) NSData *responseData1A;
+@property (nonatomic, strong) NSData *responseData1E;
+@property (nonatomic, strong) NSData *responseData20;
+@property (nonatomic, strong) NSData *responseData26;
+@property (nonatomic, strong) NSData *responseData28;
+@property (nonatomic, strong) NSData *responseData34;
+@property (nonatomic, strong) NSData *responseData36;
+@property (nonatomic, strong) NSData *responseData3A;
+@property (nonatomic, strong) NSData *responseData3C;
+@property (nonatomic, strong) NSData *responseData40;
+@property (nonatomic, strong) NSData *responseData42;
+@property (nonatomic, strong) NSData *responseData48;
+@property (nonatomic, strong) NSData *responseData4A;
+@property (nonatomic, strong) NSData *responseData4E;
+@property (nonatomic, strong) NSData *responseData50;
+@property (nonatomic, strong) NSData *responseData54;
+@property (nonatomic, strong) NSData *responseData56;
+@property (nonatomic, strong) NSData *responseData5A;
+@property (nonatomic, strong) NSData *responseData5E;
+@property (nonatomic, strong) NSData *responseData60;
+@property (nonatomic, strong) NSData *responseData64;
+@property (nonatomic, strong) NSData *responseData66;
+@property (nonatomic, strong) NSData *responseData68;
+@property (nonatomic, strong) NSData *responseData6A;
 #pragma mark -
-@property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
-//@property (nonatomic, strong) successBlock successBlock;
-//// block的参数列表为空的话，相当于可变参数（不是void）
-//@property (nonatomic, strong) void (^noResposneBlock)();
-//@property (nonatomic, strong) noRequestBlock noRequestBlock;
-//@property (nonatomic, strong) errorBlock errorBlock;
-@property(nonatomic, strong) NSData *msg;
-@property(nonatomic, strong) NSString *host;
-@property(nonatomic, strong) NSData *address;
-@property(nonatomic, assign) uint16_t port;
-@property(nonatomic, assign) long tag;
+@property (nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
+@property (nonatomic, strong) SDZGSwitch *aSwitch;
+@property (nonatomic, assign) int socketId;
+@property (nonatomic, strong) NSArray *timeList;
+@property (nonatomic, strong) NSData *msg;
+@property (nonatomic, strong) NSString *host;
+@property (nonatomic, assign) uint16_t port;
+@property (nonatomic, assign) long tag;
 @end
 @implementation UdpRequest
 - (id)init {
@@ -122,16 +119,6 @@
   [self.udpSocket sendData:self.msg
                     toHost:self.host
                       port:self.port
-               withTimeout:kUDPTimeOut
-                       tag:self.tag];
-}
-
-- (void)sendDataToAddress {
-  if (self.udpSocket.isClosed) {
-    [CC3xUtility setupUdpSocket:self.udpSocket port:0];
-  }
-  [self.udpSocket sendData:self.msg
-                 toAddress:self.address
                withTimeout:kUDPTimeOut
                        tag:self.tag];
 }
@@ -176,6 +163,7 @@
       }
   });
 }
+
 - (void)sendMsg0B:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
@@ -197,6 +185,7 @@
       }
   });
 }
+
 - (void)sendMsg0B:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msgBSendCount = 0;
@@ -204,11 +193,13 @@
     self.msgBSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2dMsg0B];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_STATE_INQUIRY_0B;
   [self sendDataToHost];
 }
+
 - (void)sendMsg0D:(NSString *)mac sendMode:(SENDMODE)mode tag:(long)tag {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == NotReachable) {
@@ -239,6 +230,7 @@
     self.msgDSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg0D:aSwitch.mac];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_STATE_INQUIRY_0D;
@@ -256,11 +248,14 @@
   SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
   self.msg =
       [CC3xMessageUtil getP2dMsg11:!socket.socketStatus socketId:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_CONTROL_REQ_11;
   [self sendDataToHost];
 }
+
 - (void)sendMsg13WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -273,11 +268,14 @@
   self.msg = [CC3xMessageUtil getP2sMsg13:aSwitch.mac
                                   aSwitch:!socket.socketStatus
                                  socketId:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_CONTROL_REQ_13;
   [self sendDataToHost];
 }
+
 - (void)sendMsg17WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -287,11 +285,14 @@
     self.msg17SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2dMsg17:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_TIMER_REQ_17;
   [self sendDataToHost];
 }
+
 - (void)sendMsg19WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -301,11 +302,14 @@
     self.msg19SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg19:aSwitch.mac socketId:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_TIMER_REQ_19;
   [self sendDataToHost];
 }
+
 - (void)sendMsg1DWithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    timeList:(NSArray *)timeList
@@ -330,11 +334,15 @@
   self.msg = [CC3xMessageUtil getP2dMsg1D:currentTime
                                  socketId:socketId
                                 timerList:timeList];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
+  self.timeList = timeList;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_TIMER_REQ_1D;
   [self sendDataToHost];
 }
+
 - (void)sendMsg1FWithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    timeList:(NSArray *)timeList
@@ -360,6 +368,9 @@
                                  socketId:socketId
                                 timerList:timeList
                                       mac:aSwitch.mac];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
+  self.timeList = timeList;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_TIMER_REQ_1F;
@@ -405,11 +416,13 @@
     self.msg33SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2DMsg33];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_POWER_INFO_REQ_33;
   [self sendDataToHost];
 }
+
 - (void)sendMsg35WithSwitch:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msg35SendCount = 0;
@@ -417,11 +430,13 @@
     self.msg35SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg35:aSwitch.mac];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_POWER_INFO_REQ_35;
   [self sendDataToHost];
 }
+
 - (void)sendMsg39WithSwitch:(SDZGSwitch *)aSwitch
                          on:(BOOL)on
                    sendMode:(SENDMODE)mode {
@@ -431,11 +446,13 @@
     self.msg39SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2dMsg39:on];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_LOCATE_REQ_39;
   [self sendDataToHost];
 }
+
 - (void)sendMsg3BWithSwitch:(SDZGSwitch *)aSwitch
                          on:(BOOL)on
                    sendMode:(SENDMODE)mode {
@@ -445,11 +462,13 @@
     self.msg3BSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg3B:aSwitch.mac on:on];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_LOCATE_REQ_3B;
   [self sendDataToHost];
 }
+
 - (void)sendMsg3FWithSwitch:(SDZGSwitch *)aSwitch
                        type:(int)type
                        name:(NSString *)name
@@ -461,6 +480,7 @@
   }
   self.msg =
       [CC3xMessageUtil getP2dMsg3F:name type:type password:aSwitch.password];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_NAME_REQ_3F;
@@ -480,6 +500,7 @@
                                      name:name
                                      type:type
                                  password:aSwitch.password];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_NAME_REQ_41;
@@ -494,11 +515,13 @@
   }
   self.msg = [CC3xMessageUtil getP2dMsg47:!aSwitch.lockStatus
                                  password:aSwitch.password];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_DEV_LOCK_REQ_47;
   [self sendDataToHost];
 }
+
 - (void)sendMsg49WithSwitch:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msg49SendCount = 0;
@@ -508,11 +531,13 @@
   self.msg = [CC3xMessageUtil getP2sMsg49:aSwitch.mac
                                      lock:!aSwitch.lockStatus
                                  password:aSwitch.password];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_DEV_LOCK_REQ_49;
   [self sendDataToHost];
 }
+
 - (void)sendMsg4DWithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                   delayTime:(NSInteger)delayTime
@@ -527,11 +552,14 @@
                                        on:on
                                  socketId:socketId
                                  password:aSwitch.password];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_SET_DELAY_REQ_4D;
   [self sendDataToHost];
 }
+
 - (void)sendMsg4FWithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                   delayTime:(NSInteger)delayTime
@@ -547,11 +575,14 @@
                                        on:on
                                  socketId:socketId
                                  password:aSwitch.password];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_SET_DELAY_REQ_4F;
   [self sendDataToHost];
 }
+
 - (void)sendMsg53WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -561,11 +592,14 @@
     self.msg53SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2dMsg53:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_DELAY_REQ_53;
   [self sendDataToHost];
 }
+
 - (void)sendMsg55WithSwitch:(SDZGSwitch *)aSwitch
                    socketId:(int)socketId
                    sendMode:(SENDMODE)mode {
@@ -575,11 +609,14 @@
     self.msg55SendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg55:aSwitch.mac socketId:socketId];
+  self.aSwitch = aSwitch;
+  self.socketId = socketId;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_DELAY_REQ_55;
   [self sendDataToHost];
 }
+
 - (void)sendMsg59:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (mode == ActiveMode) {
@@ -588,12 +625,14 @@
         self.msg59SendCount++;
       }
       self.msg = [CC3xMessageUtil getP2SMsg59:aSwitch.mac];
+      self.aSwitch = aSwitch;
       self.host = SERVER_IP;
       self.port = SERVER_PORT;
       self.tag = P2S_PHONE_INIT_REQ_59;
       [self sendDataToHost];
   });
 }
+
 - (void)sendMsg5DWithSwitch:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msg5DSendCount = 0;
@@ -601,11 +640,13 @@
     self.msg5DSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2DMsg5D];
+  self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
   self.tag = P2D_GET_NAME_REQ_5D;
   [self sendDataToHost];
 }
+
 - (void)sendMsg5FWithSwitch:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   if (mode == ActiveMode) {
     self.msg5FSendCount = 0;
@@ -613,11 +654,13 @@
     self.msg5FSendCount++;
   }
   self.msg = [CC3xMessageUtil getP2SMsg5F:aSwitch.mac];
+  self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
   self.tag = P2S_GET_NAME_REQ_5F;
   [self sendDataToHost];
 }
+
 - (void)sendMsg63:(SDZGSwitch *)aSwitch
         beginTime:(int)beginTime
           endTime:(int)endTime
@@ -638,6 +681,7 @@
                                       beginTime:beginTime
                                         endTime:endTime
                                        interval:interval];
+        self.aSwitch = aSwitch;
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
         self.tag = P2S_GET_POWER_LOG_REQ_63;
@@ -645,6 +689,7 @@
       }
   });
 }
+
 - (void)sendMsg65:(NSString *)mac type:(int)type sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == NotReachable) {
@@ -665,6 +710,7 @@
       }
   });
 }
+
 - (void)sendMsg67:(NSString *)mac
              type:(int)type
          cityName:(NSString *)cityName
@@ -689,6 +735,7 @@
       }
   });
 }
+
 - (void)sendMsg69:(NSString *)oldPassword
       newPassword:(NSString *)newPassword
          sendMode:(SENDMODE)mode {
@@ -712,6 +759,7 @@
       }
   });
 }
+
 #pragma mark - 处理内外网请求
 - (void)sendMsg0BOr0D:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
@@ -733,6 +781,7 @@
       }
   });
 }
+
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
              sendMode:(SENDMODE)mode {
@@ -755,6 +804,7 @@
       }
   });
 }
+
 - (void)sendMsg17Or19:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
              sendMode:(SENDMODE)mode {
@@ -777,6 +827,7 @@
       }
   });
 }
+
 - (void)sendMsg1DOr1F:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
              timeList:(NSArray *)timeList
@@ -808,31 +859,33 @@
         }
       }
   });
-}  //- (void)sendMsg25Or27:(GCDAsyncUdpSocket *)udpSocket
-   //              aSwitch:(SDZGSwitch *)aSwitch
-   //             sendMode:(SENDMODE)mode {
-   //  dispatch_async(GLOBAL_QUEUE, ^{
-   //      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
-   //        //根据不同的网络环境，发送 本地/远程 消息
-   //        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-   //            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
-   //          [self sendMsg25:udpSocket aSwitch:aSwitch sendMode:mode];
-   //        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-   //                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
-   //          [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
-   //        }
-   //      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
-   //        [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
-   //      } else if (kSharedAppliction.networkStatus == NotReachable) {
-   //        [[NSNotificationCenter defaultCenter]
-   //            postNotificationName:kNotReachableNotification
-   //                          object:self
-   //                        userInfo:@{
-   //                          @"NetworkStatus" : @(NotReachable)
-   //                        }];
-   //      }
-   //  });
-   //}
+}
+
+//- (void)sendMsg25Or27:(GCDAsyncUdpSocket *)udpSocket
+//              aSwitch:(SDZGSwitch *)aSwitch
+//             sendMode:(SENDMODE)mode {
+//  dispatch_async(GLOBAL_QUEUE, ^{
+//      if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
+//        //根据不同的网络环境，发送 本地/远程 消息
+//        if (aSwitch.switchStatus == SWITCH_LOCAL ||
+//            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+//          [self sendMsg25:udpSocket aSwitch:aSwitch sendMode:mode];
+//        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
+//                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+//          [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
+//        }
+//      } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
+//        [self sendMsg27:udpSocket aSwitch:aSwitch sendMode:mode];
+//      } else if (kSharedAppliction.networkStatus == NotReachable) {
+//        [[NSNotificationCenter defaultCenter]
+//            postNotificationName:kNotReachableNotification
+//                          object:self
+//                        userInfo:@{
+//                          @"NetworkStatus" : @(NotReachable)
+//                        }];
+//      }
+//  });
+//}
 
 - (void)sendMsg33Or35:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
@@ -854,6 +907,7 @@
       }
   });
 }
+
 - (void)sendMsg39Or3B:(SDZGSwitch *)aSwitch
                    on:(BOOL)on
              sendMode:(SENDMODE)mode {
@@ -876,6 +930,7 @@
       }
   });
 }
+
 - (void)sendMsg3FOr41:(SDZGSwitch *)aSwitch
                  type:(int)type
                  name:(NSString *)name
@@ -899,6 +954,7 @@
       }
   });
 }
+
 - (void)sendMsg47Or49:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
@@ -919,6 +975,7 @@
       }
   });
 }
+
 - (void)sendMsg4DOr4F:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
             delayTime:(NSInteger)delayTime
@@ -955,6 +1012,7 @@
       }
   });
 }
+
 - (void)sendMsg53Or55:(SDZGSwitch *)aSwitch
              socketId:(int)socketId
              sendMode:(SENDMODE)mode {
@@ -977,6 +1035,7 @@
       }
   });
 }
+
 - (void)sendMsg5DOr5F:(SDZGSwitch *)aSwitch sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
@@ -997,6 +1056,7 @@
       }
   });
 }
+
 #pragma mark - 线程检查器，检查指定时间内是否有数据返回
 - (void)checkResponseDataAfterSettingIntervalWithTag:(long)tag {
   float delay;
@@ -1054,6 +1114,7 @@
           if (kSharedAppliction.networkStatus == ReachableViaWiFi &&
               self.msg5SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg5SendCount + 1);
+            [self sendMsg05:self.host port:self.port mode:PassiveMode];
           }
         }
         break;
@@ -1061,6 +1122,7 @@
         if (!self.responseDataA) {
           if (self.msg9SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg9SendCount + 1);
+            [self sendMsg09:PassiveMode];
           }
         }
         break;
@@ -1069,18 +1131,23 @@
           if (kSharedAppliction.networkStatus == ReachableViaWiFi &&
               self.msgBSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msgBSendCount + 1);
+            [self sendMsg0B:PassiveMode];
           }
         }
         break;
       case P2S_STATE_INQUIRY_0D:
         if (self.msgDSendCount <= kTryCount) {
           debugLog(@"tag %ld 重新发送%d次", tag, self.msgDSendCount + 1);
+          [self sendMsg0D:self.aSwitch sendMode:PassiveMode];
         }
         break;
       case P2D_CONTROL_REQ_11:
         if (!self.responseData12) {
           if (self.msg11SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg11SendCount + 1);
+            [self sendMsg11WithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1088,6 +1155,9 @@
         if (!self.responseData14) {
           if (self.msg13SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg13SendCount + 1);
+            [self sendMsg13WithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1095,6 +1165,9 @@
         if (!self.responseData18) {
           if (self.msg17SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg17SendCount + 1);
+            [self sendMsg17Or19:self.aSwitch
+                       socketId:self.socketId
+                       sendMode:PassiveMode];
           }
         }
         break;
@@ -1102,6 +1175,9 @@
         if (!self.responseData1A) {
           if (self.msg19SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg19SendCount + 1);
+            [self sendMsg19WithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1109,6 +1185,10 @@
         if (!self.responseData1E) {
           if (self.msg1DSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg1DSendCount + 1);
+            [self sendMsg1DWithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             timeList:self.timeList
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1116,6 +1196,10 @@
         if (!self.responseData20) {
           if (self.msg1FSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg1FSendCount + 1);
+            [self sendMsg1FWithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             timeList:self.timeList
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1137,6 +1221,7 @@
         if (!self.responseData34) {
           if (self.msg33SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg33SendCount + 1);
+            [self sendMsg33WithSwitch:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1144,6 +1229,7 @@
         if (!self.responseData36) {
           if (self.msg35SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg35SendCount + 1);
+            [self sendMsg35WithSwitch:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1151,6 +1237,7 @@
         if (!self.responseData3A) {
           if (self.msg39SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg39SendCount + 1);
+            [self sendMsg39WithSwitch:self.aSwitch on:NO sendMode:PassiveMode];
           }
         }
         break;
@@ -1319,112 +1406,241 @@
  *  @param tag
  */
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag {
-  debugLog(@"didSendDataWithTag :%ld", tag);
-  //需要执行的操作：
-  // 1、清空响应数据
-  // 2、指定时间后检查数据是否为空，为空说明未响应，触发请求重发
-  switch (tag) {
-    case P2D_SERVER_INFO_05:
-      self.responseData6 = nil;
-      break;
-    case P2D_SCAN_DEV_09:
-      self.responseDataA = nil;
-      break;
-    case P2D_STATE_INQUIRY_0B:
-      self.responseDataC = nil;
-      break;
-    case P2S_STATE_INQUIRY_0D:
-      self.responseDataE = nil;
-      break;
-    case P2D_CONTROL_REQ_11:
-      self.responseData12 = nil;
-      break;
-    case P2S_CONTROL_REQ_13:
-      self.responseData14 = nil;
-      break;
-    case P2D_GET_TIMER_REQ_17:
-      self.responseData18 = nil;
-      break;
-    case P2S_GET_TIMER_REQ_19:
-      self.responseData1A = nil;
-      break;
-    case P2D_SET_TIMER_REQ_1D:
-      self.responseData1E = nil;
-      break;
-    case P2S_SET_TIMER_REQ_1F:
-      self.responseData20 = nil;
-      break;
-    case P2D_GET_PROPERTY_REQ_25:
-      self.responseData26 = nil;
-      break;
-    case P2S_GET_PROPERTY_REQ_27:
-      self.responseData28 = nil;
-      break;
-    case P2D_GET_POWER_INFO_REQ_33:
-      self.responseData34 = nil;
-      break;
-    case P2S_GET_POWER_INFO_REQ_35:
-      self.responseData36 = nil;
-      break;
-    case P2D_LOCATE_REQ_39:
-      self.responseData3A = nil;
-      break;
-    case P2S_LOCATE_REQ_3B:
-      self.responseData3C = nil;
-      break;
-    case P2D_SET_NAME_REQ_3F:
-      self.responseData40 = nil;
-      break;
-    case P2S_SET_NAME_REQ_41:
-      self.responseData42 = nil;
-      break;
-    case P2D_DEV_LOCK_REQ_47:
-      self.responseData48 = nil;
-      break;
-    case P2S_DEV_LOCK_REQ_49:
-      self.responseData4A = nil;
-      break;
-    case P2D_SET_DELAY_REQ_4D:
-      self.responseData4E = nil;
-      break;
-    case P2S_SET_DELAY_REQ_4F:
-      self.responseData50 = nil;
-      break;
-    case P2D_GET_DELAY_REQ_53:
-      self.responseData54 = nil;
-      break;
-    case P2S_GET_DELAY_REQ_55:
-      self.responseData56 = nil;
-      break;
-    case P2S_PHONE_INIT_REQ_59:
-      self.responseData5A = nil;
-      break;
-    case P2D_GET_NAME_REQ_5D:
-      self.responseData5E = nil;
-      break;
-    case P2S_GET_NAME_REQ_5F:
-      self.responseData60 = nil;
-      break;
-    case P2S_GET_POWER_LOG_REQ_63:
-      self.responseData64 = nil;
-      break;
-    case P2S_GET_CITY_REQ_65:
-      self.responseData66 = nil;
-      break;
-    case P2S_GET_CITY_WEATHER_REQ_67:
-      self.responseData68 = nil;
-      break;
-    case P2D_SET_PASSWD_REQ_69:
-      self.responseData6A = nil;
-      break;
-    default: {
-      // TODO:设备在保存到数据库等本地文件时，设置一个tag标志，通过tag标识可以找到mac
-      NSString *mac;
-      [self.responseDictE setObject:[NSNull null] forKey:mac];
-      break;
+  if (isHome) {
+    debugLog(@"didSendDataWithTag :%ld", tag);
+    CC3xMessage *msg;
+    switch (tag) {
+      case P2D_SERVER_INFO_05:
+        self.responseData6 = nil;
+        break;
+      case P2D_SCAN_DEV_09:
+        self.responseDataA = nil;
+        break;
+      case P2D_STATE_INQUIRY_0B:
+        self.responseDataC = [NSData
+            dataWithContentsOfFile:
+                [PATH_OF_TEMP stringByAppendingPathComponent:@"switch95"]];
+        msg = [CC3xMessageUtil parseMessage:self.responseDataC];
+        break;
+      case P2S_STATE_INQUIRY_0D:
+        self.responseDataE = nil;
+        break;
+      case P2D_CONTROL_REQ_11:
+        self.responseData12 = nil;
+        break;
+      case P2S_CONTROL_REQ_13:
+        self.responseData14 = nil;
+        break;
+      case P2D_GET_TIMER_REQ_17: {
+        self.responseData18 = [NSData
+            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
+                                                     @"dingshiliebiao95"]];
+        CC3xMessage *msg = [CC3xMessageUtil parseMessage:self.responseData18];
+        if ([self.delegate
+                respondsToSelector:@selector(responseMsg:address:)]) {
+          [self.delegate responseMsg:msg address:nil];
+        }
+      } break;
+      case P2S_GET_TIMER_REQ_19:
+        self.responseData1A = nil;
+        break;
+      case P2D_SET_TIMER_REQ_1D:
+        self.responseData1E = nil;
+        break;
+      case P2S_SET_TIMER_REQ_1F:
+        self.responseData20 = nil;
+        break;
+      case P2D_GET_PROPERTY_REQ_25:
+        self.responseData26 = nil;
+        break;
+      case P2S_GET_PROPERTY_REQ_27:
+        self.responseData28 = nil;
+        break;
+      case P2D_GET_POWER_INFO_REQ_33:
+        self.responseData34 = [NSData
+            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
+                                                     @"shishidianliang95"]];
+        msg = [CC3xMessageUtil parseMessage:self.responseData34];
+        break;
+      case P2S_GET_POWER_INFO_REQ_35:
+        self.responseData36 = nil;
+        break;
+      case P2D_LOCATE_REQ_39:
+        self.responseData3A = nil;
+        break;
+      case P2S_LOCATE_REQ_3B:
+        self.responseData3C = nil;
+        break;
+      case P2D_SET_NAME_REQ_3F:
+        self.responseData40 = nil;
+        break;
+      case P2S_SET_NAME_REQ_41:
+        self.responseData42 = nil;
+        break;
+      case P2D_DEV_LOCK_REQ_47:
+        self.responseData48 = nil;
+        break;
+      case P2S_DEV_LOCK_REQ_49:
+        self.responseData4A = nil;
+        break;
+      case P2D_SET_DELAY_REQ_4D:
+        self.responseData4E = nil;
+        break;
+      case P2S_SET_DELAY_REQ_4F:
+        self.responseData50 = nil;
+        break;
+      case P2D_GET_DELAY_REQ_53:
+        self.responseData54 = [NSData
+            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
+                                                     @"chaxunshebeiyanshi95"]];
+        msg = [CC3xMessageUtil parseMessage:self.responseData54];
+        break;
+      case P2S_GET_DELAY_REQ_55:
+        self.responseData56 = nil;
+        break;
+      case P2S_PHONE_INIT_REQ_59:
+        self.responseData5A = nil;
+        break;
+      case P2D_GET_NAME_REQ_5D:
+        self.responseData5E = [NSData
+            dataWithContentsOfFile:
+                [PATH_OF_TEMP
+                    stringByAppendingPathComponent:@"chaxunshebeimingcheng95"]];
+        msg = [CC3xMessageUtil parseMessage:self.responseData5E];
+        break;
+      case P2S_GET_NAME_REQ_5F:
+        self.responseData60 = nil;
+        break;
+      case P2S_GET_POWER_LOG_REQ_63:
+        self.responseData64 = nil;
+        break;
+      case P2S_GET_CITY_REQ_65:
+        self.responseData66 = nil;
+        break;
+      case P2S_GET_CITY_WEATHER_REQ_67:
+        self.responseData68 = nil;
+        break;
+      case P2D_SET_PASSWD_REQ_69:
+        self.responseData6A = nil;
+        break;
+      default: {
+        // TODO:设备在保存到数据库等本地文件时，设置一个tag标志，通过tag标识可以找到mac
+        NSString *mac;
+        [self.responseDictE setObject:[NSNull null] forKey:mac];
+        break;
+      }
     }
+    if ([self.delegate respondsToSelector:@selector(responseMsg:address:)]) {
+      [self.delegate responseMsg:msg address:nil];
+    }
+  } else {
+    debugLog(@"didSendDataWithTag :%ld", tag);
+    //需要执行的操作：
+    // 1、清空响应数据
+    // 2、指定时间后检查数据是否为空，为空说明未响应，触发请求重发
+    switch (tag) {
+      case P2D_SERVER_INFO_05:
+        self.responseData6 = nil;
+        break;
+      case P2D_SCAN_DEV_09:
+        self.responseDataA = nil;
+        break;
+      case P2D_STATE_INQUIRY_0B:
+        self.responseDataC = nil;
+        break;
+      case P2S_STATE_INQUIRY_0D:
+        self.responseDataE = nil;
+        break;
+      case P2D_CONTROL_REQ_11:
+        self.responseData12 = nil;
+        break;
+      case P2S_CONTROL_REQ_13:
+        self.responseData14 = nil;
+        break;
+      case P2D_GET_TIMER_REQ_17:
+        self.responseData18 = nil;
+        break;
+      case P2S_GET_TIMER_REQ_19:
+        self.responseData1A = nil;
+        break;
+      case P2D_SET_TIMER_REQ_1D:
+        self.responseData1E = nil;
+        break;
+      case P2S_SET_TIMER_REQ_1F:
+        self.responseData20 = nil;
+        break;
+      case P2D_GET_PROPERTY_REQ_25:
+        self.responseData26 = nil;
+        break;
+      case P2S_GET_PROPERTY_REQ_27:
+        self.responseData28 = nil;
+        break;
+      case P2D_GET_POWER_INFO_REQ_33:
+        self.responseData34 = nil;
+        break;
+      case P2S_GET_POWER_INFO_REQ_35:
+        self.responseData36 = nil;
+        break;
+      case P2D_LOCATE_REQ_39:
+        self.responseData3A = nil;
+        break;
+      case P2S_LOCATE_REQ_3B:
+        self.responseData3C = nil;
+        break;
+      case P2D_SET_NAME_REQ_3F:
+        self.responseData40 = nil;
+        break;
+      case P2S_SET_NAME_REQ_41:
+        self.responseData42 = nil;
+        break;
+      case P2D_DEV_LOCK_REQ_47:
+        self.responseData48 = nil;
+        break;
+      case P2S_DEV_LOCK_REQ_49:
+        self.responseData4A = nil;
+        break;
+      case P2D_SET_DELAY_REQ_4D:
+        self.responseData4E = nil;
+        break;
+      case P2S_SET_DELAY_REQ_4F:
+        self.responseData50 = nil;
+        break;
+      case P2D_GET_DELAY_REQ_53:
+        self.responseData54 = nil;
+        break;
+      case P2S_GET_DELAY_REQ_55:
+        self.responseData56 = nil;
+        break;
+      case P2S_PHONE_INIT_REQ_59:
+        self.responseData5A = nil;
+        break;
+      case P2D_GET_NAME_REQ_5D:
+        self.responseData5E = nil;
+        break;
+      case P2S_GET_NAME_REQ_5F:
+        self.responseData60 = nil;
+        break;
+      case P2S_GET_POWER_LOG_REQ_63:
+        self.responseData64 = nil;
+        break;
+      case P2S_GET_CITY_REQ_65:
+        self.responseData66 = nil;
+        break;
+      case P2S_GET_CITY_WEATHER_REQ_67:
+        self.responseData68 = nil;
+        break;
+      case P2D_SET_PASSWD_REQ_69:
+        self.responseData6A = nil;
+        break;
+      default: {
+        // TODO:设备在保存到数据库等本地文件时，设置一个tag标志，通过tag标识可以找到mac
+        NSString *mac;
+        [self.responseDictE setObject:[NSNull null] forKey:mac];
+        break;
+      }
+    }
+    [self checkResponseDataAfterSettingIntervalWithTag:tag];
   }
-  [self checkResponseDataAfterSettingIntervalWithTag:tag];
 }
 
 /**

@@ -71,6 +71,8 @@
 		15BC9E6A1999BA03006516D8 /* HistoryElectricityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E691999BA03006516D8 /* HistoryElectricityViewController.m */; };
 		15BC9E71199B74B8006516D8 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E70199B74B8006516D8 /* TimerViewController.m */; };
 		15BC9E74199B74CE006516D8 /* TimerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E73199B74CE006516D8 /* TimerCell.m */; };
+		15BCC0B319AAF91900776E7D /* TimerCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BCC0B219AAF91900776E7D /* TimerCountdownView.m */; };
+		15BCC0B619AB161700776E7D /* TimeDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15BCC0B519AB161700776E7D /* TimeDisplayView.m */; };
 		15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E7F60F1993189A00C46854 /* SwitchExpandCell.m */; };
 		15E7F61319933A4300C46854 /* libFTC_DEBUG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E7F61119933A4300C46854 /* libFTC_DEBUG.a */; };
 		4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */; };
@@ -196,8 +198,8 @@
 		15A7AC9D199CAE3100EED480 /* DelayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayViewController.m; sourceTree = "<group>"; };
 		15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataCeneter.h; sourceTree = "<group>"; };
 		15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataCeneter.m; sourceTree = "<group>"; };
-		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSwitch.h; sourceTree = "<group>"; };
-		15B7A31219A31E6600C00342 /* SDZGSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSwitch.m; sourceTree = "<group>"; };
+		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDZGSwitch.h; path = ../SDZGSwitch.h; sourceTree = "<group>"; };
+		15B7A31219A31E6600C00342 /* SDZGSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDZGSwitch.m; path = ../SDZGSwitch.m; sourceTree = "<group>"; };
 		15B941AF19A6E0D8007339F8 /* UdpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpViewController.h; sourceTree = "<group>"; };
 		15B941B019A6E0D8007339F8 /* UdpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpViewController.m; sourceTree = "<group>"; };
 		15BB6B261994DFF5004D447A /* InsetsTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InsetsTextField.h; sourceTree = "<group>"; };
@@ -212,6 +214,10 @@
 		15BC9E70199B74B8006516D8 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		15BC9E72199B74CE006516D8 /* TimerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerCell.h; sourceTree = "<group>"; };
 		15BC9E73199B74CE006516D8 /* TimerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerCell.m; sourceTree = "<group>"; };
+		15BCC0B119AAF91900776E7D /* TimerCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerCountdownView.h; sourceTree = "<group>"; };
+		15BCC0B219AAF91900776E7D /* TimerCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerCountdownView.m; sourceTree = "<group>"; };
+		15BCC0B419AB161700776E7D /* TimeDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeDisplayView.h; sourceTree = "<group>"; };
+		15BCC0B519AB161700776E7D /* TimeDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeDisplayView.m; sourceTree = "<group>"; };
 		15E7F60E1993189A00C46854 /* SwitchExpandCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchExpandCell.h; sourceTree = "<group>"; };
 		15E7F60F1993189A00C46854 /* SwitchExpandCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchExpandCell.m; sourceTree = "<group>"; };
 		15E7F61119933A4300C46854 /* libFTC_DEBUG.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFTC_DEBUG.a; sourceTree = "<group>"; };
@@ -390,8 +396,6 @@
 				152952A21990899400924FC3 /* CC3xSwitch.m */,
 				152952A31990899400924FC3 /* CC3xTimerTask.h */,
 				152952A41990899400924FC3 /* CC3xTimerTask.m */,
-				15B7A31119A31E6600C00342 /* SDZGSwitch.h */,
-				15B7A31219A31E6600C00342 /* SDZGSwitch.m */,
 			);
 			name = CC3x;
 			sourceTree = "<group>";
@@ -503,6 +507,10 @@
 				1587F45E199315680061EB86 /* SwitchListCell.m */,
 				15E7F60E1993189A00C46854 /* SwitchExpandCell.h */,
 				15E7F60F1993189A00C46854 /* SwitchExpandCell.m */,
+				15BCC0B119AAF91900776E7D /* TimerCountdownView.h */,
+				15BCC0B219AAF91900776E7D /* TimerCountdownView.m */,
+				15BCC0B419AB161700776E7D /* TimeDisplayView.h */,
+				15BCC0B519AB161700776E7D /* TimeDisplayView.m */,
 				15BC9E631998BD61006516D8 /* SocketView.h */,
 				15BC9E641998BD61006516D8 /* SocketView.m */,
 				15BC9E72199B74CE006516D8 /* TimerCell.h */,
@@ -539,6 +547,8 @@
 		47ECC90D19A98A080070AFE2 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				15B7A31119A31E6600C00342 /* SDZGSwitch.h */,
+				15B7A31219A31E6600C00342 /* SDZGSwitch.m */,
 				15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */,
 				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
 			);
@@ -690,10 +700,12 @@
 				152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */,
 				47ECC91019A9D4FC0070AFE2 /* HistoryElecView.m in Sources */,
 				15A7AC91199C4D7E00EED480 /* TimerEditViewController.m in Sources */,
+				15BCC0B619AB161700776E7D /* TimeDisplayView.m in Sources */,
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
 				152952D71991BF4600924FC3 /* MenuViewController.m in Sources */,
 				1587F456199230BB0061EB86 /* SDZGUserProtocolViewController.m in Sources */,
+				15BCC0B319AAF91900776E7D /* TimerCountdownView.m in Sources */,
 				152952AF1990899F00924FC3 /* CC3xAPManager.m in Sources */,
 				152952B719908B3F00924FC3 /* GDataXMLNode.m in Sources */,
 				152952A51990899400924FC3 /* CC3xMessage.m in Sources */,

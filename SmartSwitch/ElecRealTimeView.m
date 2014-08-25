@@ -14,17 +14,21 @@
 #define kBigRoundFillColor [UIColor whiteColor]
 #define kTextColor [UIColor whiteColor]
 #define str(value) [NSString stringWithFormat:@"%.fw", value]
-#define kTopMargin 10 //上边距
+#define kTopMargin 10  //上边距
+#define kLeftMargin 4  //左边距
 
 @interface ElecRealTimeView ()
-@property (nonatomic, strong) dispatch_source_t timer;
-@property (nonatomic, strong) NSMutableArray *points;
+@property(nonatomic, strong) dispatch_source_t timer;
+@property(nonatomic, strong) NSArray *points;
 @end
 @implementation ElecRealTimeView
+
+//最大显示个数
+static int count = 8;
 - (void)awakeFromNib {
-  self.points = [@[] mutableCopy];
+  //  self.points = [@[] mutableCopy];
   __weak id weakSelf = self;
-  double delayInSeconds = 1;
+  double delayInSeconds = 2;
   self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
                                       dispatch_get_main_queue());
   dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0),
@@ -33,16 +37,24 @@
   dispatch_resume(_timer);
 }
 
+//- (void)updateView {
+//  //随机取0到2000的值
+//  int value = (arc4random() % 500);
+//  //  int value = 0;
+//  //  NSLog(@"next value is %d", value);
+//  [self.points addObject:@(value)];
+//  if (self.points.count > count) {
+//    [self.points removeObjectAtIndex:0];
+//  }
+//  [self setNeedsDisplay];
+//}
+
 - (void)updateView {
-  //随机取0到2000的值
-  int value = (arc4random() % 500);
-  //  int value = 0;
-  //  NSLog(@"next value is %d", value);
-  [self.points addObject:@(value)];
-  //最大显示个数
-  static int count = 8;
-  if (self.points.count > count) {
-    [self.points removeObjectAtIndex:0];
+  if (self.powers.count > count) {
+    NSRange range = NSMakeRange(self.powers.count - count, count);
+    self.points = [self.powers subarrayWithRange:range];
+  } else {
+    self.points = self.powers;
   }
   [self setNeedsDisplay];
 }
@@ -69,15 +81,17 @@
   CGContextSetStrokeColorWithColor(context, kLineColor.CGColor);
   CGContextSetFillColorWithColor(context, kFillColor.CGColor);
   int maxValue = [[self.points valueForKeyPath:@"@max.self"] integerValue];
-  CGFloat height = rect.size.height - kTopMargin; //离上边距
+  CGFloat height = rect.size.height - kTopMargin;  //离上边距
   CGFloat scaleY = 1;
-  if (maxValue > height) {
-    scaleY = height / maxValue;
+  scaleY = height / maxValue;
+  if (height > maxValue) {
+    scaleY *= 0.6;
   }
   CGFloat scaleX = 42;
   for (int i = 0; i < self.points.count; i++) {
     double point = [[self.points objectAtIndex:i] doubleValue];
-    CGFloat x = scaleX * i, y = height - (point * scaleY) + kTopMargin / 2;
+    CGFloat x = scaleX * i + kLeftMargin,
+            y = height - (point * scaleY) + kTopMargin / 2;
     if (i == 0) {
       CGPathMoveToPoint(pathRef, NULL, x, y);
     } else {
@@ -101,8 +115,9 @@
   CGContextSetFillColorWithColor(context, kBigRoundFillColor.CGColor);
   for (int i = 0; i < self.points.count; i++) {
     double point = [[self.points objectAtIndex:i] doubleValue];
-    CGFloat x = scaleX * i, y = height - (point * scaleY) + kTopMargin / 2;
-    double bigRoundRadius = 4.0f; //大圆半径
+    CGFloat x = scaleX * i + kLeftMargin,
+            y = height - (point * scaleY) + kTopMargin / 2;
+    double bigRoundRadius = 4.0f;  //大圆半径
     CGContextAddEllipseInRect(
         context, CGRectMake(x - bigRoundRadius, y - bigRoundRadius,
                             2 * bigRoundRadius, 2 * bigRoundRadius));
@@ -116,8 +131,9 @@
   CGContextSetFillColorWithColor(context, kBigRoundStrokeColor.CGColor);
   for (int i = 0; i < self.points.count; i++) {
     double point = [[self.points objectAtIndex:i] doubleValue];
-    CGFloat x = scaleX * i, y = height - (point * scaleY) + kTopMargin / 2;
-    double smallRoundRadius = 1.5f; //小圆半径
+    CGFloat x = scaleX * i + kLeftMargin,
+            y = height - (point * scaleY) + kTopMargin / 2;
+    double smallRoundRadius = 1.5f;  //小圆半径
     CGContextAddEllipseInRect(
         context, CGRectMake(x - smallRoundRadius, y - smallRoundRadius,
                             2 * smallRoundRadius, 2 * smallRoundRadius));

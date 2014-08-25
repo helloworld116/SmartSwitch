@@ -29,6 +29,8 @@
                                      forBarMetrics:UIBarMetricsDefault];
   [[UINavigationBar appearance]
       setTitleTextAttributes:@{
+                               NSFontAttributeName :
+                                   [UIFont boldSystemFontOfSize:22],
                                UITextAttributeTextColor : [UIColor whiteColor]
                              }];
   return YES;

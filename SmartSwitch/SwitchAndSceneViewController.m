@@ -13,22 +13,15 @@
 
 @interface SwitchAndSceneViewController ()<
     SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property (strong, nonatomic) SceneTableView *tableViewOfScene;
-@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property (strong, nonatomic) IBOutlet UIButton *btnScene;
+@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property(strong, nonatomic) SceneTableView *tableViewOfScene;
+@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property (strong, nonatomic) NSTimer *updateTimer;
-//@property (strong, nonatomic) successBlock msg0BsuccessBlock,
-//    msg11Or13successBlock;
-//@property (strong, nonatomic) noResponseBlock msg0BnoResponseBlock,
-//    msg11Or13noResponseBlock;
-//@property (strong, nonatomic) noRequestBlock msg0BnoRequestBlock,
-//    msg11Or13noRequestBlock;
-//@property (strong, nonatomic) errorBlock msg0BerrorBlock, msg11Or13errorBlock;
-@property (strong, atomic) UdpRequest *request;
+@property(strong, nonatomic) NSTimer *updateTimer;
+@property(strong, atomic) UdpRequest *request;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;

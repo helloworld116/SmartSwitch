@@ -8,23 +8,30 @@
 
 #import "SwitchDetailViewController.h"
 #import "SwitchDataCeneter.h"
+#import "ElecRealTimeView.h"
+#import "SocketView.h"
 #define kElecRefreshInterval 2
 #define kSwitchRefreshInterval 2
 
-@interface SwitchDetailViewController ()<
-    UIScrollViewDelegate, EGORefreshTableHeaderDelegate, UdpRequestDelegate>
+@interface SwitchDetailViewController ()<UIScrollViewDelegate,
+                                         EGORefreshTableHeaderDelegate,
+                                         UdpRequestDelegate, SocketViewDelegate>
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property(strong, nonatomic) IBOutlet UIView *contentView;
+@property(strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
+@property(strong, nonatomic) IBOutlet SocketView *viewSocket1;
+@property(strong, nonatomic) IBOutlet SocketView *viewSocket2;
 
 @property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property(assign, nonatomic) BOOL reloading;
-
-@property(strong, nonatomic) SDZGSwitch *aSwitch;
 @property(strong, nonatomic) NSTimer *timerElec;
 @property(strong, nonatomic) NSTimer *timerSwitch;
 @property(strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
     *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
 
+//数据
+@property(strong, nonatomic) NSMutableArray *powers;
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
 @end
 
 @implementation SwitchDetailViewController
@@ -40,8 +47,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
-  self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
-      objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
+  [self setupDefaultValue];
 
   self.navigationItem.title = self.aSwitch.name;
   self.navigationItem.leftBarButtonItem =
@@ -87,6 +93,18 @@
   [super viewWillLayoutSubviews];
 }
 
+- (void)setupDefaultValue {
+  self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
+      objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
+  self.powers = [@[] mutableCopy];
+  // TODO:设置默认值
+  self.aSwitch.sockets;
+  [self.viewSocket1 socketId:1 socketName:@"" status:0 timer:0 delay:0];
+  self.viewSocket1.delegate = self;
+  [self.viewSocket2 socketId:2 socketName:@"" status:0 timer:0 delay:0];
+  self.viewSocket2.delegate = self;
+}
+
 - (void)firstSend {
   //  dispatch_queue_t queue =
   //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
@@ -95,28 +113,30 @@
       dispatch_queue_create("com.itouchco.www", DISPATCH_QUEUE_CONCURRENT);
   static NSTimeInterval seconds = 0.5;
 
-  dispatch_barrier_async(queue, ^{
-      [self sendMsg0BOr0D];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  dispatch_barrier_async(queue, ^{
-      [self send17Or19];
-      [NSThread sleepForTimeInterval:2 * seconds];
-  });
-  dispatch_barrier_async(queue, ^{
-      [self sendMsg33Or35];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  dispatch_barrier_async(queue, ^{
-      [self send53Or55];
-      [NSThread sleepForTimeInterval:2 * seconds];
-  });
-  dispatch_barrier_async(queue, ^{
-      [self send5DOr5F];
-      [NSThread sleepForTimeInterval:seconds];
-  });
+  //  dispatch_barrier_async(queue, ^{
+  //      [self sendMsg0BOr0D];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_barrier_async(queue, ^{
+  //      [self send17Or19];
+  //      [NSThread sleepForTimeInterval:2 * seconds];
+  //  });
+  //  dispatch_barrier_async(queue, ^{
+  //      [self sendMsg33Or35];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_barrier_async(queue, ^{
+  //      [self send53Or55];
+  //      [NSThread sleepForTimeInterval:2 * seconds];
+  //  });
+  //  dispatch_barrier_async(queue, ^{
+  //      [self send5DOr5F];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
 
   //  [self setTimer];
+
+  [self send5DOr5F];
 }
 
 #pragma mark - Timer
@@ -130,14 +150,14 @@
   [[NSRunLoop currentRunLoop] addTimer:self.timerElec
                                forMode:NSRunLoopCommonModes];
 
-  self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
-                                             target:self
-                                           selector:@selector(sendMsg0BOr0D)
-                                           userInfo:nil
-                                            repeats:YES];
-  [self.timerSwitch fire];
-  [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
-                               forMode:NSRunLoopCommonModes];
+  //  self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
+  //                                             target:self
+  //                                           selector:@selector(sendMsg0BOr0D)
+  //                                           userInfo:nil
+  //                                            repeats:YES];
+  //  [self.timerSwitch fire];
+  //  [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
+  //                               forMode:NSRunLoopCommonModes];
 }
 
 - (void)invalidateTimer {
@@ -154,14 +174,19 @@
 #pragma mark - 发送UDP
 //开关状态
 - (void)sendMsg0BOr0D {
-  self.request0BOr0D = [UdpRequest manager];
-  self.request0BOr0D.delegate = self;
+  if (!self.request0BOr0D) {
+    self.request0BOr0D = [UdpRequest manager];
+    self.request0BOr0D.delegate = self;
+  }
   [self.request0BOr0D sendMsg0BOr0D:self.aSwitch sendMode:ActiveMode];
 }
 
 //控制插孔开关
 - (void)sendMsg11Or13:(int)socketId {
-  self.request11Or13 = [UdpRequest manager];
+  if (!self.request11Or13) {
+    self.request11Or13 = [UdpRequest manager];
+    self.request11Or13.delegate = self;
+  }
   [self.request11Or13 sendMsg11Or13:self.aSwitch
                            socketId:1
                            sendMode:ActiveMode];
@@ -169,40 +194,56 @@
 
 //定时列表
 - (void)send17Or19 {
-  dispatch_queue_t queue =
-      dispatch_queue_create("timer.com.itouchco.www", DISPATCH_QUEUE_SERIAL);
-  for (SDZGSocket *socket in self.aSwitch.sockets) {
-    dispatch_async(queue, ^{
-        self.request17Or19 = [UdpRequest manager];
-        self.request17Or19.delegate = self;
-        [self.request17Or19 sendMsg17Or19:self.aSwitch
-                                 socketId:socket.socketId
-                                 sendMode:ActiveMode];
-        //        [NSThread sleepForTimeInterval:0.5];
-    });
-  }
+  // TODO:修复
+  //  dispatch_queue_t queue =
+  //      dispatch_queue_create("timer.com.itouchco.www",
+  //      DISPATCH_QUEUE_SERIAL);
+  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
+  //    dispatch_async(queue, ^{
+  //        self.request17Or19 = [UdpRequest manager];
+  //        self.request17Or19.delegate = self;
+  //        [self.request17Or19 sendMsg17Or19:self.aSwitch
+  //                                 socketId:socket.socketId
+  //                                 sendMode:ActiveMode];
+  //        //        [NSThread sleepForTimeInterval:0.5];
+  //    });
+  //  }
+  self.request17Or19 = [UdpRequest manager];
+  self.request17Or19.delegate = self;
+  [self.request17Or19 sendMsg17Or19:self.aSwitch
+                           socketId:2
+                           sendMode:ActiveMode];
 }
 
 //实时电量
 - (void)sendMsg33Or35 {
-  self.request33Or35 = [UdpRequest manager];
+  if (!self.request33Or35) {
+    self.request33Or35 = [UdpRequest manager];
+    self.request33Or35.delegate = self;
+  }
   [self.request33Or35 sendMsg33Or35:self.aSwitch sendMode:ActiveMode];
 }
 
 //延时任务
 - (void)send53Or55 {
-  for (SDZGSocket *socket in self.aSwitch.sockets) {
-    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
-                                                   DISPATCH_QUEUE_CONCURRENT);
-    dispatch_barrier_async(queue, ^{
-        self.request53Or55 = [UdpRequest manager];
-        self.request53Or55.delegate = self;
-        [self.request53Or55 sendMsg53Or55:self.aSwitch
-                                 socketId:socket.socketId
-                                 sendMode:ActiveMode];
-        [NSThread sleepForTimeInterval:0.5];
-    });
-  }
+  // TODO: 修改
+  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
+  //    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
+  //                                                   DISPATCH_QUEUE_CONCURRENT);
+  //    dispatch_barrier_async(queue, ^{
+  //        self.request53Or55 = [UdpRequest manager];
+  //        self.request53Or55.delegate = self;
+  //        [self.request53Or55 sendMsg53Or55:self.aSwitch
+  //                                 socketId:socket.socketId
+  //                                 sendMode:ActiveMode];
+  //        [NSThread sleepForTimeInterval:0.5];
+  //    });
+  //  }
+  self.request53Or55 = [UdpRequest manager];
+  self.request53Or55.delegate = self;
+  [self.request53Or55 sendMsg53Or55:self.aSwitch
+                           socketId:1
+                           sendMode:ActiveMode];
 }
 
 //查询设备名称
@@ -332,5 +373,81 @@ preparation before navigation
 
 #pragma mark - UdpRequestDelegate
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    case 0xc:
+    case 0xe:
+      self.aSwitch.name = message.deviceName;
+      debugLog(@"message.onStatus is %d", message.onStatus);
+      break;
+    case 0x12:
+    case 0x14:
+      break;
+    case 0x18:
+    case 0x1a:
+      switch (message.socketId) {
+        case 1:
+
+          break;
+        case 2:
+
+          break;
+        default:
+          break;
+      }
+      break;
+    case 0x34:
+    case 0x36:
+      //      message.state;
+      //      message.power;
+      [self.powers addObject:@(message.power)];
+      self.viewOfElecRealTime.powers = self.powers;
+      break;
+    case 0x54:
+    case 0x56:
+      switch (message.socketId) {
+        case 1:
+          if (message.delay) {
+            [self.viewSocket1 countDown:message.delay * 60];
+          }
+          break;
+        case 2:
+          if (message.delay) {
+            [self.viewSocket2 countDown:message.delay * 60];
+          }
+          break;
+        default:
+          break;
+      }
+      break;
+    case 0x5e:
+    case 0x60:
+      if (![self.aSwitch.name isEqualToString:message.deviceName]) {
+        self.aSwitch.name = message.deviceName;
+        self.navigationItem.title = message.deviceName;
+      }
+      if (message.socketNames.count == 2) {
+        [self.viewSocket1 setSocketName:message.socketNames[0]];
+        [self.viewSocket2 setSocketName:message.socketNames[1]];
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+#pragma mark - SocketViewDelegate
+- (void)socketTimer:(int)socketId {
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"TimerViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+- (void)socketDelay:(int)socketId {
+  UIViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"DelayViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+- (void)socketChangeStatus:(int)socketId {
 }
 @end

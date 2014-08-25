@@ -8,7 +8,7 @@
 
 #import "SwitchDataCeneter.h"
 @interface SwitchDataCeneter ()
-@property(strong, nonatomic) NSMutableDictionary *switchsDict;
+@property(strong, atomic) NSMutableDictionary *switchsDict;
 @end
 
 @implementation SwitchDataCeneter
@@ -35,6 +35,7 @@
 }
 
 - (void)updateSwitch:(SDZGSwitch *)aSwitch {
+  debugLog(@"update switch ceneter");
   NSDictionary *userInfo;
   if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
     //修改

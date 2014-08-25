@@ -136,7 +136,7 @@ enum {
 @property(nonatomic, assign) int socketId;
 
 @property(nonatomic, strong) NSString *deviceName;
-@property(nonatomic, strong) NSMutableArray *socketNames;
+@property(nonatomic, strong) NSArray *socketNames;
 @property(nonatomic, assign) char state;  // 0表示成功；-1表示无控制权
 @property(nonatomic, assign) char version;
 @property(nonatomic, assign) char onStatus;

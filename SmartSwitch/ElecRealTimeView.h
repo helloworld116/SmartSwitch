@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ElecRealTimeView : UIView
-
+@property(nonatomic, strong) NSMutableArray *powers;
 @end

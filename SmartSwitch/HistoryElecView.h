@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryElecView : UIView
-
+@property(nonatomic, strong) NSArray *data;  //[{@"time":data,@"value":data}]
 @end

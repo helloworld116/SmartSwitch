@@ -180,8 +180,8 @@ typedef struct {
 typedef struct {
   char week;
   unsigned char actionTime[4];
-  char takeEffect;  //是否生效，1表示动作，0表示不动作
-  char actionType;  //动作类型，1表示开，0表示关
+  unsigned char takeEffect;  //是否生效，1表示动作，0表示不动作
+  unsigned char actionType;  //动作类型，1表示开，0表示关
 } timerTask;
 
 // D2P_GET_TIMER_RESP 0x18
@@ -191,7 +191,7 @@ typedef struct {
   unsigned char socketId;
   unsigned char currentTime[4];
   unsigned char timerNumber;
-  timerTask timerList[8];
+  timerTask *timerList;
   unsigned short crc;
 } d2pMsg18;
 
@@ -519,7 +519,8 @@ typedef struct {
   unsigned char mac[6];
   char deviceName[32];
   unsigned char count;
-  socketInfo *socketName;
+  char socket1Name[32];
+  char socket2Name[32];
   unsigned short crc;
 } d2pMsg5E;
 
@@ -742,16 +743,6 @@ typedef struct {
 }
 
 // P2D_GET_TIMER_REQ	0X17
-+ (NSData *)getP2dMsg17 {
-  p2dMsg17 msg;
-  memset(&msg, 0, sizeof(msg));
-  msg.header.msgId = 0x17;
-  msg.header.msgDir = 0xAD;
-  msg.header.msgLength = ntohs(sizeof(msg));
-  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
-  return B2D(msg);
-}
-
 + (NSData *)getP2dMsg17:(int)socketId {
   p2dMsg17 msg;
   memset(&msg, 0, sizeof(msg));
@@ -764,20 +755,6 @@ typedef struct {
 }
 
 // P2S_GET_TIMER_REQ	0X19
-+ (NSData *)getP2SMsg19:(NSString *)mac {
-  p2sMsg19 msg;
-  memset(&msg, 0, sizeof(msg));
-  msg.header.msgLength = ntohs(sizeof(msg));
-  msg.header.msgId = 0x19;
-  msg.header.msgDir = 0xA5;
-  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
-  memcpy(msg.mac, macBytes, sizeof(msg.mac));
-  free(macBytes);
-
-  msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
-  return B2D(msg);
-}
-
 + (NSData *)getP2SMsg19:(NSString *)mac socketId:(int)socketId {
   p2sMsg19 msg;
   memset(&msg, 0, sizeof(msg));
@@ -1299,33 +1276,36 @@ typedef struct {
   return message;
 }
 
+// 00 19 18 da 00 19 94 37 a2 88 02 00 00 0a 6d 01 00 00 00 e2 2c 01 01 f6 d1
 + (CC3xMessage *)parseD2P18:(NSData *)aData {
   CC3xMessage *message = nil;
   d2pMsg18 aMsg;
   [aData getBytes:&aMsg length:sizeof(aMsg)];
   NSUInteger num = aMsg.timerNumber & 0xff;
-  if (num == 0xff || num > 8) {
+  if (num == 0xff) {
     return nil;
   }
   message = [[CC3xMessage alloc] init];
-  NSUInteger size = sizeof(d2pMsg18) + sizeof(timerTask) * num;
+  NSUInteger size =
+      sizeof(d2pMsg18) + sizeof(timerTask) * num - sizeof(aMsg.timerList);
   d2pMsg18 *msg = (d2pMsg18 *)malloc(size);
   [aData getBytes:msg length:size];
   message.currentTime = *(int *)msg->currentTime;
   message.msgId = msg->header.msgId;
   message.msgDir = msg->header.msgDir;
   message.timerTaskNumber = num;
-  message.timerTaskList =
-      [[NSMutableArray alloc] initWithCapacity:message.timerTaskNumber];
+  //  message.timerTaskList =
+  //      [[NSMutableArray alloc] initWithCapacity:message.timerTaskNumber];
+
   for (int i = 0; i < message.timerTaskNumber; i++) {
-    timerTask t = msg->timerList[i];
-    //    CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
-    SDZGTimerTask *task = [[SDZGTimerTask alloc] init];
-    task.week = t.week;
-    charArray2int(t.actionTime, task.actionTime);
-    task.isEffective = t.takeEffect;
-    task.timerActionType = t.actionType;
-    [message.timerTaskList addObject:task];
+    timerTask *t = &(msg->timerList[i]);
+    //    //    CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
+    //    SDZGTimerTask *task = [[SDZGTimerTask alloc] init];
+    //    task.week = t.week;
+    //    charArray2int(t.actionTime, task.actionTime);
+    //    task.isEffective = t.takeEffect;
+    //    task.timerActionType = t.actionType;
+    //    [message.timerTaskList addObject:task];
   }
   message.crc = msg->crc;
   free(msg);
@@ -1344,7 +1324,7 @@ typedef struct {
   if (msg.pulse == 0) {
     message.power = 0;
   } else {
-    message.power = 53035.5f / msg.pulse;
+    message.power = 53035.5f / ntohs(msg.pulse);
   }
   return message;
 }
@@ -1364,7 +1344,7 @@ typedef struct {
   if (msg.pulse == 0) {
     message.power = 0;
   } else {
-    message.power = 53035.5f / msg.pulse;
+    message.power = 53035.5f / ntohs(msg.pulse);
   }
   return message;
 }
@@ -1403,6 +1383,9 @@ typedef struct {
   return message;
 }
 
+// 00 3d 0c da 00 00 19 94 37 a2 ca c0 a8 00 76 dd dd 53 6d 61 72 74 20 53 77 69
+// 74 63 68 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 01 00
+// 1a 17 fd 63 00 00 00 d0 08
 + (CC3xMessage *)parseD2P5E:(NSData *)aData {
   CC3xMessage *message = nil;
   d2pMsg5E msg;
@@ -1417,13 +1400,16 @@ typedef struct {
   message.deviceName = [[NSString alloc] initWithBytes:msg.deviceName
                                                 length:sizeof(msg.deviceName)
                                               encoding:NSUTF8StringEncoding];
-  NSString *socketName = [[NSString alloc] initWithBytes:&msg.socketName
-                                                  length:sizeof(socketInfo)
-                                                encoding:NSUTF8StringEncoding];
-  //  int socketCount = msg.count;
-  //  socketInfo socketName[socketCount];
-  NSLog(@"socket count is %@", socketName);
-  NSLog(@"%ld is", sizeof(*msg.socketName));
+  NSString *socket1Name =
+      [[NSString alloc] initWithBytes:msg.socket1Name
+                               length:sizeof(msg.socket1Name)
+                             encoding:NSUTF8StringEncoding];
+  NSString *socket2Name =
+      [[NSString alloc] initWithBytes:msg.socket2Name
+                               length:sizeof(msg.socket1Name)
+                             encoding:NSUTF8StringEncoding];
+  message.socketNames = @[ socket1Name, socket2Name ];
+  message.crc = msg.crc;
   return message;
 }
 

@@ -10,14 +10,15 @@
 #import "SwitchDataCeneter.h"
 #import "HistoryElecView.h"
 
-@interface HistoryElectricityViewController ()
-@property (strong, nonatomic) IBOutlet HistoryElecView *viewOfHistoryElec;
+@interface HistoryElectricityViewController ()<UdpRequestDelegate>
+@property(strong, nonatomic) IBOutlet HistoryElecView *viewOfHistoryElec;
 //@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
 //@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
 //@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
 //@property (strong, nonatomic) IBOutlet UIView *viewImgContainer;
 
-@property (strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) UdpRequest *request;
 @end
 
 @implementation HistoryElectricityViewController
@@ -37,11 +38,11 @@
   self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
       objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
   self.navigationItem.title = @"历史电量";
-  self.navigationItem.leftBarButtonItem =
-      [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"fh"]
-                                       style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(pop:)];
+  self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+      initWithImage:[UIImage imageNamed:@"fh"]
+              style:UIBarButtonItemStylePlain
+             target:self.navigationController
+             action:@selector(popViewControllerAnimated:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,16 +59,20 @@
   // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillLayoutSubviews {
-  [super viewWillLayoutSubviews];
-}
+//- (void)viewWillLayoutSubviews {
+//  [super viewWillLayoutSubviews];
+//}
 
 - (void)senMsg63 {
-  [[UdpRequest manager] sendMsg63:self.aSwitch
-                        beginTime:1406822400
-                          endTime:1409500799
-                         interval:3600 * 24
-                         sendMode:ActiveMode];
+  if (!self.request) {
+    self.request = [UdpRequest manager];
+    self.request.delegate = self;
+  }
+  [self.request sendMsg63:self.aSwitch
+                beginTime:1406822400
+                  endTime:1409500799
+                 interval:3600 * 24
+                 sendMode:ActiveMode];
 }
 
 /*
@@ -83,8 +88,19 @@ preparation before navigation
 */
 
 #pragma mark - 导航栏事件
-- (void)pop:(id)sender {
-  [self.navigationController popViewControllerAnimated:YES];
-}
+//- (void)pop:(id)sender {
+//  [self.navigationController popViewControllerAnimated:YES];
+//}
 
+#pragma mark - UdpRequestDelegate
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    case 0x64:
+
+      break;
+
+    default:
+      break;
+  }
+}
 @end

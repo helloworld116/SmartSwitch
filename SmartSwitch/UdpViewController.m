@@ -444,6 +444,8 @@
   } else {
     aSwitch.sockets = [@[] mutableCopy];
   }
+  aSwitch.lockStatus = LockStatusOn;
+
   SDZGSocket *socket1 = [[SDZGSocket alloc] init];
   socket1.socketId = 1;
   socket1.socketStatus = SocketStatusOn;

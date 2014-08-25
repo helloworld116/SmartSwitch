@@ -67,43 +67,6 @@ static CC3xUtility *_sharedObj = nil;
   [CC3xUtility setReceiveFilterForSocket:socket];
 }
 
-+ (uint16_t)setupUdpSocket:(GCDAsyncUdpSocket *)socket {
-  NSError *error = nil;
-
-  if (![socket enableBroadcast:YES error:&error]) {
-    NSLog(@"Error starting server (enableBroadcast): %@", error);
-  }
-
-  int port = [CC3xUtility socketBindPort:socket port:APP_PORT_MIN error:error];
-
-  if (![socket beginReceiving:&error]) {
-    [socket close];
-
-    NSLog(@"Error starting server (recv): %@", error);
-    return 0;
-  }
-
-  [CC3xUtility setReceiveFilterForSocket:socket];
-  return port;
-}
-
-+ (uint16_t)socketBindPort:(GCDAsyncUdpSocket *)socket
-                      port:(uint16_t)port
-                     error:(NSError *)error {
-  uint16_t availablePort = 0;
-  while (port <= APP_PORT_MAX) {
-    if ([socket bindToPort:port error:&error]) {
-      availablePort = port;
-      break;
-    } else {
-      port += 1;
-      [CC3xUtility socketBindPort:socket port:port error:error];
-    }
-  }
-  return availablePort;
-}
-
-//
 + (void)setReceiveFilterForSocket:(GCDAsyncUdpSocket *)socket {
   dispatch_queue_t filterQueue =
       dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

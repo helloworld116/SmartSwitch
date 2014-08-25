@@ -12,6 +12,7 @@
 // typedef BOOL delayAction;
 // typedef BOOL socketStatus;
 // typedef BOOL actionType;
+// TODO:修改状态只包含SWITCH_LOCAL、SWITCH_REMOTE、SWITCH_OFFLINE
 typedef NS_OPTIONS(NSUInteger, SwitchStatus) {
     SWITCH_UNKNOWN, SWITCH_LOCAL,       SWITCH_LOCAL_LOCK, SWITCH_OFFLINE,
     SWITCH_REMOTE,  SWITCH_REMOTE_LOCK, SWITCH_NEW,

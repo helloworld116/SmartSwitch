@@ -84,25 +84,25 @@
 //                  timerList:nil
 //                  imageName:nil];
 //}
-
-- (UIImage *)getImageByImageName:(NSString *)imageName {
-  UIImage *image;
-  NSArray *imageNames = [kTemplatePicDict allValues];
-  for (NSString *name in imageNames) {
-    if ([imageName isEqualToString:name]) {
-      image = [UIImage imageNamed:name];
-      break;
-    }
-  }
-  if (image) {
-    return image;
-  } else {
-    NSString *imagePath =
-        [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
-            stringByAppendingPathComponent:imageName];
-    image = [UIImage imageWithContentsOfFile:imagePath];
-    return image;
-  }
-}
+//
+//- (UIImage *)getImageByImageName:(NSString *)imageName {
+//  UIImage *image;
+//  NSArray *imageNames = [kTemplatePicDict allValues];
+//  for (NSString *name in imageNames) {
+//    if ([imageName isEqualToString:name]) {
+//      image = [UIImage imageNamed:name];
+//      break;
+//    }
+//  }
+//  if (image) {
+//    return image;
+//  } else {
+//    NSString *imagePath =
+//        [[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"]
+//            stringByAppendingPathComponent:imageName];
+//    image = [UIImage imageWithContentsOfFile:imagePath];
+//    return image;
+//  }
+//}
 
 @end

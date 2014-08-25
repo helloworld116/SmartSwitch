@@ -765,11 +765,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg0B:aSwitch sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg0D:aSwitch sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -788,11 +788,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg11WithSwitch:aSwitch socketId:socketId sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg13WithSwitch:aSwitch socketId:socketId sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -811,11 +811,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg17WithSwitch:aSwitch socketId:socketId sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg19WithSwitch:aSwitch socketId:socketId sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -835,14 +835,14 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg1DWithSwitch:aSwitch
                            socketId:socketId
                            timeList:timeList
                            sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg1FWithSwitch:aSwitch
                            socketId:socketId
                            timeList:timeList
@@ -891,11 +891,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg33WithSwitch:aSwitch sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg35WithSwitch:aSwitch sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -914,11 +914,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg39WithSwitch:aSwitch on:on sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg3BWithSwitch:aSwitch on:on sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -938,11 +938,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg3FWithSwitch:aSwitch type:type name:name sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg41WithSwitch:aSwitch type:type name:name sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -959,11 +959,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg47WithSwitch:aSwitch sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg49WithSwitch:aSwitch sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -984,15 +984,15 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg4DWithSwitch:aSwitch
                            socketId:socketId
                           delayTime:delayTime
                            switchOn:on
                            sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg4FWithSwitch:aSwitch
                            socketId:socketId
                           delayTime:delayTime
@@ -1019,11 +1019,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg53WithSwitch:aSwitch socketId:socketId sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg55WithSwitch:aSwitch socketId:socketId sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {
@@ -1040,11 +1040,11 @@
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == ReachableViaWiFi) {
         //根据不同的网络环境，发送 本地/远程 消息
-        if (aSwitch.switchStatus == SWITCH_LOCAL ||
-            aSwitch.switchStatus == SWITCH_LOCAL_LOCK) {
+        if (aSwitch.networkStatus == SWITCH_LOCAL ||
+            aSwitch.networkStatus == SWITCH_LOCAL_LOCK) {
           [self sendMsg5DWithSwitch:aSwitch sendMode:mode];
-        } else if (aSwitch.switchStatus == SWITCH_REMOTE ||
-                   aSwitch.switchStatus == SWITCH_REMOTE_LOCK) {
+        } else if (aSwitch.networkStatus == SWITCH_REMOTE ||
+                   aSwitch.networkStatus == SWITCH_REMOTE_LOCK) {
           [self sendMsg5FWithSwitch:aSwitch sendMode:mode];
         }
       } else if (kSharedAppliction.networkStatus == ReachableViaWWAN) {

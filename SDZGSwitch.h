@@ -33,7 +33,7 @@ typedef NS_OPTIONS(NSUInteger, LockStatus) {
 
 @interface SDZGSwitch : NSObject
 @property(nonatomic, strong) NSString *name;
-@property(nonatomic, assign) SwitchStatus switchStatus;
+@property(nonatomic, assign) SwitchStatus networkStatus;
 @property(nonatomic, strong) NSString *mac;
 @property(nonatomic, strong) NSString *ip;
 @property(nonatomic, assign) unsigned short port;

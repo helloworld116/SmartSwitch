@@ -423,22 +423,22 @@
   aSwitch.name = message.deviceName;
   aSwitch.version = message.version;
   aSwitch.password = nil;
-  if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
+  if (message.msgId == 0xc && aSwitch.networkStatus != SWITCH_NEW) {
     if (aSwitch.lockStatus == LockStatusOn) {
-      aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
+      aSwitch.networkStatus = SWITCH_LOCAL_LOCK;
     } else {
-      aSwitch.switchStatus = SWITCH_LOCAL;
+      aSwitch.networkStatus = SWITCH_LOCAL;
     }
-  } else if (message.msgId == 0xe && aSwitch.switchStatus != SWITCH_NEW &&
-             (aSwitch.switchStatus == SWITCH_UNKNOWN ||
-              aSwitch.switchStatus == SWITCH_OFFLINE)) {
+  } else if (message.msgId == 0xe && aSwitch.networkStatus != SWITCH_NEW &&
+             (aSwitch.networkStatus == SWITCH_UNKNOWN ||
+              aSwitch.networkStatus == SWITCH_OFFLINE)) {
     if (aSwitch.lockStatus == LockStatusOn) {
-      aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
+      aSwitch.networkStatus = SWITCH_REMOTE_LOCK;
     } else {
-      aSwitch.switchStatus = SWITCH_REMOTE;
+      aSwitch.networkStatus = SWITCH_REMOTE;
     }
-  } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
-    aSwitch.switchStatus = SWITCH_OFFLINE;
+  } else if (aSwitch.networkStatus == SWITCH_UNKNOWN) {
+    aSwitch.networkStatus = SWITCH_OFFLINE;
   }
   if (aSwitch.sockets) {
   } else {

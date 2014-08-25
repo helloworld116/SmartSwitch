@@ -1364,7 +1364,7 @@
                                                             <constraint firstAttribute="centerY" secondItem="uSq-XE-unG" secondAttribute="centerY" id="yN8-Mq-fzG"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="34d-B2-qFn" userLabel="4">
+                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="34d-B2-qFn" userLabel="4">
                                                         <rect key="frame" x="0.0" y="123" width="60" height="41"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
@@ -1392,11 +1392,11 @@
                                                             <constraint firstItem="9Jm-SQ-ehO" firstAttribute="leading" secondItem="34d-B2-qFn" secondAttribute="leading" constant="-3" id="yTa-Qt-Smx"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YO3-L0-KTu" userLabel="5">
+                                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YO3-L0-KTu" userLabel="5">
                                                         <rect key="frame" x="0.0" y="164" width="60" height="41"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dc05" translatesAutoresizingMaskIntoConstraints="NO" id="nT1-Cy-Ldc">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="dc05" translatesAutoresizingMaskIntoConstraints="NO" id="nT1-Cy-Ldc">
                                                                 <rect key="frame" x="-3" y="8" width="25" height="25"/>
                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                 <constraints>
@@ -1404,7 +1404,7 @@
                                                                     <constraint firstAttribute="height" constant="25" id="U3C-Uk-VnV"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGV-qY-Rrc">
+                                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="30000w" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CGV-qY-Rrc">
                                                                 <rect key="frame" x="17" y="18" width="44" height="15"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>

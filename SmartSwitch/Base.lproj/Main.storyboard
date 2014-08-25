@@ -568,11 +568,35 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timesep" translatesAutoresizingMaskIntoConstraints="NO" id="T5N-gP-tAP">
-                                                        <rect key="frame" x="58" y="126" width="7" height="12"/>
+                                                        <rect key="frame" x="59" y="126" width="7" height="12"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timesep" translatesAutoresizingMaskIntoConstraints="NO" id="CLu-aW-BzF">
-                                                        <rect key="frame" x="92" y="126" width="7" height="12"/>
+                                                        <rect key="frame" x="94" y="126" width="7" height="12"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="n1U-yB-jEb">
+                                                        <rect key="frame" x="34" y="123" width="11" height="18"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="ztp-X9-eMy">
+                                                        <rect key="frame" x="45" y="123" width="11" height="18"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="2bJ-1L-84H">
+                                                        <rect key="frame" x="69" y="123" width="11" height="18"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-fA-VcZ">
+                                                        <rect key="frame" x="80" y="123" width="11" height="18"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-g8-AV0">
+                                                        <rect key="frame" x="104" y="123" width="11" height="18"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="lyo-4z-8kh">
+                                                        <rect key="frame" x="115" y="123" width="11" height="18"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timebg" translatesAutoresizingMaskIntoConstraints="NO" id="nQE-mR-79I">
@@ -588,35 +612,11 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timesep" translatesAutoresizingMaskIntoConstraints="NO" id="zL9-XS-2YF">
-                                                        <rect key="frame" x="58" y="172" width="7" height="12"/>
+                                                        <rect key="frame" x="59" y="172" width="7" height="12"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="timesep" translatesAutoresizingMaskIntoConstraints="NO" id="KWx-pO-g3p">
-                                                        <rect key="frame" x="92" y="172" width="7" height="12"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="n1U-yB-jEb">
-                                                        <rect key="frame" x="34" y="123" width="11" height="18"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="ztp-X9-eMy">
-                                                        <rect key="frame" x="45" y="123" width="11" height="18"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="2bJ-1L-84H">
-                                                        <rect key="frame" x="68" y="123" width="11" height="18"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="YdZ-fA-VcZ">
-                                                        <rect key="frame" x="79" y="123" width="11" height="18"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-g8-AV0">
-                                                        <rect key="frame" x="102" y="123" width="11" height="18"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    </imageView>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="lyo-4z-8kh">
-                                                        <rect key="frame" x="113" y="123" width="11" height="18"/>
+                                                        <rect key="frame" x="94" y="172" width="7" height="12"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="og6-nj-O2y">
@@ -628,19 +628,19 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Qop-xp-eai">
-                                                        <rect key="frame" x="68" y="169" width="11" height="18"/>
+                                                        <rect key="frame" x="69" y="169" width="11" height="18"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="kqS-IL-ebi">
-                                                        <rect key="frame" x="79" y="169" width="11" height="18"/>
+                                                        <rect key="frame" x="80" y="169" width="11" height="18"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="zgv-Cd-S9K">
-                                                        <rect key="frame" x="102" y="169" width="11" height="18"/>
+                                                        <rect key="frame" x="104" y="169" width="11" height="18"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="9" translatesAutoresizingMaskIntoConstraints="NO" id="mUG-gz-wkC">
-                                                        <rect key="frame" x="113" y="169" width="11" height="18"/>
+                                                        <rect key="frame" x="115" y="169" width="11" height="18"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     </imageView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jcbj" translatesAutoresizingMaskIntoConstraints="NO" id="7Ye-OJ-Whg">
@@ -658,14 +658,14 @@
                                                     <constraint firstItem="og6-nj-O2y" firstAttribute="top" secondItem="7LC-wN-q99" secondAttribute="bottom" constant="22" id="8Dz-Vv-hKq"/>
                                                     <constraint firstItem="RHc-g8-AV0" firstAttribute="top" secondItem="dBz-43-xRk" secondAttribute="bottom" constant="98" id="8Iw-aI-B96"/>
                                                     <constraint firstItem="YdZ-fA-VcZ" firstAttribute="top" secondItem="dth-L7-IHt" secondAttribute="bottom" constant="20" id="8OL-3i-Mtw"/>
-                                                    <constraint firstItem="zL9-XS-2YF" firstAttribute="leading" secondItem="epq-xJ-5z9" secondAttribute="trailing" constant="2" id="ANK-xI-EiW"/>
+                                                    <constraint firstItem="zL9-XS-2YF" firstAttribute="leading" secondItem="epq-xJ-5z9" secondAttribute="trailing" constant="3" id="ANK-xI-EiW"/>
                                                     <constraint firstItem="T5N-gP-tAP" firstAttribute="top" secondItem="dth-L7-IHt" secondAttribute="bottom" constant="23" id="BIU-Ls-TIm"/>
                                                     <constraint firstItem="fQo-0n-6hC" firstAttribute="top" secondItem="u89-sO-zWz" secondAttribute="bottom" constant="16" id="DgM-Rj-M1P"/>
                                                     <constraint firstItem="Skq-y5-mKS" firstAttribute="top" secondItem="dBz-43-xRk" secondAttribute="bottom" constant="90" id="Dl5-xn-ygY"/>
                                                     <constraint firstItem="n1U-yB-jEb" firstAttribute="leading" secondItem="Skq-y5-mKS" secondAttribute="trailing" constant="10" id="DvQ-lF-YTX"/>
                                                     <constraint firstItem="nQE-mR-79I" firstAttribute="leading" secondItem="DZn-Rb-Vuf" secondAttribute="trailing" constant="6" id="ESS-jQ-tMY"/>
                                                     <constraint firstItem="ztp-X9-eMy" firstAttribute="leading" secondItem="Skq-y5-mKS" secondAttribute="trailing" constant="21" id="GYH-yn-Q7N"/>
-                                                    <constraint firstItem="T5N-gP-tAP" firstAttribute="leading" secondItem="ztp-X9-eMy" secondAttribute="trailing" constant="2" id="IMC-c5-cNK"/>
+                                                    <constraint firstItem="T5N-gP-tAP" firstAttribute="leading" secondItem="ztp-X9-eMy" secondAttribute="trailing" constant="3" id="IMC-c5-cNK"/>
                                                     <constraint firstItem="dth-L7-IHt" firstAttribute="top" secondItem="dBz-43-xRk" secondAttribute="bottom" constant="8" id="IO8-tV-4Af"/>
                                                     <constraint firstItem="lyo-4z-8kh" firstAttribute="leading" secondItem="CLu-aW-BzF" secondAttribute="trailing" constant="14" id="JAN-IP-H7u"/>
                                                     <constraint firstItem="7LC-wN-q99" firstAttribute="top" secondItem="dth-L7-IHt" secondAttribute="bottom" constant="14" id="KLE-q2-5na"/>
@@ -677,7 +677,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="7Ye-OJ-Whg" secondAttribute="trailing" id="QTK-fy-Tcv"/>
                                                     <constraint firstItem="ztp-X9-eMy" firstAttribute="top" secondItem="dth-L7-IHt" secondAttribute="bottom" constant="20" id="TdH-eR-WAU"/>
                                                     <constraint firstItem="7Ye-OJ-Whg" firstAttribute="top" secondItem="2GP-yt-w6K" secondAttribute="top" constant="24" id="Vkc-Ex-Lr5"/>
-                                                    <constraint firstItem="KWx-pO-g3p" firstAttribute="leading" secondItem="kqS-IL-ebi" secondAttribute="trailing" constant="2" id="WaO-Sa-Dii"/>
+                                                    <constraint firstItem="KWx-pO-g3p" firstAttribute="leading" secondItem="kqS-IL-ebi" secondAttribute="trailing" constant="3" id="WaO-Sa-Dii"/>
                                                     <constraint firstItem="Skq-y5-mKS" firstAttribute="leading" secondItem="2GP-yt-w6K" secondAttribute="leading" constant="10" id="YY9-fd-DM7"/>
                                                     <constraint firstItem="Ycs-EL-OCr" firstAttribute="leading" secondItem="7LC-wN-q99" secondAttribute="trailing" constant="5" id="ZPD-Oj-lRd"/>
                                                     <constraint firstItem="epq-xJ-5z9" firstAttribute="top" secondItem="7LC-wN-q99" secondAttribute="bottom" constant="22" id="ZSG-ID-Dbj"/>
@@ -697,7 +697,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="7Ye-OJ-Whg" secondAttribute="bottom" id="hvv-tX-Z8q"/>
                                                     <constraint firstItem="GGY-hg-Rki" firstAttribute="leading" secondItem="nQE-mR-79I" secondAttribute="trailing" constant="5" id="iIc-RG-Flm"/>
                                                     <constraint firstItem="2bJ-1L-84H" firstAttribute="top" secondItem="dth-L7-IHt" secondAttribute="bottom" constant="20" id="iJp-6F-DPD"/>
-                                                    <constraint firstItem="CLu-aW-BzF" firstAttribute="leading" secondItem="YdZ-fA-VcZ" secondAttribute="trailing" constant="2" id="j7d-fp-TEv"/>
+                                                    <constraint firstItem="CLu-aW-BzF" firstAttribute="leading" secondItem="YdZ-fA-VcZ" secondAttribute="trailing" constant="3" id="j7d-fp-TEv"/>
                                                     <constraint firstItem="kqS-IL-ebi" firstAttribute="leading" secondItem="zL9-XS-2YF" secondAttribute="trailing" constant="14" id="l0G-yu-Ba6"/>
                                                     <constraint firstItem="u89-sO-zWz" firstAttribute="leading" secondItem="Ycs-EL-OCr" secondAttribute="trailing" constant="5" id="m06-4v-HkU"/>
                                                     <constraint firstAttribute="trailing" secondItem="dBz-43-xRk" secondAttribute="trailing" id="nYX-1N-Yuc"/>
@@ -801,6 +801,7 @@
                     <connections>
                         <outlet property="contentView" destination="X0i-ly-34M" id="Ghg-A3-QpH"/>
                         <outlet property="scrollView" destination="eYE-lq-XB3" id="xvQ-yN-hf1"/>
+                        <outlet property="viewOfElecRealTime" destination="QnH-tk-UVo" id="yc0-fX-D7z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fbK-3w-s9W" userLabel="First Responder" sceneMemberID="firstResponder"/>

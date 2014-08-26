@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <NSDate+Calendar.h>
+
+@protocol HistoryElecViewDelegate<NSObject>
+- (void)currentYear:(int)year
+      selectedMonth:(int)selectedMonth
+           startDay:(int)startDay
+             endDay:(int)endDay;
+@end
 
 @interface HistoryElecView : UIView
+@property(nonatomic, assign) id<HistoryElecViewDelegate> delegate;
 @property(nonatomic, strong) NSArray *data;  //[{@"time":data,@"value":data}]
 @end

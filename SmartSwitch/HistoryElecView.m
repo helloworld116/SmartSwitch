@@ -8,7 +8,6 @@
 
 #import "HistoryElecView.h"
 #import <PNChart.h>
-#import <NSDate+Calendar.h>
 #define kBarWidth 25
 #define kHistroryElecAnnimationInterval 0.3
 
@@ -35,6 +34,7 @@
 @property(strong, nonatomic) NSMutableArray *times;
 @property(strong, nonatomic) NSMutableArray *values;
 
+@property(assign, nonatomic) int currentYear;   //当前年
 @property(assign, nonatomic) int currentMonth;  //当前月
 @property(assign, nonatomic) int currentDay;    //当前日
 
@@ -59,6 +59,7 @@
 
   //默认选中今天
   NSDate *currentDate = [NSDate date];
+  self.currentYear = [currentDate year];
   self.currentDay = [currentDate day];
   self.currentMonth = [currentDate month];
   self.selectedDay = self.currentDay;
@@ -275,6 +276,9 @@
                        self.btnDay.selected = NO;
                        self.scrollViewDay.hidden = YES;
                    }];
+  NSDate *date = [[NSDate date] dateBySettingMonth:self.selectedMonth];
+  NSDateComponents *lastDayInMonth = [[date dateMonthEnd] dateComponentsDate];
+  [self sendParam:1 endDay:lastDayInMonth.day];
 }
 
 - (IBAction)selectDay:(id)sender {
@@ -284,6 +288,7 @@
                        self.btnMonth.selected = NO;
                        self.scrollViewDay.hidden = NO;
                    }];
+  [self sendParam:self.selectedDay endDay:self.selectedDay];
 }
 
 - (IBAction)goPre:(id)sender {
@@ -329,6 +334,7 @@
                          self.btnSelectedDay = btn;
                      }];
   }
+  [self sendParam:self.selectedDay endDay:self.selectedDay];
 }
 
 //选中某个具体的月
@@ -360,11 +366,30 @@
                          self.btnSelectedMonth = btn;
                      }];
   }
+  int startDay, endDay;
   //判断日是否显示
-  if (self.btnSelectedDay.selected) {
+  if (self.btnDay.selected) {
     //查询时间为某月某日
+    startDay = self.selectedDay;
+    endDay = self.selectedDay;
   } else {
     //查询时间为某月
+    startDay = 1;
+    endDay = lastDayInMonth.day;
+  }
+  [self sendParam:startDay endDay:endDay];
+}
+
+- (void)sendParam:(int)startDay endDay:(int)endDay {
+  if ([self.delegate respondsToSelector:@selector(currentYear:
+                                                selectedMonth:
+                                                     startDay:
+                                                       endDay:)]) {
+    [self.delegate currentYear:self.currentYear
+                 selectedMonth:self.selectedMonth
+                      startDay:startDay
+                        endDay:endDay];
   }
 }
+
 @end

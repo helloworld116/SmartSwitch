@@ -53,7 +53,7 @@
   if ([self.expandCellDelegate
           respondsToSelector:@selector(socketAction:socketId:)]) {
     UIButton *btn = (UIButton *)sender;
-    int socketId = btn.tag - 1000;
+    int socketId = btn.tag - 1000;  //按钮的tag已设置为1001和1002
     [self.expandCellDelegate socketAction:self socketId:socketId];
   }
 }

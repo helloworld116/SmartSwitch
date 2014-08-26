@@ -97,15 +97,26 @@
   self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
       objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
   self.powers = [@[] mutableCopy];
-  // TODO:设置默认值
-  self.aSwitch.sockets;
-  [self.viewSocket1 socketId:1 socketName:@"" status:0 timer:0 delay:0];
+  // TODO: 名称从数据库中取
+  SDZGSocket *socket1 = [self.aSwitch.sockets objectAtIndex:0];
+  [self.viewSocket1 socketId:socket1.socketId
+                  socketName:socket1.name
+                      status:socket1.socketStatus
+                       timer:0
+                       delay:0];
   self.viewSocket1.delegate = self;
-  [self.viewSocket2 socketId:2 socketName:@"" status:0 timer:0 delay:0];
+
+  SDZGSocket *socket2 = [self.aSwitch.sockets objectAtIndex:1];
+  [self.viewSocket2 socketId:socket2.socketId
+                  socketName:socket2.name
+                      status:socket2.socketStatus
+                       timer:0
+                       delay:0];
   self.viewSocket2.delegate = self;
 }
 
 - (void)firstSend {
+  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
   //  dispatch_queue_t queue =
   //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
 
@@ -169,88 +180,6 @@
     [self.timerElec invalidate];
     self.timerElec = nil;
   }
-}
-
-#pragma mark - 发送UDP
-//开关状态
-- (void)sendMsg0BOr0D {
-  if (!self.request0BOr0D) {
-    self.request0BOr0D = [UdpRequest manager];
-    self.request0BOr0D.delegate = self;
-  }
-  [self.request0BOr0D sendMsg0BOr0D:self.aSwitch sendMode:ActiveMode];
-}
-
-//控制插孔开关
-- (void)sendMsg11Or13:(int)socketId {
-  if (!self.request11Or13) {
-    self.request11Or13 = [UdpRequest manager];
-    self.request11Or13.delegate = self;
-  }
-  [self.request11Or13 sendMsg11Or13:self.aSwitch
-                           socketId:1
-                           sendMode:ActiveMode];
-}
-
-//定时列表
-- (void)send17Or19 {
-  // TODO:修复
-  //  dispatch_queue_t queue =
-  //      dispatch_queue_create("timer.com.itouchco.www",
-  //      DISPATCH_QUEUE_SERIAL);
-  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
-  //    dispatch_async(queue, ^{
-  //        self.request17Or19 = [UdpRequest manager];
-  //        self.request17Or19.delegate = self;
-  //        [self.request17Or19 sendMsg17Or19:self.aSwitch
-  //                                 socketId:socket.socketId
-  //                                 sendMode:ActiveMode];
-  //        //        [NSThread sleepForTimeInterval:0.5];
-  //    });
-  //  }
-  self.request17Or19 = [UdpRequest manager];
-  self.request17Or19.delegate = self;
-  [self.request17Or19 sendMsg17Or19:self.aSwitch
-                           socketId:2
-                           sendMode:ActiveMode];
-}
-
-//实时电量
-- (void)sendMsg33Or35 {
-  if (!self.request33Or35) {
-    self.request33Or35 = [UdpRequest manager];
-    self.request33Or35.delegate = self;
-  }
-  [self.request33Or35 sendMsg33Or35:self.aSwitch sendMode:ActiveMode];
-}
-
-//延时任务
-- (void)send53Or55 {
-  // TODO: 修改
-  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
-  //    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
-  //                                                   DISPATCH_QUEUE_CONCURRENT);
-  //    dispatch_barrier_async(queue, ^{
-  //        self.request53Or55 = [UdpRequest manager];
-  //        self.request53Or55.delegate = self;
-  //        [self.request53Or55 sendMsg53Or55:self.aSwitch
-  //                                 socketId:socket.socketId
-  //                                 sendMode:ActiveMode];
-  //        [NSThread sleepForTimeInterval:0.5];
-  //    });
-  //  }
-  self.request53Or55 = [UdpRequest manager];
-  self.request53Or55.delegate = self;
-  [self.request53Or55 sendMsg53Or55:self.aSwitch
-                           socketId:1
-                           sendMode:ActiveMode];
-}
-
-//查询设备名称
-- (void)send5DOr5F {
-  self.request5DOr5F = [UdpRequest manager];
-  self.request5DOr5F.delegate = self;
-  [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
 }
 
 /*
@@ -370,8 +299,89 @@ preparation before navigation
                 (EGORefreshTableHeaderView *)view {
   return [NSDate date];  // should return date data source was last changed
 }
+#pragma mark - 发送UDP
+//开关状态
+- (void)sendMsg0BOr0D {
+  if (!self.request0BOr0D) {
+    self.request0BOr0D = [UdpRequest manager];
+    self.request0BOr0D.delegate = self;
+  }
+  [self.request0BOr0D sendMsg0BOr0D:self.aSwitch sendMode:ActiveMode];
+}
 
-#pragma mark - UdpRequestDelegate
+//控制插孔开关
+- (void)sendMsg11Or13:(int)socketId {
+  if (!self.request11Or13) {
+    self.request11Or13 = [UdpRequest manager];
+    self.request11Or13.delegate = self;
+  }
+  [self.request11Or13 sendMsg11Or13:self.aSwitch
+                           socketId:socketId
+                           sendMode:ActiveMode];
+}
+
+//定时列表
+- (void)send17Or19 {
+  // TODO:修复
+  //  dispatch_queue_t queue =
+  //      dispatch_queue_create("timer.com.itouchco.www",
+  //      DISPATCH_QUEUE_SERIAL);
+  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
+  //    dispatch_async(queue, ^{
+  //        self.request17Or19 = [UdpRequest manager];
+  //        self.request17Or19.delegate = self;
+  //        [self.request17Or19 sendMsg17Or19:self.aSwitch
+  //                                 socketId:socket.socketId
+  //                                 sendMode:ActiveMode];
+  //        //        [NSThread sleepForTimeInterval:0.5];
+  //    });
+  //  }
+  self.request17Or19 = [UdpRequest manager];
+  self.request17Or19.delegate = self;
+  [self.request17Or19 sendMsg17Or19:self.aSwitch
+                           socketId:2
+                           sendMode:ActiveMode];
+}
+
+//实时电量
+- (void)sendMsg33Or35 {
+  if (!self.request33Or35) {
+    self.request33Or35 = [UdpRequest manager];
+    self.request33Or35.delegate = self;
+  }
+  [self.request33Or35 sendMsg33Or35:self.aSwitch sendMode:ActiveMode];
+}
+
+//延时任务
+- (void)send53Or55 {
+  // TODO: 修改
+  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
+  //    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
+  //                                                   DISPATCH_QUEUE_CONCURRENT);
+  //    dispatch_barrier_async(queue, ^{
+  //        self.request53Or55 = [UdpRequest manager];
+  //        self.request53Or55.delegate = self;
+  //        [self.request53Or55 sendMsg53Or55:self.aSwitch
+  //                                 socketId:socket.socketId
+  //                                 sendMode:ActiveMode];
+  //        [NSThread sleepForTimeInterval:0.5];
+  //    });
+  //  }
+  self.request53Or55 = [UdpRequest manager];
+  self.request53Or55.delegate = self;
+  [self.request53Or55 sendMsg53Or55:self.aSwitch
+                           socketId:1
+                           sendMode:ActiveMode];
+}
+
+//查询设备名称
+- (void)send5DOr5F {
+  self.request5DOr5F = [UdpRequest manager];
+  self.request5DOr5F.delegate = self;
+  [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
+}
+
+#pragma mark - UdpRequestDelegate UDP响应
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
   switch (message.msgId) {
     case 0xc:
@@ -381,6 +391,7 @@ preparation before navigation
       break;
     case 0x12:
     case 0x14:
+      [self responseMsg12Or14:message];
       break;
     case 0x18:
     case 0x1a:
@@ -435,7 +446,25 @@ preparation before navigation
   }
 }
 
-#pragma mark - SocketViewDelegate
+- (void)responseMsg12Or14:(CC3xMessage *)message {
+  if (message.state == 0) {
+    SDZGSocket *socket =
+        [self.aSwitch.sockets objectAtIndex:(message.socketId - 1)];
+    socket.socketStatus = !socket.socketStatus;
+    switch (message.socketId) {
+      case 1:
+        [self.viewSocket1 setSocketStatus:socket.socketStatus];
+        break;
+      case 2:
+        [self.viewSocket2 setSocketStatus:socket.socketStatus];
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+#pragma mark - SocketViewDelegate SocketView事件
 - (void)socketTimer:(int)socketId {
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerViewController"];
@@ -449,5 +478,6 @@ preparation before navigation
 }
 
 - (void)socketChangeStatus:(int)socketId {
+  [self sendMsg11Or13:socketId];
 }
 @end

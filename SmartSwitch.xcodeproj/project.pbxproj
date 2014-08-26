@@ -42,6 +42,7 @@
 		152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */; };
 		156CB953199DE70D007A9C35 /* SwitchInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */; };
 		156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB955199DF84A007A9C35 /* WelcomeViewController.m */; };
+		1578096D19AC643C00F106FF /* HistoryElec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1578096C19AC643C00F106FF /* HistoryElec.m */; };
 		1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */; };
 		1587F4351991DB6F0061EB86 /* AddSwitchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F4341991DB6F0061EB86 /* AddSwitchViewController.m */; };
 		1587F439199208570061EB86 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1587F438199208570061EB86 /* HelpViewController.m */; };
@@ -156,6 +157,8 @@
 		156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchInfoViewController.m; sourceTree = "<group>"; };
 		156CB954199DF84A007A9C35 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		156CB955199DF84A007A9C35 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
+		1578096B19AC643C00F106FF /* HistoryElec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElec.h; sourceTree = "<group>"; };
+		1578096C19AC643C00F106FF /* HistoryElec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElec.m; sourceTree = "<group>"; };
 		1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDZGSidePanelController.h; sourceTree = "<group>"; };
 		1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDZGSidePanelController.m; sourceTree = "<group>"; };
 		1587F4331991DB6F0061EB86 /* AddSwitchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSwitchViewController.h; sourceTree = "<group>"; };
@@ -556,6 +559,8 @@
 				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
 				47C07AF719AB7ECE00941CBD /* DB.h */,
 				47C07AF819AB7ECE00941CBD /* DB.m */,
+				1578096B19AC643C00F106FF /* HistoryElec.h */,
+				1578096C19AC643C00F106FF /* HistoryElec.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -729,6 +734,7 @@
 				15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */,
 				150B315D19A5F0B0005794F3 /* UdpPort.m in Sources */,
 				152952B3199089B100924FC3 /* CRC.c in Sources */,
+				1578096D19AC643C00F106FF /* HistoryElec.m in Sources */,
 				15295269199071EF00924FC3 /* main.m in Sources */,
 				152952C919908B7200924FC3 /* UdpSocketUtil.m in Sources */,
 				1587F44C199225EF0061EB86 /* AddSenceViewController.m in Sources */,

@@ -15,6 +15,7 @@
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
                               SwitchListCellDelegate, SwitchExpandCellDelegate,
                               EGORefreshTableHeaderDelegate>
+@property(strong, nonatomic) NSArray *switchs;
 @property(assign, nonatomic) BOOL isOpen;  //是否展开
 @property(strong, nonatomic)
     NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
@@ -51,18 +52,20 @@
 #pragma mark - NotificationCenter
 - (void)switchUpdate:(NSNotification *)notification {
   if (notification.object == [SwitchDataCeneter sharedInstance]) {
+    self.switchs = [SwitchDataCeneter sharedInstance].switchs;
     NSDictionary *userInfo = [notification userInfo];
     NSString *mac = userInfo[@"mac"];
     int type = [userInfo[@"type"] intValue];
     if (type == 1) {
+      //新增
       dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
     } else {
       for (SwitchListCell *visibleCell in self.visibleCells) {
         int row = [self indexPathForCell:visibleCell].row;
-        SDZGSwitch *aSwitch =
-            [[SwitchDataCeneter sharedInstance].switchs objectAtIndex:row];
+        SDZGSwitch *aSwitch = [self.switchs objectAtIndex:row];
         if ([aSwitch.mac isEqualToString:mac]) {
           NSIndexPath *indexPath = [self indexPathForCell:visibleCell];
+          debugLog(@"indexPath row is %d", indexPath.row);
           if (indexPath) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self beginUpdates];
@@ -91,7 +94,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return [[SwitchDataCeneter sharedInstance].switchs count];
+  return [self.switchs count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -99,8 +102,7 @@
   static NSString *CellId = @"SwitchListCell";
   static NSString *cellForExpandId = @"SwitchExpandCell";
   SwitchListCell *cell;
-  SDZGSwitch *aSwitch =
-      [[SwitchDataCeneter sharedInstance].switchs objectAtIndex:indexPath.row];
+  SDZGSwitch *aSwitch = [self.switchs objectAtIndex:indexPath.row];
   if (self.selectedIndexPath && indexPath.row == self.selectedIndexPath.row &&
       self.isOpen) {
     SwitchExpandCell *expandCell = (SwitchExpandCell *)
@@ -181,8 +183,7 @@
           respondsToSelector:@selector(socketAction:socketId:)]) {
     NSIndexPath *indexPath = [self indexPathForCell:cell];
     if (indexPath) {
-      SDZGSwitch *aSwitch = [[SwitchDataCeneter sharedInstance].switchs
-          objectAtIndex:indexPath.row];
+      SDZGSwitch *aSwitch = [self.switchs objectAtIndex:indexPath.row];
       [self.switchTableViewDelegate socketAction:aSwitch socketId:socketId];
     }
   }

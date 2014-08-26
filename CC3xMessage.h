@@ -133,7 +133,7 @@ enum {
 @property(nonatomic, strong) NSString *mac;
 @property(nonatomic, strong) NSString *ip;
 @property(nonatomic, assign) unsigned short port;
-@property(nonatomic, assign) int socketId;
+@property(nonatomic, assign) int socketId;  //当前操作的socket的id
 
 @property(nonatomic, strong) NSString *deviceName;
 @property(nonatomic, strong) NSArray *socketNames;
@@ -143,11 +143,14 @@ enum {
 @property(nonatomic, assign) char lockStatus;
 @property(nonatomic, assign) unsigned int currentTime;
 @property(nonatomic, assign) char timerTaskNumber;
-@property(nonatomic, strong) NSMutableArray *timerTaskList;
+@property(nonatomic, strong) NSArray *timerTaskList;
 @property(nonatomic, assign) short delay;
 
 @property(nonatomic, assign) NSInteger update;
 @property(nonatomic, assign) NSString *updateUrl;
+
+@property(nonatomic, assign) int historyElecCount;
+@property(nonatomic, strong) NSArray *historyElecs;
 
 @property(nonatomic, assign) unsigned short pmTwoPointFive;
 @property(nonatomic, assign) float temperature;

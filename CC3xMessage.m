@@ -10,27 +10,26 @@
 #import "CC3xUtility.h"
 #import "CC3xTimerTask.h"
 #import "CRC.h"
+#import "HistoryElec.h"
 
 #define B2D(bytes) ([NSData dataWithBytes:&bytes length:sizeof(bytes)]);
 
-#define int2charArray(array, value)                                            \
-  do {                                                                         \
-    array[0] = ((value >> 24) & 0xff);                                         \
-    array[1] = ((value >> 16) & 0xff);                                         \
-    array[2] = ((value >> 8) & 0xff);                                          \
-    array[3] = ((value >> 0) & 0xff);                                          \
+#define int2charArray(array, value)    \
+  do {                                 \
+    array[0] = ((value >> 24) & 0xff); \
+    array[1] = ((value >> 16) & 0xff); \
+    array[2] = ((value >> 8) & 0xff);  \
+    array[3] = ((value >> 0) & 0xff);  \
   } while (0);
 
-#define charArray2int(array, value)                                            \
-  do {                                                                         \
-    value += array[0] << 24;                                                   \
-    value += array[1] << 16;                                                   \
-    value += array[2] << 8;                                                    \
-    value += array[3] << 0;                                                    \
+#define charArray2int(array, value) \
+  do {                              \
+    value += array[0] << 24;        \
+    value += array[1] << 16;        \
+    value += array[2] << 8;         \
+    value += array[3] << 0;         \
   } while (0);
-
 @implementation CC3xMessageUtil
-;
 
 /* HEADER, P2D_SCAN_DEV_REQ 0x9 == P2D_STATE_INQUIRY 0xb
  * P2D_GET_TIMER_REQ 0x17 == P2D_GET_PROPERTY_REQ 0x25
@@ -179,9 +178,9 @@ typedef struct {
 // Timer related structure
 typedef struct {
   char week;
-  unsigned char actionTime[4];
-  unsigned char takeEffect; //是否生效，1表示动作，0表示不动作
-  unsigned char actionType; //动作类型，1表示开，0表示关
+  unsigned int actionTime;
+  unsigned char takeEffect;  //是否生效，1表示动作，0表示不动作
+  unsigned char actionType;  //动作类型，1表示开，0表示关
 } timerTask;
 
 // D2P_GET_TIMER_RESP 0x18
@@ -189,9 +188,8 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
-  unsigned char currentTime[4];
-  unsigned char timerNumber;
-  timerTask *timerList;
+  unsigned int currentTime;
+  unsigned char count;
   unsigned short crc;
 } d2pMsg18;
 
@@ -291,9 +289,9 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;           // 0表示成功
-  unsigned short pulse; //电量脉冲的周期值x，单位为ms 功率W=（53035.5/x）
-                        //保留2位小数
+  char state;            // 0表示成功
+  unsigned short pulse;  //电量脉冲的周期值x，单位为ms 功率W=（53035.5/x）
+                         //保留2位小数
   unsigned short crc;
 } d2pMsg34;
 
@@ -317,14 +315,14 @@ typedef struct {
 
 typedef struct {
   msgHeader header;
-  unsigned char on; // 1闪烁 0消除闪烁
+  unsigned char on;  // 1闪烁 0消除闪烁
   unsigned short crc;
 } p2dMsg39;
 // D2P_LOCATE_RESP 0x3A
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0成功，非0失败
+  char state;  // 0成功，非0失败
   unsigned short crc;
 } d2pMsg3A;
 
@@ -333,7 +331,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char on; // 1闪烁 0消除闪烁
+  char on;  // 1闪烁 0消除闪烁
   unsigned short crc;
 } p2sMsg3B;
 
@@ -341,14 +339,14 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0成功，非0失败
+  char state;  // 0成功，非0失败
   unsigned short crc;
 } s2pMsg3C;
 
 // P2D_SET_NAME_REQ 0x3F
 typedef struct {
   msgHeader header;
-  unsigned char type; // 0代表插座名字，1-n表示插孔n的名字
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
   char password[6];
   char name[32];
   unsigned short crc;
@@ -358,8 +356,8 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char type; // 0代表插座名字，1-n表示插孔n的名字
-  char state;         // 0表示成功
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char state;          // 0表示成功
   unsigned short crc;
 } d2pMsg40;
 
@@ -367,7 +365,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char type; // 0代表插座名字，1-n表示插孔n的名字
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
   char password[6];
   char name[32];
   unsigned short crc;
@@ -377,8 +375,8 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  unsigned char type; // 0代表插座名字，1-n表示插孔n的名字
-  char state;         // 0表示成功
+  unsigned char type;  // 0代表插座名字，1-n表示插孔n的名字
+  char state;          // 0表示成功
   unsigned short crc;
 } s2pMsg42;
 
@@ -386,7 +384,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   char password[6];
-  char lock; // 0X1加锁；0X0解锁
+  char lock;  // 0X1加锁；0X0解锁
   unsigned short crc;
 } p2dMsg47;
 
@@ -394,7 +392,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0成功
+  char state;  // 0成功
   unsigned short crc;
 } d2pMsg48;
 
@@ -403,7 +401,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   char password[6];
-  char lock; // 0X1加锁；0X0解锁
+  char lock;  // 0X1加锁；0X0解锁
   unsigned short crc;
 } p2sMsg49;
 
@@ -411,7 +409,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0成功
+  char state;  // 0成功
   unsigned short crc;
 } s2pMsg4A;
 
@@ -420,8 +418,8 @@ typedef struct {
   msgHeader header;
   unsigned char socketId;
   char password[6];
-  unsigned short delay; // max= 1440分钟
-  char on;              // 0x1表示开，0x0表示关
+  unsigned short delay;  // max= 1440分钟
+  char on;               // 0x1表示开，0x0表示关
   unsigned short crc;
 } p2dMsg4D;
 
@@ -430,7 +428,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
-  char state; // 0表示成功
+  char state;  // 0表示成功
   unsigned short crc;
 } d2pMsg4E;
 
@@ -441,7 +439,7 @@ typedef struct {
   unsigned char socketId;
   char password[6];
   unsigned short delay;
-  char on; // 0x1表示开，0x0表示关
+  char on;  // 0x1表示开，0x0表示关
   unsigned short crc;
 } p2sMsg4F;
 
@@ -450,7 +448,7 @@ typedef struct {
   msgHeader header;
   unsigned char mac[6];
   unsigned char socketId;
-  char state; // 0表示成功
+  char state;  // 0表示成功
   unsigned short crc;
 } s2pMsg50;
 
@@ -467,7 +465,7 @@ typedef struct {
   unsigned char mac[6];
   unsigned char socketId;
   unsigned short delay;
-  unsigned char on; // 0x1表示开，0x0表示关
+  unsigned char on;  // 0x1表示开，0x0表示关
   unsigned short crc;
 } d2pMsg54;
 
@@ -485,7 +483,7 @@ typedef struct {
   unsigned char mac[6];
   unsigned char socketId;
   unsigned short delay;
-  unsigned char on; // 0x1表示开，0x0表示关
+  unsigned char on;  // 0x1表示开，0x0表示关
   unsigned short crc;
 } s2pmsg56;
 
@@ -493,9 +491,9 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char phoneType[20];  //手机型号
-  char systemName[20]; //手机操作系统版本
-  char appVersion[10]; // app软件版本
+  char phoneType[20];   //手机型号
+  char systemName[20];  //手机操作系统版本
+  char appVersion[10];  // app软件版本
   unsigned short crc;
 } p2sMsg59;
 
@@ -545,41 +543,40 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  int beginTime; //开始时间 （秒）
-  int endTime;   //开始时间 （秒）
-  int interval; //间隔时间，返回查询数量是(endtime-begintime)/ interval
+  int beginTime;  //开始时间 （秒）
+  int endTime;    //开始时间 （秒）
+  int interval;  //间隔时间，返回查询数量是(endtime-begintime)/ interval
   unsigned short crc;
 } p2sMsg63;
 
 //电量信息，时间和功率
 typedef struct {
   int time;
-  int power; //功率,单位(1/100)瓦
+  int power;  //功率,单位(1/100)瓦
 } elecInfo;
 
 // S2P_GET_POWER_LOG_RESP 0X64
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0表示成功
-  char count; //结果数量
-  elecInfo *elecInfo;
+  char state;  // 0表示成功
+  char count;  //结果数量
   unsigned short crc;
 } s2pMsg64;
 
 // P2S_GET_CITY_REQ	 0X65
 typedef struct {
   msgHeader header;
-  unsigned char mac[6]; //设备/手机MAC地址
-  char type; // 0 为获取设备当地的城市 1为获取换手机当地的城市
+  unsigned char mac[6];  //设备/手机MAC地址
+  char type;  // 0 为获取设备当地的城市 1为获取换手机当地的城市
   unsigned short crc;
 } p2sMsg65;
 
 // S2P_GET_ CITY_RESP 0X66
 typedef struct {
   msgHeader header;
-  unsigned char mac[6]; //设备MAC地址
-  char state;           // 0成功
+  unsigned char mac[6];  //设备MAC地址
+  char state;            // 0成功
   char city[10];
   unsigned short crc;
 } s2pMsg66;
@@ -588,9 +585,9 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char type; // 0 为获取设备当地的天气 1为获取换手机当地的天气
+  char type;  // 0 为获取设备当地的天气 1为获取换手机当地的天气
   // 3为获取指定城市的天气
-  char cityName[20]; //城市名称
+  char cityName[20];  //城市名称
   unsigned short crc;
 } p2sMSg67;
 
@@ -598,15 +595,15 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state;                // 0表示成功
-  char city[10];             //城市
-  char temperature[10];      //温度
-  char humidity[10];         //湿度
-  char weather[20];          //天气
-  char wind[20];             //风速
-  char pm2point5[5];         // pm2.5
-  char dayPictureUrl[100];   //白天图片
-  char nightPictureUrl[100]; //晚上图片
+  char state;                 // 0表示成功
+  char city[10];              //城市
+  char temperature[10];       //温度
+  char humidity[10];          //湿度
+  char weather[20];           //天气
+  char wind[20];              //风速
+  char pm2point5[5];          // pm2.5
+  char dayPictureUrl[100];    //白天图片
+  char nightPictureUrl[100];  //晚上图片
   unsigned short crc;
 } s2pMsg68;
 
@@ -622,7 +619,7 @@ typedef struct {
 typedef struct {
   msgHeader header;
   unsigned char mac[6];
-  char state; // 0表示成功
+  char state;  // 0表示成功
   unsigned short crc;
 } d2pMSg6A;
 
@@ -1148,9 +1145,9 @@ typedef struct {
   Byte *macBytes = [CC3xMessageUtil mac2HexBytes:mac];
   memcpy(&msg.mac, macBytes, sizeof(msg.mac));
   free(macBytes);
-  msg.beginTime = beginTime;
-  msg.endTime = endTime;
-  msg.interval = interval;
+  msg.beginTime = htonl(beginTime);
+  msg.endTime = htonl(endTime);
+  msg.interval = htonl(interval);
   msg.crc = CRC16((unsigned char *)&msg, sizeof(msg) - 2);
   return B2D(msg);
 }
@@ -1197,7 +1194,7 @@ typedef struct {
   message = [[CC3xMessage alloc] init];
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
   message.state = msg.state;
@@ -1249,7 +1246,7 @@ typedef struct {
   message.deviceName = deviceName;
   message.version = msg.FWVersion;
   message.lockStatus = msg.deviceLockState;
-  message.onStatus = msg.deviceLockState;
+  message.onStatus = msg.onOffState;
   message.crc = msg.crc;
   return message;
 }
@@ -1262,9 +1259,10 @@ typedef struct {
   message = [[CC3xMessage alloc] init];
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.socketId = msg.socketId;
   message.state = msg.state;
   message.crc = msg.crc;
   return message;
@@ -1279,36 +1277,50 @@ typedef struct {
 // 00 19 18 da 00 19 94 37 a2 88 02 00 00 0a 6d 01 00 00 00 e2 2c 01 01 f6 d1
 + (CC3xMessage *)parseD2P18:(NSData *)aData {
   CC3xMessage *message = nil;
-  d2pMsg18 aMsg;
-  [aData getBytes:&aMsg length:sizeof(aMsg)];
-  NSUInteger num = aMsg.timerNumber & 0xff;
-  if (num == 0xff) {
-    return nil;
-  }
+  d2pMsg18 msg;
+  [aData getBytes:&msg length:sizeof(msg)];
   message = [[CC3xMessage alloc] init];
-  NSUInteger size =
-      sizeof(d2pMsg18) + sizeof(timerTask) * num - sizeof(aMsg.timerList);
-  d2pMsg18 *msg = (d2pMsg18 *)malloc(size);
-  [aData getBytes:msg length:size];
-  message.currentTime = *(int *)msg->currentTime;
-  message.msgId = msg->header.msgId;
-  message.msgDir = msg->header.msgDir;
-  message.timerTaskNumber = num;
-  //  message.timerTaskList =
-  //      [[NSMutableArray alloc] initWithCapacity:message.timerTaskNumber];
+  message.msgId = msg.header.msgId;
+  message.msgDir = msg.header.msgDir;
+  message.msgLength = msg.header.msgLength;
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
+                                           msg.mac[0], msg.mac[1], msg.mac[2],
+                                           msg.mac[3], msg.mac[4], msg.mac[5]];
 
-  for (int i = 0; i < message.timerTaskNumber; i++) {
-    timerTask *t = &(msg->timerList[i]);
-    //    //    CC3xTimerTask *task = [[CC3xTimerTask alloc] init];
-    //    SDZGTimerTask *task = [[SDZGTimerTask alloc] init];
-    //    task.week = t.week;
-    //    charArray2int(t.actionTime, task.actionTime);
-    //    task.isEffective = t.takeEffect;
-    //    task.timerActionType = t.actionType;
-    //    [message.timerTaskList addObject:task];
+  message.socketId = msg.socketId;
+  message.currentTime = ntohl(msg.currentTime);
+  message.timerTaskNumber = msg.count;
+  if (msg.count > 0) {
+    timerTask tasks[msg.count];
+    [aData getBytes:&tasks
+              range:NSMakeRange(sizeof(d2pMsg18) - 2,
+                                sizeof(d2pMsg18) * msg.count)];
+    NSMutableArray *timers = [NSMutableArray arrayWithCapacity:msg.count];
+    for (int i = 0; i < msg.count; i++) {
+      //      elecInfo elecInfo = elecInfos[i];
+      //      int time = ntohl(elecInfo.time);
+      //      int power = ntohl(elecInfo.power) / 100;
+      //      ElecHistoryInfo *historyInfo =
+      //          [[ElecHistoryInfo alloc] initWithTime:time power:power];
+      //      [elecs addObject:historyInfo];
+      timerTask task = tasks[i];
+      unsigned char week = task.week;
+      unsigned char effective = task.takeEffect;
+      unsigned int actionTime = ntohl(task.actionTime);
+      unsigned char actionType = task.actionType;
+      SDZGTimerTask *sdzgTask = [[SDZGTimerTask alloc] initWithWeek:week
+                                                         actionTime:actionTime
+                                                        isEffective:effective
+                                                    timerActionType:actionType];
+      [timers addObject:sdzgTask];
+    }
+    message.timerTaskList = timers;
+    unsigned short crc;
+    [aData getBytes:&crc range:NSMakeRange(aData.length - 2, 2)];
+    message.crc = ntohs(crc);
+  } else {
+    message.crc = msg.crc;
   }
-  message.crc = msg->crc;
-  free(msg);
   return message;
 }
 
@@ -1337,7 +1349,7 @@ typedef struct {
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
   message.msgLength = msg.header.msgLength;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
   message.state = msg.state;
@@ -1357,13 +1369,13 @@ typedef struct {
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
   message.msgLength = msg.header.msgLength;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
   message.socketId = msg.socketId;
   //高低字节互换了
   message.delay =
-      msg.delay / 256; //这个地方不知道什么原因导致左移两位，放大了256倍
+      msg.delay / 256;  //这个地方不知道什么原因导致左移两位，放大了256倍
   message.onStatus = msg.on;
   message.crc = msg.crc;
   return message;
@@ -1394,7 +1406,7 @@ typedef struct {
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
   message.msgLength = msg.header.msgLength;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
   message.deviceName = [[NSString alloc] initWithBytes:msg.deviceName
@@ -1421,9 +1433,32 @@ typedef struct {
   message.msgId = msg.header.msgId;
   message.msgDir = msg.header.msgDir;
   message.msgLength = msg.header.msgLength;
-  message.mac = [NSString stringWithFormat:@"%02x-%02x-%02x-%02x-%02x-%02x",
+  message.mac = [NSString stringWithFormat:@"%02x:%02x:%02x:%02x:%02x:%02x",
                                            msg.mac[0], msg.mac[1], msg.mac[2],
                                            msg.mac[3], msg.mac[4], msg.mac[5]];
+  message.state = msg.state;
+  message.historyElecCount = msg.count;
+  if (msg.count > 0) {
+    elecInfo elecInfos[msg.count];
+    [aData getBytes:&elecInfos
+              range:NSMakeRange(sizeof(s2pMsg64) - 2,
+                                sizeof(elecInfo) * msg.count)];
+    NSMutableArray *elecs = [NSMutableArray arrayWithCapacity:msg.count];
+    for (int i = 0; i < msg.count; i++) {
+      elecInfo elecInfo = elecInfos[i];
+      int time = ntohl(elecInfo.time);
+      int power = ntohl(elecInfo.power) / 100;
+      HistoryElecResponse *historyInfo =
+          [[HistoryElecResponse alloc] initWithTime:time power:power];
+      [elecs addObject:historyInfo];
+    }
+    message.historyElecs = elecs;
+    unsigned short crc;
+    [aData getBytes:&crc range:NSMakeRange(aData.length - 2, 2)];
+    message.crc = ntohs(crc);
+  } else {
+    message.crc = msg.crc;
+  }
   return message;
 }
 
@@ -1524,7 +1559,7 @@ typedef struct {
 + (Byte *)mac2HexBytes:(NSString *)mac {
   NSArray *macArray = [mac componentsSeparatedByString:@":"];
   Byte *bytes = malloc(macArray.count);
-  char byte_char[3] = { '\0', '\0', '\0' };
+  char byte_char[3] = {'\0', '\0', '\0'};
   for (int i = 0; i < macArray.count; i++) {
     NSString *str = macArray[i];
     byte_char[0] = [str characterAtIndex:0];
@@ -1613,35 +1648,31 @@ typedef struct {
   }
   return [NSString stringWithString:hexStr];
 }
-/*
-+ (NSData *)data2HexData:(NSData *)data
-{
-    char buf[3];
-        buf[2] = '\0';
-    int length = data.length;
-        NSAssert(0 == length % 2, @"Hex strings should have an even number of
-digits");
-    Byte *bytes = (Byte *)[data bytes];
-    unsigned char *newBytes = malloc(length/2);
-    unsigned char *bp = newBytes;
-        for (CFIndex i = 0; i < length; i += 2) {
-                buf[0] = bytes[i];
-                buf[1] = bytes[i+1];
-                char *b2 = NULL;
-                *bp++ = strtol(buf, &b2, 16);
-                NSAssert(b2 == buf + 2, @"String should be all hex digits: (bad
-digit around %ld)", i);
-        }
 
-        return [NSData dataWithBytesNoCopy:newBytes
-                                length:length/2
-                          freeWhenDone:YES];
-}
-*/
+//+ (NSData *)data2HexData:(NSData *)data {
+//  char buf[3];
+//  buf[2] = '\0';
+//  int length = data.length;
+//  NSAssert(0 == length % 2,
+//           @"Hex strings should have an even number of digits");
+//  Byte *bytes = (Byte *)[data bytes];
+//  unsigned char *newBytes = malloc(length / 2);
+//  unsigned char *bp = newBytes;
+//  for (CFIndex i = 0; i < length; i += 2) {
+//    buf[0] = bytes[i];
+//    buf[1] = bytes[i + 1];
+//    char *b2 = NULL;
+//    *bp++ = strtol(buf, &b2, 16);
+//    NSAssert(b2 == buf + 2,
+//             @"String should be all hex digits: (bad digit around %ld) ", i);
+//  }
+//  return
+//      [NSData dataWithBytesNoCopy:newBytes length:length / 2
+//      freeWhenDone:YES];
+//}
+
 @end
-
 @implementation CC3xMessage
-
 - (id)init {
   self = [super init];
   return self;

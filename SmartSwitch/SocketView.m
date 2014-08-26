@@ -31,6 +31,7 @@
 }
 
 - (void)awakeFromNib {
+  self.btnIcon.selected = NO;
 }
 
 - (IBAction)touchName:(id)sender {
@@ -66,21 +67,27 @@
 }
 
 - (void)countDown:(int)seconds {
-  [self.viewDelayCountdown countDown:seconds];
+  dispatch_async(dispatch_get_main_queue(),
+                 ^{ [self.viewDelayCountdown countDown:seconds]; });
 }
 
 - (void)setTimer:(int)seconds {
+  dispatch_async(dispatch_get_main_queue(), ^{});
 }
 
 - (void)setSocketName:(NSString *)socketName {
-  [self.btnName setTitle:socketName forState:UIControlStateNormal];
+  dispatch_async(dispatch_get_main_queue(), ^{
+      [self.btnName setTitle:socketName forState:UIControlStateNormal];
+  });
 }
 
 - (void)setSocketStatus:(SocketStatus)status {
-  if (status == SocketStatusOn) {
-    self.btnIcon.selected = YES;
-  } else {
-    self.btnIcon.selected = NO;
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+      if (status == SocketStatusOn) {
+        self.btnIcon.selected = YES;
+      } else {
+        self.btnIcon.selected = NO;
+      }
+  });
 }
 @end

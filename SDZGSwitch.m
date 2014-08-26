@@ -17,5 +17,17 @@
 @end
 
 @implementation SDZGTimerTask
-
+- (id)initWithWeek:(unsigned char)week
+         actionTime:(unsigned int)actionTime
+        isEffective:(BOOL)isEffective
+    timerActionType:(TimerActionType)timerActionType {
+  self = [super init];
+  if (self) {
+    self.week = week;
+    self.actionTime = actionTime;
+    self.isEffective = isEffective;
+    self.timerActionType = timerActionType;
+  }
+  return self;
+}
 @end

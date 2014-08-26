@@ -9,13 +9,13 @@
 #import "HistoryElectricityViewController.h"
 #import "SwitchDataCeneter.h"
 #import "HistoryElecView.h"
+#import "HistoryElec.h"
 
-@interface HistoryElectricityViewController ()<UdpRequestDelegate>
+@interface HistoryElectricityViewController ()<UdpRequestDelegate,
+                                               HistoryElecViewDelegate>
 @property(strong, nonatomic) IBOutlet HistoryElecView *viewOfHistoryElec;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
-//@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
-//@property (strong, nonatomic) IBOutlet UIView *viewImgContainer;
+@property(strong, nonatomic) HistoryElecParam *param;
+@property(strong, nonatomic) HistoryElec *historyElec;
 
 @property(strong, nonatomic) SDZGSwitch *aSwitch;
 @property(strong, nonatomic) UdpRequest *request;
@@ -32,6 +32,20 @@
   return self;
 }
 
+- (void)setup {
+  self.viewOfHistoryElec.delegate = self;
+  self.historyElec = [[HistoryElec alloc] init];
+  NSDate *currentDate = [NSDate date];
+  int currentYear = [currentDate year];
+  int currentDay = [currentDate day];
+  int currentMonth = [currentDate month];
+  self.param = [self.historyElec getParam:currentYear
+                            selectedMonth:currentMonth
+                                 startDay:currentDay
+                                   endDay:currentDay];
+  [self senMsg63];
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
@@ -43,11 +57,11 @@
               style:UIBarButtonItemStylePlain
              target:self.navigationController
              action:@selector(popViewControllerAnimated:)];
+  [self setup];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
   [super viewWillAppear:animated];
-  [self senMsg63];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -59,19 +73,28 @@
   // Dispose of any resources that can be recreated.
 }
 
-//- (void)viewWillLayoutSubviews {
-//  [super viewWillLayoutSubviews];
-//}
+- (void)currentYear:(int)year
+      selectedMonth:(int)selectedMonth
+           startDay:(int)startDay
+             endDay:(int)endDay {
+  self.param = [self.historyElec getParam:year
+                            selectedMonth:selectedMonth
+                                 startDay:startDay
+                                   endDay:endDay];
+  [self senMsg63];
+}
 
 - (void)senMsg63 {
   if (!self.request) {
     self.request = [UdpRequest manager];
     self.request.delegate = self;
   }
+  debugLog(@"begintime is %d and endtime is %f", (int)self.param.beginTime,
+           self.param.endTime);
   [self.request sendMsg63:self.aSwitch
-                beginTime:1406822400
-                  endTime:1409500799
-                 interval:3600 * 24
+                beginTime:self.param.beginTime
+                  endTime:self.param.endTime
+                 interval:self.param.interval
                  sendMode:ActiveMode];
 }
 
@@ -96,7 +119,15 @@ preparation before navigation
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
   switch (message.msgId) {
     case 0x64:
-
+      if (message.state == 0) {
+        //          message.historyElecCount
+        //          message.historyElecs
+        if (message.historyElecCount) {
+          HistoryElecResponse *response =
+              [message.historyElecs objectAtIndex:0];
+          debugLog(@"time is %d", response.time);
+        }
+      }
       break;
 
     default:

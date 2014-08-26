@@ -64,4 +64,9 @@ typedef NS_OPTIONS(NSUInteger, LockStatus) {
 @property(nonatomic, assign) BOOL isEffective;         //是否生效
 @property(nonatomic, assign)
     TimerActionType timerActionType;  //动作类型，on表示开，off表示关
+
+- (id)initWithWeek:(unsigned char)week
+         actionTime:(unsigned int)actionTime
+        isEffective:(BOOL)isEffective
+    timerActionType:(TimerActionType)timerActionType;
 @end

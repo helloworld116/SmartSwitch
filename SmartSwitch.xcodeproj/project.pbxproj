@@ -306,6 +306,7 @@
 		15295262199071EF00924FC3 /* SmartSwitch */ = {
 			isa = PBXGroup;
 			children = (
+				47C07AFA19ACD51E00941CBD /* 菜单栏 */,
 				15BB6B251994DFD9004D447A /* 自定义控件 */,
 				1587F44D199229050061EB86 /* 用户相关 */,
 				1587F44919921C660061EB86 /* 开关和场景 */,
@@ -316,24 +317,6 @@
 				15295263199071EF00924FC3 /* Supporting Files */,
 				152952D21990D01D00924FC3 /* BaseViewController.h */,
 				152952D31990D01D00924FC3 /* BaseViewController.m */,
-				152952D51991BF4600924FC3 /* MenuViewController.h */,
-				152952D61991BF4600924FC3 /* MenuViewController.m */,
-				1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */,
-				1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */,
-				1587F4331991DB6F0061EB86 /* AddSwitchViewController.h */,
-				1587F4341991DB6F0061EB86 /* AddSwitchViewController.m */,
-				1587F437199208570061EB86 /* HelpViewController.h */,
-				1587F438199208570061EB86 /* HelpViewController.m */,
-				1587F43A199208600061EB86 /* SettingViewController.h */,
-				1587F43B199208600061EB86 /* SettingViewController.m */,
-				1587F43D199208690061EB86 /* AboutViewController.h */,
-				1587F43E199208690061EB86 /* AboutViewController.m */,
-				1587F440199208D70061EB86 /* ShareViewController.h */,
-				1587F441199208D70061EB86 /* ShareViewController.m */,
-				1587F44319920B460061EB86 /* AddModelViewController.h */,
-				1587F44419920B460061EB86 /* AddModelViewController.m */,
-				1587F44619920B590061EB86 /* BuyViewController.h */,
-				1587F44719920B590061EB86 /* BuyViewController.m */,
 				156CB954199DF84A007A9C35 /* WelcomeViewController.h */,
 				156CB955199DF84A007A9C35 /* WelcomeViewController.m */,
 				15B941AF19A6E0D8007339F8 /* UdpViewController.h */,
@@ -502,6 +485,31 @@
 				1587F44B199225EF0061EB86 /* AddSenceViewController.m */,
 			);
 			name = "场景";
+			sourceTree = "<group>";
+		};
+		47C07AFA19ACD51E00941CBD /* 菜单栏 */ = {
+			isa = PBXGroup;
+			children = (
+				152952D51991BF4600924FC3 /* MenuViewController.h */,
+				152952D61991BF4600924FC3 /* MenuViewController.m */,
+				1587F4301991CCA40061EB86 /* SDZGSidePanelController.h */,
+				1587F4311991CCA40061EB86 /* SDZGSidePanelController.m */,
+				1587F4331991DB6F0061EB86 /* AddSwitchViewController.h */,
+				1587F4341991DB6F0061EB86 /* AddSwitchViewController.m */,
+				1587F437199208570061EB86 /* HelpViewController.h */,
+				1587F438199208570061EB86 /* HelpViewController.m */,
+				1587F43A199208600061EB86 /* SettingViewController.h */,
+				1587F43B199208600061EB86 /* SettingViewController.m */,
+				1587F43D199208690061EB86 /* AboutViewController.h */,
+				1587F43E199208690061EB86 /* AboutViewController.m */,
+				1587F440199208D70061EB86 /* ShareViewController.h */,
+				1587F441199208D70061EB86 /* ShareViewController.m */,
+				1587F44319920B460061EB86 /* AddModelViewController.h */,
+				1587F44419920B460061EB86 /* AddModelViewController.m */,
+				1587F44619920B590061EB86 /* BuyViewController.h */,
+				1587F44719920B590061EB86 /* BuyViewController.m */,
+			);
+			name = "菜单栏";
 			sourceTree = "<group>";
 		};
 		47ECC90B19A989F90070AFE2 /* view */ = {

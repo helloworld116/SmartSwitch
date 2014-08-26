@@ -12,36 +12,33 @@
 #define kHistroryElecAnnimationInterval 0.3
 
 @interface HistoryElecView ()
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
-@property(strong, nonatomic) IBOutlet UILabel *lblDate;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue;
-@property(strong, nonatomic) IBOutlet UIButton *btnMonth;
-@property(strong, nonatomic) IBOutlet UIButton *btnDay;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue1;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue2;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue3;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue4;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue5;
-@property(strong, nonatomic) IBOutlet UILabel *lblValue6;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
+@property (strong, nonatomic) IBOutlet UILabel *lblDate;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue;
+@property (strong, nonatomic) IBOutlet UIButton *btnMonth;
+@property (strong, nonatomic) IBOutlet UIButton *btnDay;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue1;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue2;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue3;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue4;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue5;
+@property (strong, nonatomic) IBOutlet UILabel *lblValue6;
 
 - (IBAction)selectMonth:(id)sender;
 - (IBAction)selectDay:(id)sender;
 - (IBAction)goPre:(id)sender;
 - (IBAction)goNext:(id)sender;
 
-@property(strong, nonatomic) NSMutableArray *times;
-@property(strong, nonatomic) NSMutableArray *values;
+@property (assign, nonatomic) int currentYear;  //当前年
+@property (assign, nonatomic) int currentMonth; //当前月
+@property (assign, nonatomic) int currentDay;   //当前日
 
-@property(assign, nonatomic) int currentYear;   //当前年
-@property(assign, nonatomic) int currentMonth;  //当前月
-@property(assign, nonatomic) int currentDay;    //当前日
-
-@property(assign, nonatomic) int selectedMonth;  //选中月
-@property(assign, nonatomic) int selectedDay;    //选中日
-@property(strong, nonatomic) UIButton *btnSelectedMonth;
-@property(strong, nonatomic) UIButton *btnSelectedDay;
+@property (assign, nonatomic) int selectedMonth; //选中月
+@property (assign, nonatomic) int selectedDay;   //选中日
+@property (strong, nonatomic) UIButton *btnSelectedMonth;
+@property (strong, nonatomic) UIButton *btnSelectedDay;
 @end
 
 @implementation HistoryElecView
@@ -76,48 +73,6 @@
 - (void)layoutSubviews {
   [super layoutSubviews];
   debugLog(@"layout subviews");
-  if (self.data && self.data.count > 0) {
-    for (NSDictionary *dict in self.data) {
-      NSString *time = [dict objectForKey:@"time"];
-      NSNumber *value = [dict objectForKey:@"value"];
-      if (time && value) {
-        [self.times addObject:time];
-        [self.values addObject:value];
-      }
-    }
-  }
-  //  self.times = [@[
-  //    @"1",
-  //    @"2",
-  //    @"3",
-  //    @"4",
-  //    @"5",
-  //    @"6",
-  //    @"7",
-  //    @"8",
-  //    @"9",
-  //    @"10",
-  //    @"11",
-  //    @"12",
-  //    @"13",
-  //    @"14"
-  //  ] mutableCopy];
-  //  self.values = [@[
-  //    @1,
-  //    @24,
-  //    @12,
-  //    @18,
-  //    @30,
-  //    @10,
-  //    @21,
-  //    @1,
-  //    @24,
-  //    @12,
-  //    @18,
-  //    @30,
-  //    @10,
-  //    @21
-  //  ] mutableCopy];
   if (self.times.count > 0 && self.values.count > 0) {
     [self strokeChartInScrollView];
   }
@@ -303,7 +258,7 @@
     } else {
       self.selectedDay -= 1;
       [UIView animateWithDuration:kHistroryElecAnnimationInterval
-                       animations:^{//                self
+                       animations:^{ //                self
                                   }];
     }
   }

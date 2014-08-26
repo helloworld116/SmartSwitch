@@ -14,12 +14,12 @@
 
 @end
 
-@interface HistoryElecData ()
+@implementation HistoryElecData
 
 @end
 
 @interface HistoryElec ()
-@property(strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @end
 
 @implementation HistoryElec
@@ -64,22 +64,40 @@
   return param;
 }
 
-- (HistoryElecData *)data:(NSArray *)responseArray
-                    param:(HistoryElecParam *)param {
+- (HistoryElecData *)parseResponse:(NSArray *)responseArray
+                             param:(HistoryElecParam *)param {
   NSMutableDictionary *needDict = [@{} mutableCopy];
   int needCount = (param.endTime + 1 - param.beginTime) / param.interval;
   NSString *key;
-
+  //设置默认值为0
   for (int i = 0; i < needCount; i++) {
     key = [NSString
         stringWithFormat:@"%d", (int)(param.beginTime + i * param.interval)];
     [needDict setObject:@(0) forKey:key];
   }
+  //替换不为0的数据
   for (HistoryElecResponse *response in responseArray) {
     NSString *key = [NSString stringWithFormat:@"%d", response.time];
-    response.power;
+    [needDict setObject:@(response.power) forKey:key];
   }
-  return nil;
+
+  HistoryElecData *data = [[HistoryElecData alloc] init];
+  data.values = [needDict allValues];
+  if (param.interval == kTimeIntervalDay) {
+    [self.dateFormatter setDateFormat:@"HH:mm"];
+  } else if (param.interval == kTimeIntervalMonth) {
+    [self.dateFormatter setDateFormat:@"MM-dd"];
+  }
+  NSMutableArray *values = [@[] mutableCopy];
+  NSString *formatterDateStr;
+  for (NSString *dateInterval in [needDict allKeys]) {
+    NSDate *date =
+        [NSDate dateWithTimeIntervalSince1970:[dateInterval intValue]];
+    formatterDateStr = [self.dateFormatter stringFromDate:date];
+    [values addObject:formatterDateStr];
+  }
+  data.values = values;
+  return data;
 }
 @end
 

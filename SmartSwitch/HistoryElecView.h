@@ -17,6 +17,7 @@
 @end
 
 @interface HistoryElecView : UIView
-@property(nonatomic, assign) id<HistoryElecViewDelegate> delegate;
-@property(nonatomic, strong) NSArray *data;  //[{@"time":data,@"value":data}]
+@property (nonatomic, assign) id<HistoryElecViewDelegate> delegate;
+@property (strong, nonatomic) NSArray *times;
+@property (strong, nonatomic) NSArray *values;
 @end

@@ -68,16 +68,11 @@ enum {
 + (NSData *)getP2dMsg25;
 + (NSData *)getP2SMsg27:(NSString *)mac;
 + (NSData *)getP2dMsg1D:(NSUInteger)currentTime
-               timerNum:(NSUInteger)num
-              timerList:(NSArray *)timerList;
-+ (NSData *)getP2dMsg1D:(NSUInteger)currentTime
+               password:(NSString *)password
                socketId:(int)socketId
               timerList:(NSArray *)timerList;
 + (NSData *)getP2SMsg1F:(NSUInteger)currentTime
-               timerNum:(NSUInteger)num
-              timerList:(NSArray *)timerList
-                    mac:(NSString *)aMac;
-+ (NSData *)getP2SMsg1F:(NSUInteger)currentTime
+               password:(NSString *)password
                socketId:(int)socketId
               timerList:(NSArray *)timerList
                     mac:(NSString *)aMac;

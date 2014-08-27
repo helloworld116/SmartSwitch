@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3DFF8AF43B3E403D9D041920"
+               BlueprintIdentifier = "96302BD65CCB4AB9B847F6AF"
                BuildableName = "libPods-EGOTableViewPullRefresh.a"
                BlueprintName = "Pods-EGOTableViewPullRefresh"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -70,6 +70,11 @@
 
   dispatch_barrier_async(queue, ^{
       [self setup];
+      [self sendMsg0B];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+
+  dispatch_barrier_async(queue, ^{
       [self sendMsg11Or13:0];
       [NSThread sleepForTimeInterval:seconds];
   });
@@ -413,7 +418,7 @@
 
 - (SDZGSwitch *)getSocket {
   NSData *data = [NSData
-      dataWithContentsOfFile:[PATH_OF_TEMP
+      dataWithContentsOfFile:[PATH_OF_DOCUMENT
                                  stringByAppendingPathComponent:@"switch95"]];
   CC3xMessage *message = [CC3xMessageUtil parseMessage:data];
   SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];

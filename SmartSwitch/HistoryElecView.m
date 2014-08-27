@@ -12,33 +12,33 @@
 #define kHistroryElecAnnimationInterval 0.3
 
 @interface HistoryElecView ()
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
-@property (strong, nonatomic) IBOutlet UILabel *lblDate;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue;
-@property (strong, nonatomic) IBOutlet UIButton *btnMonth;
-@property (strong, nonatomic) IBOutlet UIButton *btnDay;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue1;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue2;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue3;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue4;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue5;
-@property (strong, nonatomic) IBOutlet UILabel *lblValue6;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewMonth;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewDay;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollViewBarChart;
+@property(strong, nonatomic) IBOutlet UILabel *lblDate;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue;
+@property(strong, nonatomic) IBOutlet UIButton *btnMonth;
+@property(strong, nonatomic) IBOutlet UIButton *btnDay;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue1;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue2;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue3;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue4;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue5;
+@property(strong, nonatomic) IBOutlet UILabel *lblValue6;
 
 - (IBAction)selectMonth:(id)sender;
 - (IBAction)selectDay:(id)sender;
 - (IBAction)goPre:(id)sender;
 - (IBAction)goNext:(id)sender;
 
-@property (assign, nonatomic) int currentYear;  //当前年
-@property (assign, nonatomic) int currentMonth; //当前月
-@property (assign, nonatomic) int currentDay;   //当前日
+@property(assign, nonatomic) int currentYear;   //当前年
+@property(assign, nonatomic) int currentMonth;  //当前月
+@property(assign, nonatomic) int currentDay;    //当前日
 
-@property (assign, nonatomic) int selectedMonth; //选中月
-@property (assign, nonatomic) int selectedDay;   //选中日
-@property (strong, nonatomic) UIButton *btnSelectedMonth;
-@property (strong, nonatomic) UIButton *btnSelectedDay;
+@property(assign, nonatomic) int selectedMonth;  //选中月
+@property(assign, nonatomic) int selectedDay;    //选中日
+@property(strong, nonatomic) UIButton *btnSelectedMonth;
+@property(strong, nonatomic) UIButton *btnSelectedDay;
 @end
 
 @implementation HistoryElecView
@@ -143,6 +143,18 @@
       return labelText;
   };
   self.lblValue6.text = @"0w";
+  if (self.btnDay.selected) {
+    self.lblDate.text =
+        [NSString stringWithFormat:@"%d-%d-%d", self.currentYear,
+                                   self.selectedMonth, self.selectedDay];
+  } else {
+    self.lblDate.text = [NSString
+        stringWithFormat:@"%d-%d", self.currentYear, self.selectedMonth];
+  }
+  self.lblValue.text =
+      [NSString stringWithFormat:
+                    @"平均功率：%dw",
+                    [[self.values valueForKeyPath:@"@avg.self"] integerValue]];
   barChart.yLabelSum = 5;
   barChart.yChartLabelWidth = 0.f;
   barChart.barWidth = kBarWidth;
@@ -258,7 +270,7 @@
     } else {
       self.selectedDay -= 1;
       [UIView animateWithDuration:kHistroryElecAnnimationInterval
-                       animations:^{ //                self
+                       animations:^{//                self
                                   }];
     }
   }
@@ -280,7 +292,6 @@
           [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
       componentsJoinedByString:@""];
   self.selectedDay = [numString intValue];
-  debugLog(@"select day is %d", self.selectedDay);
   if (self.btnSelectedDay != btn) {
     [UIView animateWithDuration:kHistroryElecAnnimationInterval
                      animations:^{
@@ -300,7 +311,6 @@
           [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
       componentsJoinedByString:@""];
   self.selectedMonth = [numString intValue];
-  debugLog(@"select month is %d", self.selectedMonth);
   //修改当前月份的天数选中数
   NSDate *date = [[NSDate date] dateBySettingMonth:self.selectedMonth];
   NSDateComponents *lastDayInMonth = [[date dateMonthEnd] dateComponentsDate];

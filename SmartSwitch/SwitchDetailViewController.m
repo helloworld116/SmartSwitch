@@ -10,6 +10,8 @@
 #import "SwitchDataCeneter.h"
 #import "ElecRealTimeView.h"
 #import "SocketView.h"
+#import "DelayViewController.h"
+#import "TimerViewController.h"
 #define kElecRefreshInterval 2
 #define kSwitchRefreshInterval 2
 
@@ -466,14 +468,18 @@ preparation before navigation
 
 #pragma mark - SocketViewDelegate SocketView事件
 - (void)socketTimer:(int)socketId {
-  UIViewController *nextVC = [self.storyboard
+  TimerViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerViewController"];
+  nextVC.socketId = socketId;
+  nextVC.aSwitch = self.aSwitch;
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 - (void)socketDelay:(int)socketId {
-  UIViewController *nextVC = [self.storyboard
+  DelayViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"DelayViewController"];
+  nextVC.socketId = socketId;
+  nextVC.aSwitch = self.aSwitch;
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 

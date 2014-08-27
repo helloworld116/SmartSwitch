@@ -42,6 +42,7 @@ PODS:
     - UICountingLabel (~> 1.0.0)
   - Reachability (3.1.1)
   - SGNavigationProgress (1.2)
+  - Toast (2.3)
   - TWMessageBarManager (1.7.0)
   - UICountingLabel (1.0.0)
 
@@ -60,6 +61,7 @@ DEPENDENCIES:
   - PNChart (~> 0.5)
   - Reachability
   - SGNavigationProgress
+  - Toast (~> 2.3)
   - TWMessageBarManager (~> 1.7.0)
 
 EXTERNAL SOURCES:
@@ -81,6 +83,7 @@ SPEC CHECKSUMS:
   PNChart: 0d0cf4531de3aa7f2b12434a54845d70d9c9cfe3
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   SGNavigationProgress: 6c38006ca3c652618411c67d493b263343d5aece
+  Toast: 1d773017c5d2e7b1d90565a5f9530340e6eeff72
   TWMessageBarManager: 427c1f2463b22f4048ea2663184d33644212be37
   UICountingLabel: 0a0e9e34bf4690dbd127aaec552d19ed938087a9
 

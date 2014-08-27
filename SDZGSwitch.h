@@ -30,6 +30,9 @@ typedef NS_OPTIONS(NSUInteger, TimerActionType) {
 typedef NS_OPTIONS(NSUInteger, LockStatus) {
     LockStatusOff = 0, LockStatusOn,
 };
+typedef NS_OPTIONS(NSUInteger, DAYTYPE) {
+    MONDAY = 1 << 0, TUESDAY = 1 << 1,  WENSDAY = 1 << 2, THURSDAY = 1 << 3,
+    FRIDAY = 1 << 4, SATURDAY = 1 << 5, SUNDAY = 1 << 6};
 
 @interface SDZGSwitch : NSObject
 @property(nonatomic, strong) NSString *name;
@@ -69,4 +72,11 @@ typedef NS_OPTIONS(NSUInteger, LockStatus) {
          actionTime:(unsigned int)actionTime
         isEffective:(BOOL)isEffective
     timerActionType:(TimerActionType)timerActionType;
+
+- (BOOL)isDayOn:(DAYTYPE)aDay;
+
+- (NSString *)actionWeekString;
+- (NSString *)actionTimeString;
+- (NSString *)actionTypeString;
+- (BOOL)actionEffective;
 @end

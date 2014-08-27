@@ -19,7 +19,7 @@
 @end
 
 @interface HistoryElec ()
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property(strong, nonatomic) NSDateFormatter *dateFormatter;
 @end
 
 @implementation HistoryElec
@@ -27,7 +27,6 @@
   self = [super init];
   if (self) {
     self.dateFormatter = [[NSDateFormatter alloc] init];
-    [self.dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   }
   return self;
 }
@@ -36,6 +35,7 @@
                  selectedMonth:(int)selectedMonth
                       startDay:(int)startDay
                         endDay:(int)endDay {
+  [self.dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   NSString *startDateString =
       [NSString stringWithFormat:@"%d-%d-%d 00:00:00", currentYear,
                                  selectedMonth, startDay];
@@ -75,27 +75,38 @@
         stringWithFormat:@"%d", (int)(param.beginTime + i * param.interval)];
     [needDict setObject:@(0) forKey:key];
   }
-  //替换不为0的数据
-  for (HistoryElecResponse *response in responseArray) {
-    NSString *key = [NSString stringWithFormat:@"%d", response.time];
-    [needDict setObject:@(response.power) forKey:key];
+  //替换服务器响应的数据
+  if (responseArray && responseArray.count) {
+    for (HistoryElecResponse *response in responseArray) {
+      NSString *key = [NSString stringWithFormat:@"%d", response.time];
+      [needDict setObject:@(response.power) forKey:key];
+    }
   }
 
   HistoryElecData *data = [[HistoryElecData alloc] init];
-  data.values = [needDict allValues];
   if (param.interval == kTimeIntervalDay) {
     [self.dateFormatter setDateFormat:@"HH:mm"];
   } else if (param.interval == kTimeIntervalMonth) {
     [self.dateFormatter setDateFormat:@"MM-dd"];
   }
+  NSMutableArray *times = [@[] mutableCopy];
   NSMutableArray *values = [@[] mutableCopy];
   NSString *formatterDateStr;
-  for (NSString *dateInterval in [needDict allKeys]) {
+  int value;
+  //排序后的时间戳
+  NSArray *timeArray = [[needDict allKeys]
+      sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+          return [obj1 intValue] - [obj2 intValue];
+      }];
+  for (NSString *dateInterval in timeArray) {
     NSDate *date =
         [NSDate dateWithTimeIntervalSince1970:[dateInterval intValue]];
     formatterDateStr = [self.dateFormatter stringFromDate:date];
-    [values addObject:formatterDateStr];
+    value = [[needDict objectForKey:dateInterval] intValue];
+    [times addObject:formatterDateStr];
+    [values addObject:@(value)];
   }
+  data.times = times;
   data.values = values;
   return data;
 }

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CycleViewController : UITableViewController
-
+@property(nonatomic, assign) int week;
+@property(nonatomic, assign) id<PassValueDelegate> delegate;
 @end

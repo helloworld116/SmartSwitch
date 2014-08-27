@@ -13,12 +13,12 @@
 
 @interface HistoryElectricityViewController ()<UdpRequestDelegate,
                                                HistoryElecViewDelegate>
-@property (strong, nonatomic) IBOutlet HistoryElecView *viewOfHistoryElec;
-@property (strong, nonatomic) HistoryElecParam *param;
-@property (strong, nonatomic) HistoryElec *historyElec;
+@property(strong, nonatomic) IBOutlet HistoryElecView *viewOfHistoryElec;
+@property(strong, nonatomic) HistoryElecParam *param;
+@property(strong, nonatomic) HistoryElec *historyElec;
 
-@property (strong, nonatomic) SDZGSwitch *aSwitch;
-@property (strong, nonatomic) UdpRequest *request;
+@property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) UdpRequest *request;
 @end
 
 @implementation HistoryElectricityViewController
@@ -119,6 +119,7 @@ preparation before navigation
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
   switch (message.msgId) {
     case 0x64:
+      [self responseMsg64:message];
       break;
 
     default:
@@ -130,17 +131,12 @@ preparation before navigation
   if (message.state == 0) {
     //          message.historyElecCount
     //          message.historyElecs
-    if (message.historyElecCount) {
-      HistoryElecData *data =
-          [self.historyElec parseResponse:message.historyElecs
-                                    param:self.param];
-      self.viewOfHistoryElec.values = data.values;
-      self.viewOfHistoryElec.times = data.times;
-      dispatch_async(dispatch_get_main_queue(),
-                     ^{ [self.viewOfHistoryElec setNeedsLayout]; });
-    }
-  } else {
-    // TODO:提示错误
+    HistoryElecData *data =
+        [self.historyElec parseResponse:message.historyElecs param:self.param];
+    self.viewOfHistoryElec.values = data.values;
+    self.viewOfHistoryElec.times = data.times;
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{ [self.viewOfHistoryElec setNeedsLayout]; });
   }
 }
 @end

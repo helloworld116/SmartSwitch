@@ -332,6 +332,7 @@
   //获取当前时间离本周一0点开始的秒数
   NSInteger currentTime = weekday * 24 * 3600 + hour * 3600 + min * 60;
   self.msg = [CC3xMessageUtil getP2dMsg1D:currentTime
+                                 password:aSwitch.password
                                  socketId:socketId
                                 timerList:timeList];
   self.aSwitch = aSwitch;
@@ -365,6 +366,7 @@
   //获取当前时间离本周一0点开始的秒数
   NSInteger currentTime = weekday * 24 * 3600 + hour * 3600 + min * 60;
   self.msg = [CC3xMessageUtil getP2SMsg1F:currentTime
+                                 password:aSwitch.password
                                  socketId:socketId
                                 timerList:timeList
                                       mac:aSwitch.mac];
@@ -1419,7 +1421,7 @@
       case P2D_STATE_INQUIRY_0B:
         self.responseDataC = [NSData
             dataWithContentsOfFile:
-                [PATH_OF_TEMP stringByAppendingPathComponent:@"switch95"]];
+                [PATH_OF_DOCUMENT stringByAppendingPathComponent:@"switch95"]];
         msg = [CC3xMessageUtil parseMessage:self.responseDataC];
         break;
       case P2S_STATE_INQUIRY_0D:
@@ -1433,8 +1435,9 @@
         break;
       case P2D_GET_TIMER_REQ_17: {
         self.responseData18 = [NSData
-            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
-                                                     @"dingshiliebiao95"]];
+            dataWithContentsOfFile:
+                [PATH_OF_DOCUMENT
+                    stringByAppendingPathComponent:@"dingshiliebiao95"]];
         CC3xMessage *msg = [CC3xMessageUtil parseMessage:self.responseData18];
         if ([self.delegate
                 respondsToSelector:@selector(responseMsg:address:)]) {
@@ -1458,8 +1461,9 @@
         break;
       case P2D_GET_POWER_INFO_REQ_33:
         self.responseData34 = [NSData
-            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
-                                                     @"shishidianliang95"]];
+            dataWithContentsOfFile:
+                [PATH_OF_DOCUMENT
+                    stringByAppendingPathComponent:@"shishidianliang95"]];
         msg = [CC3xMessageUtil parseMessage:self.responseData34];
         break;
       case P2S_GET_POWER_INFO_REQ_35:
@@ -1491,8 +1495,9 @@
         break;
       case P2D_GET_DELAY_REQ_53:
         self.responseData54 = [NSData
-            dataWithContentsOfFile:[PATH_OF_TEMP stringByAppendingPathComponent:
-                                                     @"chaxunshebeiyanshi95"]];
+            dataWithContentsOfFile:
+                [PATH_OF_DOCUMENT
+                    stringByAppendingPathComponent:@"chaxunshebeiyanshi95"]];
         msg = [CC3xMessageUtil parseMessage:self.responseData54];
         break;
       case P2S_GET_DELAY_REQ_55:
@@ -1504,7 +1509,7 @@
       case P2D_GET_NAME_REQ_5D:
         self.responseData5E = [NSData
             dataWithContentsOfFile:
-                [PATH_OF_TEMP
+                [PATH_OF_DOCUMENT
                     stringByAppendingPathComponent:@"chaxunshebeimingcheng95"]];
         msg = [CC3xMessageUtil parseMessage:self.responseData5E];
         break;
@@ -1792,24 +1797,24 @@
         self.responseDataA = data;
         break;
       case 0xc:
-        //        if (msg.version == 2) {
-        //          if ([msg.mac isEqualToString:@"00:19:94:37:a2:95"]) {
-        //            NSLog(
-        //                @"write to file is %d",
-        //                [data
-        //                    writeToFile:[PATH_OF_TEMP
-        //                                    stringByAppendingPathComponent:@"switch95"]
-        //                     atomically:YES]);
-        //          }
-        //        }
-        self.responseDataC = data;
+        if (msg.version == 2) {
+          //          if ([msg.mac isEqualToString:@"00:19:94:37:a2:95"]) {
+          //            NSLog(
+          //                @"write to file is %d",
+          //                [data
+          //                    writeToFile:[PATH_OF_DOCUMENT
+          //                                    stringByAppendingPathComponent:@"switch95"]
+          //                     atomically:YES]);
+          //          }
+          self.responseDataC = data;
+        }
         break;
       case 0xe:
         self.responseDataE = data;
         [self.responseDictE setObject:data forKey:msg.mac];
         break;
       case 0x12:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //                              stringByAppendingPathComponent:@"kaiguan95"]
         //               atomically:YES];
         self.responseData12 = data;
@@ -1819,7 +1824,7 @@
         break;
       case 0x18:
         //        [data
-        //            writeToFile:[PATH_OF_TEMP
+        //            writeToFile:[PATH_OF_DOCUMENT
         //                            stringByAppendingPathComponent:@"dingshiliebiao95"]
         //             atomically:YES];
         self.responseData18 = data;
@@ -1841,7 +1846,7 @@
         break;
       case 0x34:
         //        [data
-        //            writeToFile:[PATH_OF_TEMP
+        //            writeToFile:[PATH_OF_DOCUMENT
         //                            stringByAppendingPathComponent:@"shishidianliang95"]
         //             atomically:YES];
         self.responseData34 = data;
@@ -1850,7 +1855,7 @@
         self.responseData36 = data;
         break;
       case 0x3A:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //                              stringByAppendingPathComponent:@"shansuo95"]
         //               atomically:YES];
         self.responseData3A = data;
@@ -1860,7 +1865,7 @@
         break;
       case 0x40:
         //        [data
-        //            writeToFile:[PATH_OF_TEMP
+        //            writeToFile:[PATH_OF_DOCUMENT
         //                            stringByAppendingPathComponent:@"shebeimingcheng95"]
         //             atomically:YES];
         self.responseData40 = data;
@@ -1869,7 +1874,7 @@
         self.responseData42 = data;
         break;
       case 0x48:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //                              stringByAppendingPathComponent:@"jiasuo95"]
         //               atomically:YES];
         self.responseData48 = data;
@@ -1878,9 +1883,9 @@
         self.responseData4A = data;
         break;
       case 0x4e:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //        stringByAppendingPathComponent:
-        //                                            @"shezhishebeiyanshi95"]
+        //                                                @"shezhishebeiyanshi95"]
         //               atomically:YES];
         self.responseData4E = data;
         break;
@@ -1888,9 +1893,9 @@
         self.responseData50 = data;
         break;
       case 0x54:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //        stringByAppendingPathComponent:
-        //                                            @"chaxunshebeiyanshi95"]
+        //                                                @"chaxunshebeiyanshi95"]
         //               atomically:YES];
         self.responseData54 = data;
         break;
@@ -1901,9 +1906,9 @@
         self.responseData5A = data;
         break;
       case 0x5e:
-        //        [data writeToFile:[PATH_OF_TEMP
+        //        [data writeToFile:[PATH_OF_DOCUMENT
         //        stringByAppendingPathComponent:
-        //                                            @"chaxunshebeimingcheng95"]
+        //                                                @"chaxunshebeimingcheng95"]
         //               atomically:YES];
         self.responseData5E = data;
         break;

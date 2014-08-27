@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TimerViewController : UITableViewController
-
+@property(nonatomic, strong) SDZGSwitch *aSwitch;
+@property(nonatomic, assign) int socketId;
 @end

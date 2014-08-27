@@ -9,8 +9,9 @@
 #import "TimerViewController.h"
 #import "TimerCell.h"
 
-@interface TimerViewController ()
-
+@interface TimerViewController ()<UdpRequestDelegate>
+@property(nonatomic, strong) UdpRequest *request;
+@property(nonatomic, strong) NSArray *timers;
 @end
 
 @implementation TimerViewController
@@ -23,6 +24,12 @@
   return self;
 }
 
+- (void)setup {
+  self.request = [UdpRequest manager];
+  self.request.delegate = self;
+  [self sendMsg17Or19];
+}
+
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.navigationItem.title = @"定时列表";
@@ -31,10 +38,12 @@
               style:UIBarButtonItemStylePlain
              target:self.navigationController
              action:@selector(popViewControllerAnimated:)];
-  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-      initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                           target:self
-                           action:@selector(editTimer:)];
+  self.navigationItem.rightBarButtonItem =
+      [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tj"]
+                                       style:UIBarButtonItemStylePlain
+                                      target:self
+                                      action:@selector(addTimer:)];
+  [self setup];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,79 +55,50 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return 10;
+  return self.timers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *cellId = @"TimerCell";
-  UITableViewCell *cell =
-      [tableView dequeueReusableCellWithIdentifier:cellId
-                                      forIndexPath:indexPath];
+  TimerCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId
+                                                    forIndexPath:indexPath];
+
+  SDZGTimerTask *task = [self.timers objectAtIndex:indexPath.row];
+  [cell setCellInfo:task];
   return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath
-*)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath]
-withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the
-array, and add a new row to the table view
-    }
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath
-*)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath
-*)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little
-preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - UINavigationBar
-- (void)editTimer:(id)sender {
+- (void)addTimer:(id)sender {
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+#pragma mark - 定时列表查询请求
+- (void)sendMsg17Or19 {
+  [self.request sendMsg17Or19:self.aSwitch
+                     socketId:self.socketId
+                     sendMode:ActiveMode];
+}
+
+#pragma mark - UdpRequest代理
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    //设置延时
+    case 0x18:
+    case 0x1a:
+      [self responseMsg18Or1A:message];
+      break;
+    default:
+      break;
+  }
+}
+
+- (void)responseMsg18Or1A:(CC3xMessage *)message {
+  self.timers = message.timerTaskList;
+  debugLog(@"timers is %@", self.timers);
+  dispatch_async(dispatch_get_main_queue(), ^{ [self.tableView reloadData]; });
 }
 @end

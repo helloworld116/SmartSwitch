@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TimerEditViewController : UITableViewController
-
+@interface TimerEditViewController : UIViewController
+@property(nonatomic, strong) NSArray *timers;       //所有的定时任务
+@property(nonatomic, strong) SDZGTimerTask *timer;  //正在编辑的定时任务
 @end

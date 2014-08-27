@@ -13,6 +13,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import "MacroUtils.h"
     #import <Reachability.h>
     #import <GCDAsyncUdpSocket.h>
     #import <MBProgressHUD.h>
@@ -22,7 +23,7 @@
     #import <EGORefreshTableHeaderView.h>
     #import <HexColor.h>
 
-    #import "MacroUtils.h"
+
     #import "AppDelegate.h"
     #import "CC3xUtility.h"
     #import "CC3xMessage.h"
@@ -38,8 +39,4 @@
     #import "PassValueDelegate.h"
     #import "ViewUtil.h"
     #import "FirstTimeConfig.h"
-#endif
-
-#if TARGET_OS_IPHONE
-
 #endif

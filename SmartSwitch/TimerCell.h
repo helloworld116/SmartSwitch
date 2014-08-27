@@ -9,11 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TimerCell : UITableViewCell
-@property(strong, nonatomic) IBOutlet UIView *viewContent;
-@property(strong, nonatomic) IBOutlet UIView *lblTimeInfo;
-@property(strong, nonatomic) IBOutlet UILabel *lblAction;
-@property(strong, nonatomic) IBOutlet UILabel *lblRepeate;
-@property(strong, nonatomic) IBOutlet UILabel *lblExecuteCout;
-@property(strong, nonatomic) IBOutlet UISwitch *_switch;
-
+- (void)setCellInfo:(SDZGTimerTask *)task;
 @end

@@ -217,9 +217,8 @@ typedef struct {
   msgHeader header;
   unsigned char socketId;
   char password[6];
-  unsigned char currentTimer[4];
+  unsigned int currentTime;
   unsigned char timerNumber;
-  timerTask *timerList;
   unsigned short crc;
 } p2dMsg1D;
 
@@ -238,9 +237,8 @@ typedef struct {
   unsigned char mac[6];
   unsigned char socketId;
   char password[4];
-  unsigned char currentTime[4];
+  unsigned int currentTime;
   unsigned char timerNumber;
-  timerTask *timerList;
   unsigned short crc;
 } p2sMsg1F;
 
@@ -768,98 +766,83 @@ typedef struct {
 
 // P2D_SET_TIMER_REQ	0X1D
 + (NSData *)getP2dMsg1D:(NSUInteger)currentTime
+               password:(NSString *)password
                socketId:(int)socketId
               timerList:(NSArray *)timerList {
-  NSUInteger num = [timerList count];
-  NSUInteger bufLen = 11 + num * 10;
-  //    Byte msgBuf[bufLen];
-
-  Byte header[9];
-  header[0] = (Byte)(bufLen >> 8);
-  header[1] = (Byte)bufLen;
-  header[2] = (Byte)0x1D;
-  header[3] = (Byte)0xAD;
-  //    memcpy(header + 4, &currentTime, 4);
-  header[4] = (Byte)(currentTime >> 24);
-  header[5] = (Byte)(currentTime >> 16);
-  header[6] = (Byte)(currentTime >> 8);
-  header[7] = (Byte)(currentTime);
-  header[8] = (Byte)num;
-
-  NSMutableData *msg = [[NSMutableData alloc] initWithCapacity:bufLen];
-  [msg appendBytes:header length:9];
-  for (int i = 0; i < num; i++) {
-    CC3xTimerTask *task = timerList[i];
-    Byte item[10];
-    item[0] = (Byte)task.week;
-    item[1] = (Byte)(task.startTime >> 24);
-    item[2] = (Byte)(task.startTime >> 16);
-    item[3] = (Byte)(task.startTime >> 8);
-    item[4] = (Byte)task.startTime;
-    item[5] = (Byte)(task.endTime >> 24);
-    item[6] = (Byte)(task.endTime >> 16);
-    item[7] = (Byte)(task.endTime >> 8);
-    item[8] = (Byte)task.endTime;
-    item[9] = (Byte)task.timeDetail;
-    [msg appendBytes:item length:10];
+  p2dMsg1D msg;
+  memset(&msg, 0, sizeof(msg));
+  msg.header.msgLength =
+      htons(sizeof(msg) + sizeof(timerTask) * timerList.count);
+  msg.header.msgId = 0x1D;
+  msg.header.msgDir = 0xAD;
+  msg.socketId = socketId;
+  NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
+  memcpy(&msg.password, [passwordData bytes], [password length]);
+  msg.currentTime = htonl(currentTime);
+  Byte timerByte[sizeof(timerTask) * timerList.count];
+  msg.timerNumber = timerList.count;
+  for (int i = 0; i < timerList.count; i++) {
+    SDZGTimerTask *task = [timerList objectAtIndex:i];
+    timerTask timerTask;
+    memset(&timerTask, 0, sizeof(timerTask));
+    timerTask.week = task.week;
+    timerTask.actionTime = htonl(task.actionTime);
+    timerTask.takeEffect = task.isEffective;
+    timerTask.actionType = task.timerActionType;
+    memcmp(&timerByte + i * sizeof(timerTask), &timerTask, sizeof(timerTask));
   }
-  Byte *byteData = (Byte *)[msg bytes];
-  unsigned short crc = CRC16((unsigned char *)byteData, bufLen - 2);
-  Byte cc[2];
-  cc[1] = (Byte)(crc >> 8);
-  cc[0] = (Byte)crc;
-  [msg appendBytes:cc length:2];
-  return msg;
+  return nil;
 }
-// P2S_SET_TIMER_REQ	0X1F
-+ (NSData *)getP2SMsg1F:(NSUInteger)currentTime
-               socketId:(int)socketId
-              timerList:(NSArray *)timerList
-                    mac:(NSString *)aMac {
-  NSUInteger num = [timerList count];
-  NSUInteger bufLen = 17 + num * 10;
-  //    Byte msgBuf[bufLen];
-
-  Byte header[15];
-  header[0] = (Byte)(bufLen >> 8);
-  header[1] = (Byte)bufLen;
-  header[2] = (Byte)0x1F;
-  header[3] = (Byte)0xA5;
-  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:aMac];
-  memcpy(header + 4, macBytes, 6);
-  free(macBytes);
-  //    memcpy(header + 10, &currentTime, 4);
-  header[10] = (Byte)(currentTime >> 24);
-  header[11] = (Byte)(currentTime >> 16);
-  header[12] = (Byte)(currentTime >> 8);
-  header[13] = (Byte)(currentTime);
-  header[14] = (Byte)num;
-
-  NSMutableData *msg = [[NSMutableData alloc] initWithCapacity:bufLen];
-  [msg appendBytes:header length:15];
-  for (int i = 0; i < num; i++) {
-    CC3xTimerTask *task = timerList[i];
-    Byte item[10];
-    item[0] = (Byte)task.week;
-    item[1] = (Byte)(task.startTime >> 24);
-    item[2] = (Byte)(task.startTime >> 16);
-    item[3] = (Byte)(task.startTime >> 8);
-    item[4] = (Byte)task.startTime;
-    item[5] = (Byte)(task.endTime >> 24);
-    item[6] = (Byte)(task.endTime >> 16);
-    item[7] = (Byte)(task.endTime >> 8);
-    item[8] = (Byte)task.endTime;
-    item[9] = (Byte)task.timeDetail;
-    [msg appendBytes:item length:10];
-  }
-  Byte *byteData = (Byte *)[msg bytes];
-  unsigned short crc = CRC16((unsigned char *)byteData, bufLen - 2);
-  Byte cc[2];
-  cc[1] = (Byte)(crc >> 8);
-  cc[0] = (Byte)crc;
-  [msg appendBytes:cc length:2];
-  return msg;
-}
+//// P2S_SET_TIMER_REQ	0X1F
+//+ (NSData *)getP2SMsg1F:(NSUInteger)currentTime
+//                password:(NSString *)password
+//               socketId:(int)socketId
+//              timerList:(NSArray *)timerList
+//                    mac:(NSString *)aMac {
+//  NSUInteger num = [timerList count];
+//  NSUInteger bufLen = 17 + num * 10;
+//  //    Byte msgBuf[bufLen];
+//
+//  Byte header[15];
+//  header[0] = (Byte)(bufLen >> 8);
+//  header[1] = (Byte)bufLen;
+//  header[2] = (Byte)0x1F;
+//  header[3] = (Byte)0xA5;
+//  Byte *macBytes = [CC3xMessageUtil mac2HexBytes:aMac];
+//  memcpy(header + 4, macBytes, 6);
+//  free(macBytes);
+//  //    memcpy(header + 10, &currentTime, 4);
+//  header[10] = (Byte)(currentTime >> 24);
+//  header[11] = (Byte)(currentTime >> 16);
+//  header[12] = (Byte)(currentTime >> 8);
+//  header[13] = (Byte)(currentTime);
+//  header[14] = (Byte)num;
+//
+//  NSMutableData *msg = [[NSMutableData alloc] initWithCapacity:bufLen];
+//  [msg appendBytes:header length:15];
+//  for (int i = 0; i < num; i++) {
+//    CC3xTimerTask *task = timerList[i];
+//    Byte item[10];
+//    item[0] = (Byte)task.week;
+//    item[1] = (Byte)(task.startTime >> 24);
+//    item[2] = (Byte)(task.startTime >> 16);
+//    item[3] = (Byte)(task.startTime >> 8);
+//    item[4] = (Byte)task.startTime;
+//    item[5] = (Byte)(task.endTime >> 24);
+//    item[6] = (Byte)(task.endTime >> 16);
+//    item[7] = (Byte)(task.endTime >> 8);
+//    item[8] = (Byte)task.endTime;
+//    item[9] = (Byte)task.timeDetail;
+//    [msg appendBytes:item length:10];
+//  }
+//  Byte *byteData = (Byte *)[msg bytes];
+//  unsigned short crc = CRC16((unsigned char *)byteData, bufLen - 2);
+//  Byte cc[2];
+//  cc[1] = (Byte)(crc >> 8);
+//  cc[0] = (Byte)crc;
+//  [msg appendBytes:cc length:2];
+//  return msg;
+//}
 
 // P2D_GET_PROPERTY_REQ	0X25
 + (NSData *)getP2dMsg25 {
@@ -1294,15 +1277,9 @@ typedef struct {
     timerTask tasks[msg.count];
     [aData getBytes:&tasks
               range:NSMakeRange(sizeof(d2pMsg18) - 2,
-                                sizeof(d2pMsg18) * msg.count)];
+                                sizeof(timerTask) * msg.count)];
     NSMutableArray *timers = [NSMutableArray arrayWithCapacity:msg.count];
     for (int i = 0; i < msg.count; i++) {
-      //      elecInfo elecInfo = elecInfos[i];
-      //      int time = ntohl(elecInfo.time);
-      //      int power = ntohl(elecInfo.power) / 100;
-      //      ElecHistoryInfo *historyInfo =
-      //          [[ElecHistoryInfo alloc] initWithTime:time power:power];
-      //      [elecs addObject:historyInfo];
       timerTask task = tasks[i];
       unsigned char week = task.week;
       unsigned char effective = task.takeEffect;

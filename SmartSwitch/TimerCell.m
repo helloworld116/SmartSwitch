@@ -8,6 +8,15 @@
 
 #import "TimerCell.h"
 
+@interface TimerCell ()
+@property(strong, nonatomic) IBOutlet UIView *viewContent;
+@property(strong, nonatomic) IBOutlet UILabel *lblTimeInfo;
+@property(strong, nonatomic) IBOutlet UILabel *lblAction;
+@property(strong, nonatomic) IBOutlet UILabel *lblRepeate;
+@property(strong, nonatomic) IBOutlet UILabel *lblExecuteCout;
+@property(strong, nonatomic) IBOutlet UISwitch *_switch;
+@end
+
 @implementation TimerCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style
@@ -32,4 +41,10 @@
   // Configure the view for the selected state
 }
 
+- (void)setCellInfo:(SDZGTimerTask *)task {
+  self.lblTimeInfo.text = [task actionTimeString];
+  self._switch.on = [task actionEffective];
+  self.lblAction.text = [task actionTypeString];
+  self.lblRepeate.text = [task actionWeekString];
+}
 @end

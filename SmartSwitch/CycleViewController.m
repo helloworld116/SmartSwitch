@@ -7,21 +7,21 @@
 //
 
 #import "CycleViewController.h"
-#define kCycleDict    \
-  @{                  \
-    @"0" : @"周一", \
-    @"1" : @"周二", \
-    @"2" : @"周三", \
-    @"3" : @"周四", \
-    @"4" : @"周五", \
-    @"5" : @"周六", \
-    @"6" : @"周日"  \
+#define kCycleDict                                                             \
+  @{                                                                           \
+    @"0" : @"周一",                                                          \
+    @"1" : @"周二",                                                          \
+    @"2" : @"周三",                                                          \
+    @"3" : @"周四",                                                          \
+    @"4" : @"周五",                                                          \
+    @"5" : @"周六",                                                          \
+    @"6" : @"周日"                                                           \
   }
 
 @interface CycleCell : UITableViewCell
-@property(strong, nonatomic) IBOutlet UIView *viewOfCellContent;
-@property(strong, nonatomic) IBOutlet UILabel *lblDate;
-@property(strong, nonatomic) IBOutlet UIButton *btnSelected;
+@property (strong, nonatomic) IBOutlet UIView *viewOfCellContent;
+@property (strong, nonatomic) IBOutlet UILabel *lblDate;
+@property (strong, nonatomic) IBOutlet UIButton *btnSelected;
 @end
 @implementation CycleCell
 - (void)awakeFromNib {
@@ -34,7 +34,7 @@
 @end
 
 @interface CycleViewController ()
-@property(nonatomic, strong) NSMutableDictionary *data;
+@property (nonatomic, strong) NSMutableDictionary *data;
 
 @end
 @implementation CycleViewController
@@ -47,10 +47,31 @@
 }
 
 - (void)setup {
-  self.data = [@{
-    @"section0" : [@[ @NO, @NO, @NO, @NO, @NO, @NO, @NO ] mutableCopy],
-    @"section1" : [@[ @NO ] mutableCopy]
-  } mutableCopy];
+  if (self.week == 0) {
+    self.data = [@{
+      @"section0" : [@[ @NO, @NO, @NO, @NO, @NO, @NO, @NO ] mutableCopy],
+      @"section1" : [@[ @NO ] mutableCopy]
+    } mutableCopy];
+  } else if (self.week == 127) {
+    self.data = [@{
+      @"section0" :
+          [@[ @YES, @YES, @YES, @YES, @YES, @YES, @YES ] mutableCopy],
+      @"section1" : [@[ @YES ] mutableCopy]
+    } mutableCopy];
+  } else {
+    self.data = [@{
+      @"section0" : [@[
+        @((self.week & 1 << 0) == 1 << 0),
+        @((self.week & 1 << 1) == 1 << 1),
+        @((self.week & 1 << 2) == 1 << 2),
+        @((self.week & 1 << 3) == 1 << 3),
+        @((self.week & 1 << 4) == 1 << 4),
+        @((self.week & 1 << 5) == 1 << 5),
+        @((self.week & 1 << 6) == 1 << 6),
+      ] mutableCopy],
+      @"section1" : [@[ @NO ] mutableCopy]
+    } mutableCopy];
+  }
 }
 
 - (void)viewDidLoad {
@@ -142,7 +163,7 @@
     //修改section1
     int result = 0;
     for (int i = 0; i < array.count; i++) {
-      int oneCellState = [[array objectAtIndex:i] intValue];
+      int oneCellState = [[array objectAtIndex:i] boolValue];
       //如果所有的都是勾选，则每天勾选，反之有一个没勾选则每天不勾选
       result += oneCellState;
     }

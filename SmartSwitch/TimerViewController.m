@@ -8,10 +8,11 @@
 
 #import "TimerViewController.h"
 #import "TimerCell.h"
+#import "TimerEditViewController.h"
 
-@interface TimerViewController ()<UdpRequestDelegate>
-@property(nonatomic, strong) UdpRequest *request;
-@property(nonatomic, strong) NSArray *timers;
+@interface TimerViewController ()<UdpRequestDelegate, UIActionSheetDelegate>
+@property (nonatomic, strong) UdpRequest *request;
+@property (nonatomic, strong) NSArray *timers;
 @end
 
 @implementation TimerViewController
@@ -66,14 +67,53 @@
 
   SDZGTimerTask *task = [self.timers objectAtIndex:indexPath.row];
   [cell setCellInfo:task];
+  //增加长按事件
+  UILongPressGestureRecognizer *longPressGesture =
+      [[UILongPressGestureRecognizer alloc]
+          initWithTarget:self
+                  action:@selector(handlerLongPress:)];
+  longPressGesture.minimumPressDuration = 0.5;
+  [cell addGestureRecognizer:longPressGesture];
   return cell;
+}
+
+- (void)tableView:(UITableView *)tableView
+    didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  SDZGTimerTask *timer = [self.timers objectAtIndex:indexPath.row];
+  TimerEditViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
+  nextVC.timers = self.timers;
+  nextVC.timer = timer;
+  [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 #pragma mark - UINavigationBar
 - (void)addTimer:(id)sender {
-  UIViewController *nextVC = [self.storyboard
+  TimerEditViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
+  nextVC.timers = self.timers;
   [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+#pragma mark - SceneListCellHandler
+- (void)handlerLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+  CGPoint p = [gestureRecognizer locationInView:self.view];
+  NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+  if (indexPath && gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    debugLog(@"indexPath is %d", indexPath.row);
+    UIActionSheet *actionSheet =
+        [[UIActionSheet alloc] initWithTitle:@"确定删除定时列表"
+                                    delegate:self
+                           cancelButtonTitle:@"取消"
+                      destructiveButtonTitle:nil
+                           otherButtonTitles:@"删除", nil];
+    [actionSheet showInView:self.view];
+  }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet
+    clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSLog(@"index is %d", buttonIndex);
 }
 
 #pragma mark - 定时列表查询请求

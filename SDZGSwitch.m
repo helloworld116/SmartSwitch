@@ -9,7 +9,33 @@
 #import "SDZGSwitch.h"
 
 @implementation SDZGSwitch
++ (SDZGSwitch *)parseMessageCOrEToSwitch:(CC3xMessage *)message {
+  SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
+  aSwitch.mac = message.mac;
+  aSwitch.ip = message.ip;
+  aSwitch.port = message.port;
+  aSwitch.name = message.deviceName;
+  aSwitch.version = message.version;
+  aSwitch.lockStatus = message.lockStatus;
+  if (message.msgId == 0xc) {
+    aSwitch.networkStatus = SWITCH_LOCAL;
+  } else if (message.msgId == 0xe) {
+    aSwitch.networkStatus = SWITCH_REMOTE;
+  } else {
+    aSwitch.networkStatus = SWITCH_OFFLINE;
+  }
+  aSwitch.sockets = [@[] mutableCopy];
+  SDZGSocket *socket1 = [[SDZGSocket alloc] init];
+  socket1.socketId = 1;
+  socket1.socketStatus = ((message.onStatus & 1 << 0) == 1 << 0);
+  [aSwitch.sockets addObject:socket1];
 
+  SDZGSocket *socket2 = [[SDZGSocket alloc] init];
+  socket2.socketId = 2;
+  socket2.socketStatus = ((message.onStatus & 1 << 1) == 1 << 1);
+  [aSwitch.sockets addObject:socket2];
+  return aSwitch;
+}
 @end
 
 @implementation SDZGSocket
@@ -32,7 +58,7 @@
 }
 
 - (BOOL)isDayOn:(DAYTYPE)aDay {
-  return self.week & aDay;
+  return (self.week & aDay) == aDay;
 }
 
 - (NSString *)actionWeekString {

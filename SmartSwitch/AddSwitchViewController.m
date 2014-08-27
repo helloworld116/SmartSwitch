@@ -9,21 +9,22 @@
 #import "AddSwitchViewController.h"
 
 @interface AddSwitchViewController ()<UITextFieldDelegate, UdpRequestDelegate>
-@property(strong, nonatomic) IBOutlet UIView *contentView;
-@property(strong, nonatomic) IBOutlet UITextField *textWIFI;
-@property(strong, nonatomic) IBOutlet UITextField *textPassword;
-@property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
-@property(assign, nonatomic) BOOL isShowPassword;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet UITextField *textWIFI;
+@property (strong, nonatomic) IBOutlet UITextField *textPassword;
+@property (strong, nonatomic) IBOutlet UIButton *btnShowPassword; //展示选中图片
+@property (assign, nonatomic) BOOL isShowPassword;
 
-@property(strong, nonatomic) FirstTimeConfig *config;
-@property(strong, nonatomic) NSString *wifi;
-@property(strong, nonatomic) NSString *password;
+@property (strong, nonatomic) FirstTimeConfig *config;
+@property (strong, nonatomic) NSString *wifi;
+@property (strong, nonatomic) NSString *password;
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
-@property(assign, atomic) int count;
+@property (assign, atomic) int count;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
 - (IBAction)back:(id)sender;
+- (IBAction)touchBackground:(id)sender;
 
 @end
 
@@ -119,6 +120,11 @@ preparation before navigation
                                                       object:self];
 }
 
+- (IBAction)touchBackground:(id)sender {
+  [self.textWIFI resignFirstResponder];
+  [self.textPassword resignFirstResponder];
+}
+
 #pragma mark - CC3000
 //网络连接完好，进行udp传输
 - (void)startTransmitting {
@@ -200,8 +206,14 @@ preparation before navigation
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-  [textField resignFirstResponder];
-  return YES;
+  if (textField == self.textWIFI) {
+    [textField resignFirstResponder];
+    [self.textPassword becomeFirstResponder];
+    return NO;
+  } else {
+    [textField resignFirstResponder];
+    return YES;
+  }
 }
 
 #pragma mark - UDPDelegate

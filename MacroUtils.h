@@ -32,7 +32,7 @@
 #import "FirstTimeConfig.h"
 #endif
 
-#define kSharedAppliction \
+#define kSharedAppliction                                                      \
   ((AppDelegate *)[UIApplication sharedApplication].delegate)
 
 #define kCheckNetworkWebsite @"www.baidu.com"
@@ -41,11 +41,11 @@
 #define kDelayNotification @"DelayNotification"
 // UDP过期时间,单位秒
 #define kUDPTimeOut -1
-#define kCheckPrivateResponseInterval \
-  100  //发送UDP内网请求后，检查是否有响应数据的间隔，单位为秒
-#define kCheckPublicResponseInterval \
-  100  //发送UDP外网请求后，检查是否有响应数据的间隔，单位为秒
-#define kTryCount -1  //请求失败后自动尝试次数
+#define kCheckPrivateResponseInterval                                          \
+  100 //发送UDP内网请求后，检查是否有响应数据的间隔，单位为秒
+#define kCheckPublicResponseInterval                                           \
+  100 //发送UDP外网请求后，检查是否有响应数据的间隔，单位为秒
+#define kTryCount -1 //请求失败后自动尝试次数
 
 //日志
 #ifdef DEBUG
@@ -56,16 +56,17 @@
 #define debugMethod()
 #endif
 
-#define isEqualOrGreaterToiOS7 \
+#define isEqualOrGreaterToiOS7                                                 \
   ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
 #define is4Inch ([[UIScreen mainScreen] bounds].size.height == 568)
 
 #define PATH_OF_APP_HOME NSHomeDirectory()
 #define PATH_OF_TEMP NSTemporaryDirectory()
-#define PATH_OF_DOCUMENT                                                      \
-  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, \
+#define PATH_OF_DOCUMENT                                                       \
+  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask,  \
                                        YES) objectAtIndex:0]
+//延迟最大时间
 #define kDelayMax 1440
 
 //在家测试
-#define isHome 0
+#define isHome 1

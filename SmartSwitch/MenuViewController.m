@@ -9,8 +9,8 @@
 #import "MenuViewController.h"
 
 @interface MenuCell : UITableViewCell
-@property(strong, nonatomic) IBOutlet UIImageView *imgMenu;
-@property(strong, nonatomic) IBOutlet UILabel *lblMenuName;
+@property (strong, nonatomic) IBOutlet UIImageView *imgMenu;
+@property (strong, nonatomic) IBOutlet UILabel *lblMenuName;
 @end
 
 @implementation MenuCell
@@ -20,11 +20,11 @@
 @end
 
 @interface MenuViewController ()<UITableViewDelegate, UITableViewDataSource>
-@property(strong, nonatomic) NSArray *menuNames;
-@property(strong, nonatomic) NSArray *imageNames;
+@property (strong, nonatomic) NSArray *menuNames;
+@property (strong, nonatomic) NSArray *imageNames;
 
-@property(strong, nonatomic) IBOutlet UIView *topView;
-@property(strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *topView;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)toLoginPage:(id)sender;
 @end
@@ -57,7 +57,12 @@
       @[ @"tb01", @"tb02", @"tb03", @"tb04", @"tb05", @"tb06", @"tb07" ];
   self.tableView.delegate = self;
   self.tableView.dataSource = self;
-  self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+  self.tableView.separatorColor = [UIColor colorWithHexString:@"#1e353d"];
+  UIView *view = [[UIView alloc]
+      initWithFrame:CGRectMake(0, 1, self.view.frame.size.width, 1)];
+  view.backgroundColor = [UIColor colorWithHexString:@"#1e353d"];
+  self.tableView.tableFooterView = view;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -85,10 +90,18 @@
   menuCell.lblMenuName.text = menuName;
 
   UIView *backgroundView = [[UIView alloc] initWithFrame:menuCell.bounds];
-  backgroundView.backgroundColor = [UIColor blueColor];
+  backgroundView.backgroundColor = [UIColor colorWithHexString:@"#0099ff"];
   menuCell.selectedBackgroundView = backgroundView;
 
   return menuCell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView
+    viewForFooterInSection:(NSInteger)section {
+  UIView *view = [[UIView alloc]
+      initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
+  view.backgroundColor = [UIColor clearColor];
+  return view;
 }
 
 #pragma mark - UITableViewDelegate

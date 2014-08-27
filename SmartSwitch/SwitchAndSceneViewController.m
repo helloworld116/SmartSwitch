@@ -13,15 +13,15 @@
 
 @interface SwitchAndSceneViewController ()<
     SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property(strong, nonatomic) SceneTableView *tableViewOfScene;
-@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property(strong, nonatomic) IBOutlet UIButton *btnScene;
+@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property (strong, nonatomic) SceneTableView *tableViewOfScene;
+@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property (strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property(strong, nonatomic) NSTimer *updateTimer;
-@property(strong, atomic) UdpRequest *request0BOr0D, *request11Or13;
+@property (strong, nonatomic) NSTimer *updateTimer;
+@property (strong, atomic) UdpRequest *request0BOr0D, *request11Or13;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -348,30 +348,7 @@
 
 - (void)responseMsgCOrE:(CC3xMessage *)message {
   if (message.version == 2 && message.state == 0) {
-    SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
-    aSwitch.mac = message.mac;
-    aSwitch.ip = message.ip;
-    aSwitch.port = message.port;
-    aSwitch.name = message.deviceName;
-    aSwitch.version = message.version;
-    aSwitch.lockStatus = message.lockStatus;
-    if (message.msgId == 0xc) {
-      aSwitch.networkStatus = SWITCH_LOCAL;
-    } else if (message.msgId == 0xe) {
-      aSwitch.networkStatus = SWITCH_REMOTE;
-    } else {
-      aSwitch.networkStatus = SWITCH_OFFLINE;
-    }
-    aSwitch.sockets = [@[] mutableCopy];
-    SDZGSocket *socket1 = [[SDZGSocket alloc] init];
-    socket1.socketId = 1;
-    socket1.socketStatus = message.onStatus & 1 << 0;
-    [aSwitch.sockets addObject:socket1];
-
-    SDZGSocket *socket2 = [[SDZGSocket alloc] init];
-    socket2.socketId = 2;
-    socket2.socketStatus = message.onStatus & 1 << 1;
-    [aSwitch.sockets addObject:socket2];
+    SDZGSwitch *aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
     [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
   }
 }

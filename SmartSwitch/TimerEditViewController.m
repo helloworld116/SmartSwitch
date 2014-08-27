@@ -10,19 +10,20 @@
 #import "CycleViewController.h"
 
 @interface TimerEditViewController ()<PassValueDelegate>
-@property(strong, nonatomic) IBOutlet UIView *cellView1;
-@property(strong, nonatomic) IBOutlet UIView *cellView2;
-@property(strong, nonatomic) IBOutlet UIView *cellView3;
-@property(strong, nonatomic) IBOutlet UILabel *lblTime;
-@property(strong, nonatomic) IBOutlet UILabel *lblRepeatDesc;
-@property(strong, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (strong, nonatomic) IBOutlet UIView *cellView1;
+@property (strong, nonatomic) IBOutlet UIView *cellView2;
+@property (strong, nonatomic) IBOutlet UIView *cellView3;
+@property (strong, nonatomic) IBOutlet UILabel *lblTime;
+@property (strong, nonatomic) IBOutlet UILabel *lblRepeatDesc;
+@property (strong, nonatomic) IBOutlet UISwitch *_switch;
+@property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
 - (IBAction)switchValueChanged:(id)sender;
 - (IBAction)showDatePicker:(id)sender;
 - (IBAction)changeWeek:(id)sender;
 - (IBAction)touchBackground:(id)sender;
 - (IBAction)timeValueChanged:(id)sender;
 
-@property(strong, nonatomic) NSDateFormatter *dateFormatter;
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @end
 
 @implementation TimerEditViewController
@@ -43,7 +44,11 @@
   if (!self.timer) {
     // timer不存在，则表明正在进行添加操作
     self.timer = [[SDZGTimerTask alloc] init];
+    self.timer.timerActionType = TimerActionTypeOn; //默认开
   }
+  self.lblTime.text = [self.timer actionTimeString];
+  self.lblRepeatDesc.text = [self.timer actionWeekString];
+  self._switch.on = self.timer.timerActionType;
 }
 
 - (void)viewDidLoad {
@@ -75,7 +80,13 @@
 
 #pragma mark -
 - (IBAction)showDatePicker:(id)sender {
-  [UIView animateWithDuration:0.3 animations:^{ self.datePicker.hidden = NO; }];
+  [UIView animateWithDuration:0.3
+                   animations:^{
+                       NSDate *defaultDate = [self.dateFormatter
+                           dateFromString:[self.timer actionTimeString]];
+                       self.datePicker.date = defaultDate;
+                       self.datePicker.hidden = NO;
+                   }];
 }
 
 - (IBAction)changeWeek:(id)sender {
@@ -85,6 +96,7 @@
   }
   CycleViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"CycleViewController"];
+  nextVC.week = self.timer.week;
   nextVC.delegate = self;
   [self.navigationController pushViewController:nextVC animated:YES];
 }

@@ -35,7 +35,7 @@
                     <view key="view" contentMode="scaleToFill" id="uqr-3g-edg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15686275064945221" green="0.27058824896812439" blue="0.30980393290519714" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RE6-Tc-Z5Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -169,11 +169,6 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="fgt" translatesAutoresizingMaskIntoConstraints="NO" id="go2-N7-kz4">
-                                                    <rect key="frame" x="0.0" y="47" width="320" height="2"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </tableViewCellContentView>
@@ -1562,7 +1557,7 @@
         <scene sceneID="NK1-nD-3MN">
             <objects>
                 <tableViewController storyboardIdentifier="TimerViewController" automaticallyAdjustsScrollViewInsets="NO" id="auD-pV-v76" userLabel="定时列表" customClass="TimerViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="1" id="WYT-vn-V2Z">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="80" sectionHeaderHeight="1" sectionFooterHeight="1" id="WYT-vn-V2Z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.95686280729999995" green="0.95686280729999995" blue="0.95686280729999995" alpha="1" colorSpace="deviceRGB"/>
@@ -1738,7 +1733,7 @@
                                                     <!--2014-08-27 08:45:12 +0000-->
                                                 </date>
                                                 <timeZone key="timeZone" name="America/Los_Angeles">
-                                                    <mutableData key="data">
+                                                    <data key="data">
 VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
 y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
 5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
@@ -1756,7 +1751,7 @@ f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
 AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</mutableData>
+</data>
                                                 </timeZone>
                                                 <connections>
                                                     <action selector="timeValueChanged:" destination="gDs-LJ-VSc" eventType="valueChanged" id="mYQ-ca-Ejn"/>
@@ -2655,7 +2650,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fU-ts-75b" userLabel="Content View">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fU-ts-75b" userLabel="Content View" customClass="UIControl">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="417"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -2718,6 +2713,9 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <constraint firstAttribute="height" constant="417" id="HlS-Ls-qSJ"/>
                                             <constraint firstAttribute="width" constant="320" id="xUd-3t-MAz"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="touchBackground:" destination="2OB-Zu-5kw" eventType="touchDown" id="zBo-JA-u4J"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3418,7 +3416,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="dc04" width="25" height="25"/>
         <image name="dc05" width="25" height="25"/>
         <image name="dc06" width="25" height="25"/>
-        <image name="fgt" width="269" height="4"/>
         <image name="fh" width="27" height="27"/>
         <image name="fxanniu" width="290" height="42"/>
         <image name="goux" width="25" height="25"/>

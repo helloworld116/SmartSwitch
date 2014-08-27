@@ -15,13 +15,13 @@
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
                               SwitchListCellDelegate, SwitchExpandCellDelegate,
                               EGORefreshTableHeaderDelegate>
-@property(strong, nonatomic) NSArray *switchs;
-@property(assign, nonatomic) BOOL isOpen;  //是否展开
-@property(strong, nonatomic)
-    NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
+@property (strong, nonatomic) NSArray *switchs;
+@property (assign, nonatomic) BOOL isOpen; //是否展开
+@property (strong, nonatomic)
+    NSIndexPath *selectedIndexPath; //展开的cell所在的indexPath
 
-@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property(assign, nonatomic) BOOL reloading;
+@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property (assign, nonatomic) BOOL reloading;
 @end
 
 @implementation SwitchTableView
@@ -41,6 +41,10 @@
                                            selector:@selector(switchUpdate:)
                                                name:kSwitchUpdate
                                              object:nil];
+  UIView *view =
+      [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, 1)];
+  view.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+  self.tableFooterView = view;
 }
 
 - (void)dealloc {
@@ -227,12 +231,12 @@
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading;  // should return if data source model is reloading
+  return _reloading; // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date];  // should return date data source was last changed
+  return [NSDate date]; // should return date data source was last changed
 }
 
 @end

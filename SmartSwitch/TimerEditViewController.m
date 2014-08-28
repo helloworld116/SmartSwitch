@@ -8,25 +8,45 @@
 
 #import "TimerEditViewController.h"
 #import "CycleViewController.h"
+#import <NSDate+Calendar.h>
 
-@interface TimerEditViewController ()<PassValueDelegate>
-@property (strong, nonatomic) IBOutlet UIView *cellView1;
-@property (strong, nonatomic) IBOutlet UIView *cellView2;
-@property (strong, nonatomic) IBOutlet UIView *cellView3;
-@property (strong, nonatomic) IBOutlet UILabel *lblTime;
-@property (strong, nonatomic) IBOutlet UILabel *lblRepeatDesc;
-@property (strong, nonatomic) IBOutlet UISwitch *_switch;
-@property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
+@interface TimerEditViewController ()<PassValueDelegate, UdpRequestDelegate>
+@property(strong, nonatomic) IBOutlet UIView *cellView1;
+@property(strong, nonatomic) IBOutlet UIView *cellView2;
+@property(strong, nonatomic) IBOutlet UIView *cellView3;
+@property(strong, nonatomic) IBOutlet UILabel *lblTime;
+@property(strong, nonatomic) IBOutlet UILabel *lblRepeatDesc;
+@property(strong, nonatomic) IBOutlet UISwitch *_switch;
+@property(strong, nonatomic) IBOutlet UIDatePicker *datePicker;
 - (IBAction)switchValueChanged:(id)sender;
 - (IBAction)showDatePicker:(id)sender;
 - (IBAction)changeWeek:(id)sender;
 - (IBAction)touchBackground:(id)sender;
 - (IBAction)timeValueChanged:(id)sender;
 
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
+@property(nonatomic, strong) SDZGSwitch *aSwtich;
+@property(nonatomic, assign) int socketId;
+@property(nonatomic, strong) NSMutableArray *timers;  //所有的定时任务
+@property(nonatomic, strong) SDZGTimerTask *timer;  //正在编辑的定时任务
+@property(nonatomic, assign)
+    int index;  //正在编辑的timer在数组中位置，方便后续编辑操作时replace
+@property(strong, nonatomic) NSDateFormatter *dateFormatter;
+@property(strong, nonatomic) UdpRequest *request;
 @end
 
 @implementation TimerEditViewController
+
+- (void)setParamSwitch:(SDZGSwitch *)aSwtich
+              socketId:(int)socketId
+                timers:(NSMutableArray *)timers
+                 timer:(SDZGTimerTask *)timer
+                 index:(int)index {
+  self.aSwtich = aSwtich;
+  self.socketId = socketId;
+  self.timers = timers;
+  self.timer = timer;
+  self.index = index;
+}
 
 - (void)setup {
   self.cellView1.layer.borderWidth = 1.0f;
@@ -44,7 +64,15 @@
   if (!self.timer) {
     // timer不存在，则表明正在进行添加操作
     self.timer = [[SDZGTimerTask alloc] init];
-    self.timer.timerActionType = TimerActionTypeOn; //默认开
+    self.timer.timerActionType = TimerActionTypeOn;  //默认开
+    self.timer.isEffective = YES;                    //默认生效
+    NSDate *tenMinituesLater =
+        [NSDate dateWithTimeIntervalSinceNow:10 * 60];  //默认10分钟后
+    int hour = [tenMinituesLater hour];
+    int min = [tenMinituesLater minute];
+    //获取当前时间离本周一0点开始的秒数
+    NSInteger tenMinituesLaterTime = hour * 3600 + min * 60;
+    self.timer.actionTime = tenMinituesLaterTime;
   }
   self.lblTime.text = [self.timer actionTimeString];
   self.lblRepeatDesc.text = [self.timer actionWeekString];
@@ -73,9 +101,24 @@
   // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - UINavigationBar事件
+#pragma mark - UINavigationBar事件_保存
 - (void)save:(id)sender {
-  [self.navigationController popViewControllerAnimated:YES];
+  if (self.index == -1) {
+    //添加
+    [self.timers addObject:self.timer];
+  } else {
+    [self.timers replaceObjectAtIndex:self.index withObject:self.timer];
+  }
+  if (!self.request) {
+    self.request = [UdpRequest manager];
+    self.request.delegate = self;
+  }
+  dispatch_sync(GLOBAL_QUEUE, ^{
+      [self.request sendMsg1DOr1F:self.aSwtich
+                         socketId:self.socketId
+                         timeList:self.timers
+                         sendMode:ActiveMode];
+  });
 }
 
 #pragma mark -
@@ -85,7 +128,11 @@
                        NSDate *defaultDate = [self.dateFormatter
                            dateFromString:[self.timer actionTimeString]];
                        self.datePicker.date = defaultDate;
-                       self.datePicker.hidden = NO;
+                       if (self.datePicker.hidden) {
+                         self.datePicker.hidden = NO;
+                       } else {
+                         self.datePicker.hidden = YES;
+                       }
                    }];
 }
 
@@ -113,9 +160,12 @@
   NSString *dateString =
       [self.dateFormatter stringFromDate:self.datePicker.date];
   self.lblTime.text = dateString;
+  NSArray *time = [dateString componentsSeparatedByString:@":"];
+  self.timer.actionTime = [time[0] intValue] * 3600 + [time[1] intValue] * 60;
 }
 
 - (IBAction)switchValueChanged:(id)sender {
+  self.timer.timerActionType = self._switch.on;
 }
 
 #pragma mark - PassValueDelegate
@@ -123,5 +173,32 @@
   int week = [value intValue];
   self.timer.week = week;
   self.lblRepeatDesc.text = [self.timer actionWeekString];
+}
+
+#pragma mark - UdpRequestDelegate
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    //设置定时
+    case 0x1e:
+    case 0x20:
+      [self responseMsg1EOr20:message];
+      break;
+
+    default:
+      break;
+  }
+}
+
+- (void)responseMsg1EOr20:(CC3xMessage *)message {
+  if (message.state == 0) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSDictionary *userInfo = @{ @"type" : @(self.index) };
+        [[NSNotificationCenter defaultCenter]
+            postNotificationName:kAddOrEditTimerNotification
+                          object:self
+                        userInfo:userInfo];
+        [self.navigationController popViewControllerAnimated:YES];
+    });
+  }
 }
 @end

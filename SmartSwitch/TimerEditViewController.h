@@ -7,8 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#define kAddOrEditTimerNotification @"AddOrEditTimerNotification"
 @interface TimerEditViewController : UIViewController
-@property(nonatomic, strong) NSArray *timers;       //所有的定时任务
-@property(nonatomic, strong) SDZGTimerTask *timer;  //正在编辑的定时任务
+
+/**
+ *  初始化参数设置
+ *
+ *  @param timers 定时列表集合
+ *  @param timer  正在编辑的定时列表,nil表示执行添加操作
+ *  @param index  正在编辑的定时列表在集合的索引，-1则表示执行添加操作
+ */
+- (void)setParamSwitch:(SDZGSwitch *)aSwtich
+              socketId:(int)socketId
+                timers:(NSMutableArray *)timers
+                 timer:(SDZGTimerTask *)timer
+                 index:(int)index;
 @end

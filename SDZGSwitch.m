@@ -118,9 +118,9 @@
 
 - (NSString *)actionTypeString {
   if (TimerActionTypeOn == self.timerActionType) {
-    return @"开";
+    return @"开启";
   } else {
-    return @"关";
+    return @"关闭";
   }
 }
 

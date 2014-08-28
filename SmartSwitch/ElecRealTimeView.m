@@ -13,9 +13,10 @@
 #define kBigRoundStrokeColor [UIColor colorWithHexString:@"#0099ff"]
 #define kBigRoundFillColor [UIColor whiteColor]
 #define kTextColor [UIColor whiteColor]
-#define str(value) [NSString stringWithFormat:@"%.fw", value]
+#define str(value) [NSString stringWithFormat:@"%.2fw", value]
 #define kTopMargin 10  //上边距
 #define kLeftMargin 4  //左边距
+#define kCount 8       //显示点个数
 
 @interface ElecRealTimeView ()
 @property(nonatomic, strong) dispatch_source_t timer;
@@ -23,8 +24,8 @@
 @end
 @implementation ElecRealTimeView
 
-//最大显示个数
-static int count = 8;
+static CGFloat scaleX;
+
 - (void)awakeFromNib {
   //  self.points = [@[] mutableCopy];
   __weak id weakSelf = self;
@@ -35,6 +36,7 @@ static int count = 8;
                             (unsigned)(delayInSeconds * NSEC_PER_SEC), 0);
   dispatch_source_set_event_handler(_timer, ^{ [weakSelf updateView]; });
   dispatch_resume(_timer);
+  scaleX = (self.frame.size.width - kLeftMargin * 2) / (kCount - 1);
 }
 
 //- (void)updateView {
@@ -50,12 +52,14 @@ static int count = 8;
 //}
 
 - (void)updateView {
-  if (self.powers.count > count) {
-    NSRange range = NSMakeRange(self.powers.count - count, count);
+  if (self.powers.count > kCount) {
+    NSRange range = NSMakeRange(self.powers.count - kCount, kCount);
     self.points = [self.powers subarrayWithRange:range];
   } else {
     self.points = self.powers;
   }
+  self.lblCurrent.text = [NSString
+      stringWithFormat:@"当前 %.2fw", [[self.points lastObject] floatValue]];
   [self setNeedsDisplay];
 }
 
@@ -83,11 +87,14 @@ static int count = 8;
   int maxValue = [[self.points valueForKeyPath:@"@max.self"] integerValue];
   CGFloat height = rect.size.height - kTopMargin;  //离上边距
   CGFloat scaleY = 1;
-  scaleY = height / maxValue;
-  if (height > maxValue) {
-    scaleY *= 0.6;
+  if (maxValue != 0) {
+    scaleY = height / maxValue;
+    if (height > maxValue) {
+      scaleY *= 0.6;
+    }
   }
-  CGFloat scaleX = 42;
+
+  //画线
   for (int i = 0; i < self.points.count; i++) {
     double point = [[self.points objectAtIndex:i] doubleValue];
     CGFloat x = scaleX * i + kLeftMargin,
@@ -97,11 +104,18 @@ static int count = 8;
     } else {
       CGPathAddLineToPoint(pathRef, NULL, x, y);
     }
+    if (i == self.points.count - 1) {
+      CGPathAddLineToPoint(pathRef, NULL, x + 5, y);
+    }
   }
   //填充颜色
-  CGPathAddLineToPoint(pathRef, NULL, (scaleX * self.points.count - 1),
+  CGPathAddLineToPoint(pathRef, NULL,
+                       (scaleX * (self.points.count - 1) + kLeftMargin + 5),
                        height + kTopMargin + 1);
   CGPathAddLineToPoint(pathRef, NULL, -2, height + kTopMargin + 1);
+  CGPathAddLineToPoint(
+      pathRef, NULL, -2,
+      height - ([self.points[0] doubleValue] * scaleY) + kTopMargin / 2);
   CGPathCloseSubpath(pathRef);
   //将path添加到上下文
   CGContextAddPath(context, pathRef);

@@ -9,17 +9,18 @@
 #import "AddSwitchViewController.h"
 
 @interface AddSwitchViewController ()<UITextFieldDelegate, UdpRequestDelegate>
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (strong, nonatomic) IBOutlet UITextField *textWIFI;
-@property (strong, nonatomic) IBOutlet UITextField *textPassword;
-@property (strong, nonatomic) IBOutlet UIButton *btnShowPassword; //展示选中图片
-@property (assign, nonatomic) BOOL isShowPassword;
+@property(strong, nonatomic) IBOutlet UIView *contentView;
+@property(strong, nonatomic) IBOutlet UITextField *textWIFI;
+@property(strong, nonatomic) IBOutlet UITextField *textPassword;
+@property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
+@property(assign, nonatomic) BOOL isShowPassword;
 
-@property (strong, nonatomic) FirstTimeConfig *config;
-@property (strong, nonatomic) NSString *wifi;
-@property (strong, nonatomic) NSString *password;
+@property(strong, nonatomic) FirstTimeConfig *config;
+@property(strong, nonatomic) NSString *wifi;
+@property(strong, nonatomic) NSString *password;
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
-@property (assign, atomic) int count;
+@property(assign, atomic) int count;
+@property(strong, nonatomic) UdpRequest *request;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
@@ -108,6 +109,10 @@ preparation before navigation
 }
 
 - (IBAction)doConfig:(id)sender {
+  if (!self.request) {
+    self.request = [UdpRequest manager];
+    self.request.delegate = self;
+  }
   [self startTransmitting];
 }
 
@@ -238,4 +243,23 @@ preparation before navigation
 - (void)noSendMsgId5 {
 }
 
+#pragma mark - UdpRequestDelegate
+- (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
+  switch (message.msgId) {
+    case 0x2:
+      self.count++;
+      debugLog(@"mac is %@ ip is %@ and port is %d", message.mac, message.ip,
+               message.port);
+      if (self.count == 1) {
+        [self.request sendMsg05:message.mac port:message.port mode:ActiveMode];
+      }
+      break;
+
+    case 0x6:
+      debugLog(@"mac is %@ state is %d", message.mac, message.state);
+      break;
+    default:
+      break;
+  }
+}
 @end

@@ -771,16 +771,18 @@ typedef struct {
               timerList:(NSArray *)timerList {
   p2dMsg1D msg;
   memset(&msg, 0, sizeof(msg));
-  msg.header.msgLength =
-      htons(sizeof(msg) + sizeof(timerTask) * timerList.count);
+  unsigned short size = sizeof(msg) + sizeof(timerTask) * timerList.count;
+  msg.header.msgLength = htons(size);
   msg.header.msgId = 0x1D;
   msg.header.msgDir = 0xAD;
   msg.socketId = socketId;
   NSData *passwordData = [password dataUsingEncoding:NSASCIIStringEncoding];
   memcpy(&msg.password, [passwordData bytes], [password length]);
   msg.currentTime = htonl(currentTime);
-  Byte timerByte[sizeof(timerTask) * timerList.count];
   msg.timerNumber = timerList.count;
+  NSData *data1 = [NSData dataWithBytes:&msg length:sizeof(msg) - 2];
+
+  timerTask tasks[timerList.count];
   for (int i = 0; i < timerList.count; i++) {
     SDZGTimerTask *task = [timerList objectAtIndex:i];
     timerTask timerTask;
@@ -789,9 +791,16 @@ typedef struct {
     timerTask.actionTime = htonl(task.actionTime);
     timerTask.takeEffect = task.isEffective;
     timerTask.actionType = task.timerActionType;
-    memcmp(&timerByte + i * sizeof(timerTask), &timerTask, sizeof(timerTask));
+    tasks[i] = timerTask;
   }
-  return nil;
+  NSData *data2 = [NSData dataWithBytes:&tasks length:sizeof(tasks)];
+  NSMutableData *data = [[NSMutableData alloc] init];
+  [data appendData:data1];
+  [data appendData:data2];
+  unsigned short crc =
+      htons(CRC16((unsigned char *)[data bytes], [data length] - 2));
+  [data appendData:[NSData dataWithBytes:&crc length:2]];
+  return data;
 }
 //// P2S_SET_TIMER_REQ	0X1F
 //+ (NSData *)getP2SMsg1F:(NSUInteger)currentTime

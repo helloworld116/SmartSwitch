@@ -23,6 +23,8 @@
 @property(strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
 @property(strong, nonatomic) IBOutlet SocketView *viewSocket1;
 @property(strong, nonatomic) IBOutlet SocketView *viewSocket2;
+@property(strong, nonatomic) IBOutlet UILabel *lblCurrentValue;
+- (IBAction)showHistoryElec:(id)sender;
 
 @property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property(assign, nonatomic) BOOL reloading;
@@ -115,6 +117,8 @@
                        timer:0
                        delay:0];
   self.viewSocket2.delegate = self;
+
+  self.viewOfElecRealTime.lblCurrent = self.lblCurrentValue;
 }
 
 - (void)firstSend {
@@ -147,9 +151,9 @@
   //      [NSThread sleepForTimeInterval:seconds];
   //  });
 
-  //  [self setTimer];
+  [self setTimer];
 
-  [self send5DOr5F];
+  //  [self send5DOr5F];
 }
 
 #pragma mark - Timer
@@ -242,10 +246,6 @@ preparation before navigation
 
 - (void)menuItem3:(id)sender {
   //历史电量
-  UIViewController *nextVC =
-      [self.storyboard instantiateViewControllerWithIdentifier:
-                           @"HistoryElectricityViewController"];
-  [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 - (void)menuItem4:(id)sender {
@@ -485,5 +485,12 @@ preparation before navigation
 
 - (void)socketChangeStatus:(int)socketId {
   [self sendMsg11Or13:socketId];
+}
+
+- (IBAction)showHistoryElec:(id)sender {
+  UIViewController *nextVC =
+      [self.storyboard instantiateViewControllerWithIdentifier:
+                           @"HistoryElectricityViewController"];
+  [self.navigationController pushViewController:nextVC animated:YES];
 }
 @end

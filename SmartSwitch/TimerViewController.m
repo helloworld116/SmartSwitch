@@ -9,10 +9,14 @@
 #import "TimerViewController.h"
 #import "TimerCell.h"
 #import "TimerEditViewController.h"
+#define kAddTimer -1
 
 @interface TimerViewController ()<UdpRequestDelegate, UIActionSheetDelegate>
-@property (nonatomic, strong) UdpRequest *request;
-@property (nonatomic, strong) NSArray *timers;
+@property(nonatomic, strong) UdpRequest *request;
+@property(nonatomic, strong) NSMutableArray *timers;
+
+@property(nonatomic, strong)
+    NSIndexPath *editIndexPath;  //正在编辑或删除的indexPath
 @end
 
 @implementation TimerViewController
@@ -26,9 +30,15 @@
 }
 
 - (void)setup {
+  self.timers = [@[] mutableCopy];
   self.request = [UdpRequest manager];
   self.request.delegate = self;
   [self sendMsg17Or19];
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(addOrEditTimerNotification:)
+             name:kAddOrEditTimerNotification
+           object:nil];
 }
 
 - (void)viewDidLoad {
@@ -50,6 +60,13 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter]
+      removeObserver:self
+                name:kAddOrEditTimerNotification
+              object:nil];
 }
 
 #pragma mark - Table view data source
@@ -82,8 +99,11 @@
   SDZGTimerTask *timer = [self.timers objectAtIndex:indexPath.row];
   TimerEditViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
-  nextVC.timers = self.timers;
-  nextVC.timer = timer;
+  [nextVC setParamSwitch:self.aSwitch
+                socketId:self.socketId
+                  timers:self.timers
+                   timer:timer
+                   index:indexPath.row];
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
@@ -91,7 +111,11 @@
 - (void)addTimer:(id)sender {
   TimerEditViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"TimerEditViewController"];
-  nextVC.timers = self.timers;
+  [nextVC setParamSwitch:self.aSwitch
+                socketId:self.socketId
+                  timers:self.timers
+                   timer:nil
+                   index:kAddTimer];
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
@@ -100,7 +124,7 @@
   CGPoint p = [gestureRecognizer locationInView:self.view];
   NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
   if (indexPath && gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-    debugLog(@"indexPath is %d", indexPath.row);
+    self.editIndexPath = indexPath;
     UIActionSheet *actionSheet =
         [[UIActionSheet alloc] initWithTitle:@"确定删除定时列表"
                                     delegate:self
@@ -113,7 +137,43 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet
     clickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSLog(@"index is %d", buttonIndex);
+  if (buttonIndex == 0) {
+    //删除
+    [self.timers removeObjectAtIndex:self.editIndexPath.row];
+    [self sendMsg1DOr1F];
+  }
+}
+
+#pragma mark - AddOrEditTimerNotification
+- (void)addOrEditTimerNotification:(NSNotification *)notification {
+  NSDictionary *userIofo = [notification userInfo];
+  int type = [[userIofo objectForKey:@"type"] intValue];
+  NSIndexPath *indexPath;
+  NSString *message;
+  switch (type) {
+    case kAddTimer:
+      message = @"添加成功";
+      indexPath =
+          [NSIndexPath indexPathForRow:self.timers.count - 1 inSection:0];
+      [self.tableView beginUpdates];
+      [self.tableView insertRowsAtIndexPaths:@[ indexPath ]
+                            withRowAnimation:UITableViewRowAnimationRight];
+      [self.tableView endUpdates];
+      break;
+    default:
+      message = @"修改成功";
+      indexPath = [NSIndexPath indexPathForRow:type inSection:0];
+      [self.tableView reloadRowsAtIndexPaths:@[ indexPath ]
+                            withRowAnimation:UITableViewRowAnimationAutomatic];
+      break;
+  }
+  [self.view
+      makeToast:message
+       duration:1.f
+       position:[NSValue
+                    valueWithCGPoint:CGPointMake(
+                                         self.view.frame.size.width / 2,
+                                         self.view.frame.size.height - 40)]];
 }
 
 #pragma mark - 定时列表查询请求
@@ -123,13 +183,25 @@
                      sendMode:ActiveMode];
 }
 
+- (void)sendMsg1DOr1F {
+  [self.request sendMsg1DOr1F:self.aSwitch
+                     socketId:self.socketId
+                     timeList:self.timers
+                     sendMode:ActiveMode];
+}
+
 #pragma mark - UdpRequest代理
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
   switch (message.msgId) {
-    //设置延时
+    //查询定时
     case 0x18:
     case 0x1a:
       [self responseMsg18Or1A:message];
+      break;
+    //设置定时
+    case 0x1e:
+    case 0x20:
+      [self responseMsg1EOr20:message];
       break;
     default:
       break;
@@ -137,8 +209,24 @@
 }
 
 - (void)responseMsg18Or1A:(CC3xMessage *)message {
-  self.timers = message.timerTaskList;
-  debugLog(@"timers is %@", self.timers);
-  dispatch_async(dispatch_get_main_queue(), ^{ [self.tableView reloadData]; });
+  if (message.timerTaskList) {
+    [self.timers addObjectsFromArray:message.timerTaskList];
+  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+      if (self.timers.count) {
+        [self.tableView reloadData];
+      }
+  });
+}
+
+- (void)responseMsg1EOr20:(CC3xMessage *)message {
+  if (message.state == 0) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView beginUpdates];
+        [self.tableView deleteRowsAtIndexPaths:@[ self.editIndexPath ]
+                              withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView endUpdates];
+    });
+  }
 }
 @end

@@ -10,4 +10,5 @@
 
 @interface ElecRealTimeView : UIView
 @property(nonatomic, strong) NSMutableArray *powers;
+@property(nonatomic, strong) UILabel *lblCurrent;
 @end

@@ -82,12 +82,23 @@
 #pragma mark -
 @property(nonatomic, strong) GCDAsyncUdpSocket *udpSocket;
 @property(nonatomic, strong) SDZGSwitch *aSwitch;
+@property(nonatomic, strong) NSString *mac;
 @property(nonatomic, assign) int socketId;
 @property(nonatomic, strong) NSArray *timeList;
 @property(nonatomic, strong) NSData *msg;
 @property(nonatomic, strong) NSString *host;
 @property(nonatomic, assign) uint16_t port;
 @property(nonatomic, assign) long tag;
+@property(nonatomic, assign) BOOL on;
+@property(nonatomic, assign) int type;
+@property(nonatomic, assign) int delayTime;
+@property(nonatomic, assign) int beginTime;
+@property(nonatomic, assign) int endTime;
+@property(nonatomic, assign) int interval;
+@property(nonatomic, strong) NSString *name;  //设备名称
+@property(nonatomic, strong) NSString *cityName;
+@property(nonatomic, strong) NSString *oldPassword;
+@property(nonatomic, strong) NSString *password;
 @end
 @implementation UdpRequest
 - (id)init {
@@ -215,6 +226,7 @@
           [self.msgDSendCountDict setObject:@(count) forKey:mac];
         }
         self.msg = [CC3xMessageUtil getP2SMsg0D:mac];
+        self.mac = mac;
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
         self.tag = tag;
@@ -451,6 +463,7 @@
   self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
+  self.on = on;
   self.tag = P2D_LOCATE_REQ_39;
   [self sendDataToHost];
 }
@@ -467,10 +480,12 @@
   self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
+  self.on = on;
   self.tag = P2S_LOCATE_REQ_3B;
   [self sendDataToHost];
 }
 
+// type:0代表插座名字，1-n表示插孔n的名字
 - (void)sendMsg3FWithSwitch:(SDZGSwitch *)aSwitch
                        type:(int)type
                        name:(NSString *)name
@@ -485,6 +500,8 @@
   self.aSwitch = aSwitch;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
+  self.type = type;
+  self.name = name;
   self.tag = P2D_SET_NAME_REQ_3F;
   [self sendDataToHost];
 }
@@ -505,6 +522,8 @@
   self.aSwitch = aSwitch;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
+  self.type = type;
+  self.name = name;
   self.tag = P2S_SET_NAME_REQ_41;
   [self sendDataToHost];
 }
@@ -558,6 +577,8 @@
   self.socketId = socketId;
   self.host = aSwitch.ip;
   self.port = aSwitch.port;
+  self.delayTime = delayTime;
+  self.on = on;
   self.tag = P2D_SET_DELAY_REQ_4D;
   [self sendDataToHost];
 }
@@ -581,6 +602,8 @@
   self.socketId = socketId;
   self.host = SERVER_IP;
   self.port = SERVER_PORT;
+  self.delayTime = delayTime;
+  self.on = on;
   self.tag = P2S_SET_DELAY_REQ_4F;
   [self sendDataToHost];
 }
@@ -686,12 +709,16 @@
         self.aSwitch = aSwitch;
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
+        self.beginTime = beginTime;
+        self.endTime = endTime;
+        self.interval = interval;
         self.tag = P2S_GET_POWER_LOG_REQ_63;
         [self sendDataToHost];
       }
   });
 }
 
+// type 0 为获取设备当地的城市 1为获取换手机当地的城市
 - (void)sendMsg65:(NSString *)mac type:(int)type sendMode:(SENDMODE)mode {
   dispatch_async(GLOBAL_QUEUE, ^{
       if (kSharedAppliction.networkStatus == NotReachable) {
@@ -707,6 +734,8 @@
         self.msg = [CC3xMessageUtil getP2SMsg65:mac type:type];
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
+        self.type = type;
+        self.mac = mac;
         self.tag = P2S_GET_CITY_REQ_65;
         [self sendDataToHost];
       }
@@ -732,6 +761,9 @@
             [CC3xMessageUtil getP2SMsg67:mac type:type cityName:cityName];
         self.host = SERVER_IP;
         self.port = SERVER_PORT;
+        self.mac = mac;
+        self.type = type;
+        self.cityName = cityName;
         self.tag = P2S_GET_CITY_WEATHER_REQ_67;
         [self sendDataToHost];
       }
@@ -756,6 +788,8 @@
             [CC3xMessageUtil getP2DMsg69:oldPassword newPassword:newPassword];
         self.host = BROADCAST_ADDRESS;
         self.port = DEVICE_PORT;
+        self.oldPassword = oldPassword;
+        self.password = newPassword;
         self.tag = P2D_SET_PASSWD_REQ_69;
         [self sendDataToHost];
       }
@@ -1247,6 +1281,9 @@
         if (!self.responseData3C) {
           if (self.msg3BSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg3BSendCount + 1);
+            [self sendMsg3BWithSwitch:self.aSwitch
+                                   on:self.on
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1254,6 +1291,10 @@
         if (!self.responseData40) {
           if (self.msg3FSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg3FSendCount + 1);
+            [self sendMsg3FOr41:self.aSwitch
+                           type:self.type
+                           name:self.name
+                       sendMode:PassiveMode];
           }
         }
         break;
@@ -1261,6 +1302,10 @@
         if (!self.responseData42) {
           if (self.msg41SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg41SendCount + 1);
+            [self sendMsg41WithSwitch:self.aSwitch
+                                 type:self.type
+                                 name:self.name
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1268,6 +1313,7 @@
         if (!self.responseData48) {
           if (self.msg47SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg47SendCount + 1);
+            [self sendMsg47Or49:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1275,6 +1321,7 @@
         if (!self.responseData5A) {
           if (self.msg49SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg49SendCount + 1);
+            [self sendMsg49WithSwitch:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1282,6 +1329,11 @@
         if (!self.responseData4E) {
           if (self.msg4DSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg4DSendCount + 1);
+            [self sendMsg4DWithSwitch:self.aSwitch
+                             socketId:self.socketId
+                            delayTime:self.delayTime
+                             switchOn:self.on
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1289,6 +1341,11 @@
         if (!self.responseData50) {
           if (self.msg4FSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg4FSendCount + 1);
+            [self sendMsg4FWithSwitch:self.aSwitch
+                             socketId:self.socketId
+                            delayTime:self.delayTime
+                             switchOn:self.on
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1296,6 +1353,9 @@
         if (!self.responseData54) {
           if (self.msg53SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg53SendCount + 1);
+            [self sendMsg53WithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1303,6 +1363,9 @@
         if (!self.responseData56) {
           if (self.msg55SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg55SendCount + 1);
+            [self sendMsg55WithSwitch:self.aSwitch
+                             socketId:self.socketId
+                             sendMode:PassiveMode];
           }
         }
         break;
@@ -1310,6 +1373,7 @@
         if (!self.responseData5A) {
           if (self.msg59SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg59SendCount + 1);
+            [self sendMsg59:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1317,6 +1381,7 @@
         if (!self.responseData5E) {
           if (self.msg5DSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg5DSendCount + 1);
+            [self sendMsg5DWithSwitch:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1324,6 +1389,7 @@
         if (!self.responseData60) {
           if (self.msg5FSendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg5FSendCount + 1);
+            [self sendMsg5FWithSwitch:self.aSwitch sendMode:PassiveMode];
           }
         }
         break;
@@ -1331,6 +1397,11 @@
         if (!self.responseData64) {
           if (self.msg63SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg63SendCount + 1);
+            [self sendMsg63:self.aSwitch
+                  beginTime:self.beginTime
+                    endTime:self.endTime
+                   interval:self.interval
+                   sendMode:PassiveMode];
           }
         }
         break;
@@ -1338,6 +1409,7 @@
         if (!self.responseData66) {
           if (self.msg65SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg65SendCount + 1);
+            [self sendMsg65:self.mac type:self.type sendMode:PassiveMode];
           }
         }
         break;
@@ -1345,6 +1417,10 @@
         if (!self.responseData68) {
           if (self.msg67SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg67SendCount + 1);
+            [self sendMsg67:self.mac
+                       type:self.type
+                   cityName:self.cityName
+                   sendMode:PassiveMode];
           }
         }
         break;
@@ -1352,6 +1428,9 @@
         if (!self.responseData6A) {
           if (self.msg69SendCount <= kTryCount) {
             debugLog(@"tag %ld 重新发送%d次", tag, self.msg69SendCount + 1);
+            [self sendMsg69:self.oldPassword
+                newPassword:self.password
+                   sendMode:PassiveMode];
           }
         }
         break;

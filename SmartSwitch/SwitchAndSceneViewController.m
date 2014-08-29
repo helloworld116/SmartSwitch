@@ -13,15 +13,15 @@
 
 @interface SwitchAndSceneViewController ()<
     SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property (strong, nonatomic) SceneTableView *tableViewOfScene;
-@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property (strong, nonatomic) IBOutlet UIButton *btnScene;
+@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property(strong, nonatomic) SceneTableView *tableViewOfScene;
+@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property (strong, nonatomic) NSTimer *updateTimer;
-@property (strong, atomic) UdpRequest *request0BOr0D, *request11Or13;
+@property(strong, nonatomic) NSTimer *updateTimer;
+@property(strong, atomic) UdpRequest *request0BOr0D, *request11Or13;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -192,7 +192,7 @@
                                              target:self
                                            selector:@selector(sendMsg0BOr0D)
                                            userInfo:nil
-                                            repeats:YES];
+                                            repeats:NO];
   [self.updateTimer fire];
   [[NSRunLoop currentRunLoop] addTimer:self.updateTimer
                                forMode:NSRunLoopCommonModes];

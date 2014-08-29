@@ -67,9 +67,13 @@ static CC3xUtility *_sharedObj = nil;
   [CC3xUtility setReceiveFilterForSocket:socket];
 }
 
+static dispatch_queue_t filterQueue;
 + (void)setReceiveFilterForSocket:(GCDAsyncUdpSocket *)socket {
-  dispatch_queue_t filterQueue =
-      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  //  dispatch_queue_t filterQueue =
+  //      dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+  //  filterQueue = dispatch_queue_create("filterqueue.com.itouchco.www",
+  //                                      DISPATCH_QUEUE_SERIAL);
+  filterQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
   GCDAsyncUdpSocketReceiveFilterBlock filter =
       ^BOOL(NSData *data, NSData *address, id *context) {
       CC3xMessage *msg = [CC3xMessageUtil parseMessage:data];

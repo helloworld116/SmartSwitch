@@ -15,13 +15,13 @@
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
                               SwitchListCellDelegate, SwitchExpandCellDelegate,
                               EGORefreshTableHeaderDelegate>
-@property (strong, nonatomic) NSArray *switchs;
-@property (assign, nonatomic) BOOL isOpen; //是否展开
-@property (strong, nonatomic)
-    NSIndexPath *selectedIndexPath; //展开的cell所在的indexPath
+@property(strong, nonatomic) NSArray *switchs;
+@property(assign, nonatomic) BOOL isOpen;  //是否展开
+@property(strong, nonatomic)
+    NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
 
-@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property (assign, nonatomic) BOOL reloading;
+@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property(assign, nonatomic) BOOL reloading;
 @end
 
 @implementation SwitchTableView
@@ -57,31 +57,33 @@
 - (void)switchUpdate:(NSNotification *)notification {
   if (notification.object == [SwitchDataCeneter sharedInstance]) {
     self.switchs = [SwitchDataCeneter sharedInstance].switchs;
-    NSDictionary *userInfo = [notification userInfo];
-    NSString *mac = userInfo[@"mac"];
-    int type = [userInfo[@"type"] intValue];
-    if (type == 1) {
-      //新增
-      dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
-    } else {
-      for (SwitchListCell *visibleCell in self.visibleCells) {
-        int row = [self indexPathForCell:visibleCell].row;
-        SDZGSwitch *aSwitch = [self.switchs objectAtIndex:row];
-        if ([aSwitch.mac isEqualToString:mac]) {
-          NSIndexPath *indexPath = [self indexPathForCell:visibleCell];
-          debugLog(@"indexPath row is %d", indexPath.row);
-          if (indexPath) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self beginUpdates];
-                [self reloadRowsAtIndexPaths:@[ indexPath ]
-                            withRowAnimation:UITableViewRowAnimationNone];
-                [self endUpdates];
-            });
-          }
-        }
-        break;
-      }
-    }
+    // TODO:后期在处理
+    dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
+    //      NSDictionary *userInfo = [notification userInfo];
+    //      NSString *mac = userInfo[@"mac"];
+    //    int type = [userInfo[@"type"] intValue];
+    //    if (type == 1) {
+    //      //新增
+    //      dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
+    //    } else {
+    //      for (SwitchListCell *visibleCell in self.visibleCells) {
+    //        int row = [self indexPathForCell:visibleCell].row;
+    //        SDZGSwitch *aSwitch = [self.switchs objectAtIndex:row];
+    //        if ([aSwitch.mac isEqualToString:mac]) {
+    //          NSIndexPath *indexPath = [self indexPathForCell:visibleCell];
+    //          debugLog(@"indexPath row is %d", indexPath.row);
+    //          if (indexPath) {
+    //            dispatch_async(dispatch_get_main_queue(), ^{
+    //                [self beginUpdates];
+    //                [self reloadRowsAtIndexPaths:@[ indexPath ]
+    //                            withRowAnimation:UITableViewRowAnimationNone];
+    //                [self endUpdates];
+    //            });
+    //          }
+    //        }
+    //        break;
+    //      }
+    //    }
   }
 }
 
@@ -231,12 +233,12 @@
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading; // should return if data source model is reloading
+  return _reloading;  // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date]; // should return date data source was last changed
+  return [NSDate date];  // should return date data source was last changed
 }
 
 @end

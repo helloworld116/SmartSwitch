@@ -7,12 +7,13 @@
 //
 
 #import "SocketView.h"
+#import "TimeDisplayView.h"
 
 @interface SocketView ()
 @property(nonatomic, assign) int socketId;
 @property(nonatomic, strong) IBOutlet UIButton *btnName;
 @property(nonatomic, strong) IBOutlet UIButton *btnIcon;
-@property(nonatomic, strong) IBOutlet TimerCountdownView *viewTimerCountdown;
+@property(nonatomic, strong) IBOutlet TimeDisplayView *viewTimeDisplay;
 @property(nonatomic, strong) IBOutlet TimerCountdownView *viewDelayCountdown;
 - (IBAction)touchName:(id)sender;
 - (IBAction)touchIcon:(id)sender;
@@ -31,7 +32,7 @@
 }
 
 - (void)awakeFromNib {
-  self.btnIcon.selected = NO;
+  //  self.btnIcon.selected = NO;
 }
 
 - (IBAction)touchName:(id)sender {
@@ -67,12 +68,11 @@
 }
 
 - (void)countDown:(int)seconds {
-  dispatch_async(dispatch_get_main_queue(),
-                 ^{ [self.viewDelayCountdown countDown:seconds]; });
+  [self.viewDelayCountdown countDown:seconds];
 }
 
 - (void)setTimer:(int)seconds {
-  dispatch_async(dispatch_get_main_queue(), ^{});
+  [self.viewTimeDisplay dispSeconds:seconds];
 }
 
 - (void)setSocketName:(NSString *)socketName {

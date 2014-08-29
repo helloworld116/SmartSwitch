@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface TimeDisplayView : UIView
-
+- (void)dispSeconds:(int)seconds;
 @end

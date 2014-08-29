@@ -101,9 +101,14 @@
 @property(nonatomic, strong) NSString *password;
 @end
 @implementation UdpRequest
+
+static dispatch_queue_t delegateQueue;
 - (id)init {
   self = [super init];
   if (self) {
+    //    delegateQueue =
+    //    dispatch_queue_create("delegatequeue.com.itouchco.www",
+    //                                          DISPATCH_QUEUE_CONCURRENT);
     self.udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
                                                    delegateQueue:GLOBAL_QUEUE];
     [CC3xUtility setupUdpSocket:self.udpSocket port:0];

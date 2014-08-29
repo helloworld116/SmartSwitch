@@ -532,7 +532,7 @@
                                                             <action selector="touchName:" destination="2GP-yt-w6K" eventType="touchUpInside" id="vez-Je-dro"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dth-L7-IHt">
+                                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dth-L7-IHt">
                                                         <rect key="frame" x="35" y="33" width="70" height="72"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" image="kg02">
@@ -568,7 +568,7 @@
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDs-kV-6da" customClass="TimerCountdownView">
+                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fDs-kV-6da" customClass="TimeDisplayView">
                                                                 <rect key="frame" x="22" y="4" width="112" height="42"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <subviews>
@@ -771,7 +771,7 @@
                                                     <outlet property="btnIcon" destination="dth-L7-IHt" id="ESv-Xj-wZY"/>
                                                     <outlet property="btnName" destination="dBz-43-xRk" id="voM-Rb-gCC"/>
                                                     <outlet property="viewDelayCountdown" destination="Hoj-tR-Ti5" id="6DO-pQ-F4y"/>
-                                                    <outlet property="viewTimerCountdown" destination="fDs-kV-6da" id="8hO-0x-ajy"/>
+                                                    <outlet property="viewTimeDisplay" destination="fDs-kV-6da" id="t40-BC-s4T"/>
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2By-rD-JAL" userLabel="插孔" customClass="SocketView">
@@ -789,7 +789,7 @@
                                                             <action selector="touchName:" destination="2By-rD-JAL" eventType="touchUpInside" id="4WA-xB-JUs"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMY-xb-XmI">
+                                                    <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMY-xb-XmI">
                                                         <rect key="frame" x="35" y="33" width="70" height="72"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <state key="normal" image="kg02">
@@ -825,7 +825,7 @@
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BuX-LO-tSW" customClass="TimerCountdownView">
+                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BuX-LO-tSW" customClass="TimeDisplayView">
                                                                 <rect key="frame" x="22" y="4" width="112" height="42"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <subviews>
@@ -1028,7 +1028,7 @@
                                                     <outlet property="btnIcon" destination="eMY-xb-XmI" id="9RA-ep-wmV"/>
                                                     <outlet property="btnName" destination="0Be-lV-yKU" id="jV5-qx-7OY"/>
                                                     <outlet property="viewDelayCountdown" destination="uh9-eU-Sez" id="UNI-Ga-JWU"/>
-                                                    <outlet property="viewTimerCountdown" destination="BuX-LO-tSW" id="ifD-Bp-pSA"/>
+                                                    <outlet property="viewTimeDisplay" destination="BuX-LO-tSW" id="8bR-m3-kWC"/>
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jn3-bS-Rsk" userLabel="及时电量">

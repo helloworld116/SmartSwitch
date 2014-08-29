@@ -13,7 +13,7 @@
 #import "DelayViewController.h"
 #import "TimerViewController.h"
 #define kElecRefreshInterval 2
-#define kSwitchRefreshInterval 2
+#define kSwitchRefreshInterval 5
 
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate,
@@ -36,6 +36,7 @@
 //数据
 @property(strong, nonatomic) NSMutableArray *powers;
 @property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation SwitchDetailViewController
@@ -60,12 +61,12 @@
                                       target:self
                                       action:@selector(pop:)];
   self.navigationItem.rightBarButtonItem =
-      [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tj"]
+      [[UIBarButtonItem alloc] initWithTitle:@"编辑"
                                        style:UIBarButtonItemStylePlain
                                       target:self
                                       action:@selector(showAddMenu:)];
-  self.scrollView.delegate = self;
 
+  self.scrollView.delegate = self;
   self.refreshHeaderView = [[EGORefreshTableHeaderView alloc]
        initWithFrame:CGRectMake(0.0f, 0.0f - self.scrollView.bounds.size.height,
                                 self.scrollView.frame.size.width,
@@ -121,39 +122,52 @@
   self.viewOfElecRealTime.lblCurrent = self.lblCurrentValue;
 }
 
+static NSTimeInterval seconds = 0.5;
 - (void)firstSend {
-  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
-  //  dispatch_queue_t queue =
+  //  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
+  //  self.queue =
   //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
-
-  dispatch_queue_t queue =
-      dispatch_queue_create("com.itouchco.www", DISPATCH_QUEUE_CONCURRENT);
-  static NSTimeInterval seconds = 0.5;
-
-  //  dispatch_barrier_async(queue, ^{
-  //      [self sendMsg0BOr0D];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  dispatch_barrier_async(queue, ^{
-  //      [self send17Or19];
-  //      [NSThread sleepForTimeInterval:2 * seconds];
-  //  });
-  //  dispatch_barrier_async(queue, ^{
+  //  //实时电量
+  //
+  //  dispatch_async(self.queue, ^{
   //      [self sendMsg33Or35];
   //      [NSThread sleepForTimeInterval:seconds];
   //  });
-  //  dispatch_barrier_async(queue, ^{
-  //      [self send53Or55];
-  //      [NSThread sleepForTimeInterval:2 * seconds];
-  //  });
-  //  dispatch_barrier_async(queue, ^{
-  //      [self send5DOr5F];
+  //  //设备名称
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg5DOr5F];
   //      [NSThread sleepForTimeInterval:seconds];
   //  });
+  //  //定时
+  //  dispatch_async(self.queue, ^{
+  //      [self send17Or19:1];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_async(self.queue, ^{
+  //      [self send17Or19:2];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //延时
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg53Or55:1];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg53Or55:2];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //定时查询
+  //  [self setTimer];
 
-  [self setTimer];
-
-  //  [self send5DOr5F];
+  // TEST
+  [self sendMsg33Or35];
+  //  [self sendMsg5DOr5F];
+  //  [self send17Or19:1];
+  //  [self send17Or19:2];
+  //  [self sendMsg53Or55:1];
+  //  [self sendMsg53Or55:2];
+  //  [self sendMsg0BOr0D];
+  //  [self setTimer];
 }
 
 #pragma mark - Timer
@@ -166,15 +180,17 @@
   [self.timerElec fire];
   [[NSRunLoop currentRunLoop] addTimer:self.timerElec
                                forMode:NSRunLoopCommonModes];
+  [self.timerElec fire];
 
-  //  self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
-  //                                             target:self
-  //                                           selector:@selector(sendMsg0BOr0D)
-  //                                           userInfo:nil
-  //                                            repeats:YES];
+  self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
+                                             target:self
+                                           selector:@selector(sendMsg0BOr0D)
+                                           userInfo:nil
+                                            repeats:YES];
   //  [self.timerSwitch fire];
-  //  [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
-  //                               forMode:NSRunLoopCommonModes];
+  [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
+                               forMode:NSRunLoopCommonModes];
+  [self.timerElec setFireDate:[NSDate dateWithTimeIntervalSinceNow:2]];
 }
 
 - (void)invalidateTimer {
@@ -205,51 +221,6 @@ preparation before navigation
 }
 
 - (void)showAddMenu:(id)sender {
-  //  UIBarButtonItem *item = (UIBarButtonItem *)sender;
-  [KxMenu setTintColor:[UIColor blackColor]];
-  [KxMenu
-      showMenuInView:self.view
-            fromRect:CGRectMake(self.view.frame.size.width - 35, -20, 20, 20)
-           menuItems:@[
-                       [KxMenuItem menuItem:@"延时任务"
-                                      image:[UIImage imageNamed:@"tjcj"]
-                                     target:self
-                                     action:@selector(menuItem1:)],
-                       [KxMenuItem menuItem:@"定时任务"
-                                      image:[UIImage imageNamed:@"tjcj"]
-                                     target:self
-                                     action:@selector(menuItem2:)],
-                       [KxMenuItem menuItem:@"历史电量"
-                                      image:[UIImage imageNamed:@"tjcj"]
-                                     target:self
-                                     action:@selector(menuItem3:)],
-                       [KxMenuItem menuItem:@"开关名称"
-                                      image:[UIImage imageNamed:@"tjcj"]
-                                     target:self
-                                     action:@selector(menuItem4:)]
-                     ]];
-}
-
-- (void)menuItem1:(id)sender {
-  //延时
-  UIViewController *nextVC = [self.storyboard
-      instantiateViewControllerWithIdentifier:@"DelayViewController"];
-  [self.navigationController pushViewController:nextVC animated:YES];
-}
-
-- (void)menuItem2:(id)sender {
-  //定时
-  UIViewController *nextVC = [self.storyboard
-      instantiateViewControllerWithIdentifier:@"TimerViewController"];
-  [self.navigationController pushViewController:nextVC animated:YES];
-}
-
-- (void)menuItem3:(id)sender {
-  //历史电量
-}
-
-- (void)menuItem4:(id)sender {
-  //开关名称
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"SwitchInfoViewController"];
   [self.navigationController pushViewController:nextVC animated:YES];
@@ -323,25 +294,13 @@ preparation before navigation
 }
 
 //定时列表
-- (void)send17Or19 {
-  // TODO:修复
-  //  dispatch_queue_t queue =
-  //      dispatch_queue_create("timer.com.itouchco.www",
-  //      DISPATCH_QUEUE_SERIAL);
-  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
-  //    dispatch_async(queue, ^{
-  //        self.request17Or19 = [UdpRequest manager];
-  //        self.request17Or19.delegate = self;
-  //        [self.request17Or19 sendMsg17Or19:self.aSwitch
-  //                                 socketId:socket.socketId
-  //                                 sendMode:ActiveMode];
-  //        //        [NSThread sleepForTimeInterval:0.5];
-  //    });
-  //  }
-  self.request17Or19 = [UdpRequest manager];
-  self.request17Or19.delegate = self;
+- (void)send17Or19:(int)socketId {
+  if (!self.request17Or19) {
+    self.request17Or19 = [UdpRequest manager];
+    self.request17Or19.delegate = self;
+  }
   [self.request17Or19 sendMsg17Or19:self.aSwitch
-                           socketId:2
+                           socketId:socketId
                            sendMode:ActiveMode];
 }
 
@@ -355,29 +314,18 @@ preparation before navigation
 }
 
 //延时任务
-- (void)send53Or55 {
-  // TODO: 修改
-  //  for (SDZGSocket *socket in self.aSwitch.sockets) {
-  //    dispatch_queue_t queue = dispatch_queue_create("delay.com.itouchco.www",
-  //                                                   DISPATCH_QUEUE_CONCURRENT);
-  //    dispatch_barrier_async(queue, ^{
-  //        self.request53Or55 = [UdpRequest manager];
-  //        self.request53Or55.delegate = self;
-  //        [self.request53Or55 sendMsg53Or55:self.aSwitch
-  //                                 socketId:socket.socketId
-  //                                 sendMode:ActiveMode];
-  //        [NSThread sleepForTimeInterval:0.5];
-  //    });
-  //  }
-  self.request53Or55 = [UdpRequest manager];
-  self.request53Or55.delegate = self;
+- (void)sendMsg53Or55:(int)socketId {
+  if (!self.request53Or55) {
+    self.request53Or55 = [UdpRequest manager];
+    self.request53Or55.delegate = self;
+  }
   [self.request53Or55 sendMsg53Or55:self.aSwitch
-                           socketId:1
+                           socketId:socketId
                            sendMode:ActiveMode];
 }
 
 //查询设备名称
-- (void)send5DOr5F {
+- (void)sendMsg5DOr5F {
   self.request5DOr5F = [UdpRequest manager];
   self.request5DOr5F.delegate = self;
   [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
@@ -388,8 +336,7 @@ preparation before navigation
   switch (message.msgId) {
     case 0xc:
     case 0xe:
-      self.aSwitch.name = message.deviceName;
-      debugLog(@"message.onStatus is %d", message.onStatus);
+      [self responseMsgCOrE:message];
       break;
     case 0x12:
     case 0x14:
@@ -397,55 +344,31 @@ preparation before navigation
       break;
     case 0x18:
     case 0x1a:
-      switch (message.socketId) {
-        case 1:
-
-          break;
-        case 2:
-
-          break;
-        default:
-          break;
-      }
+      [self responseMsg18Or1A:message];
       break;
     case 0x34:
     case 0x36:
-      //      message.state;
-      //      message.power;
-      [self.powers addObject:@(message.power)];
-      self.viewOfElecRealTime.powers = self.powers;
+      [self responseMsg34Or36:message];
       break;
     case 0x54:
     case 0x56:
-      switch (message.socketId) {
-        case 1:
-          if (message.delay) {
-            [self.viewSocket1 countDown:message.delay * 60];
-          }
-          break;
-        case 2:
-          if (message.delay) {
-            [self.viewSocket2 countDown:message.delay * 60];
-          }
-          break;
-        default:
-          break;
-      }
+      [self responseMsg54Or56:message];
       break;
     case 0x5e:
     case 0x60:
-      if (![self.aSwitch.name isEqualToString:message.deviceName]) {
-        self.aSwitch.name = message.deviceName;
-        self.navigationItem.title = message.deviceName;
-      }
-      if (message.socketNames.count == 2) {
-        [self.viewSocket1 setSocketName:message.socketNames[0]];
-        [self.viewSocket2 setSocketName:message.socketNames[1]];
-      }
+      [self responseMsg5EOr60:message];
       break;
     default:
       break;
   }
+}
+
+- (void)responseMsgCOrE:(CC3xMessage *)message {
+  self.aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
+  SDZGSocket *socket1 = [self.aSwitch.sockets objectAtIndex:0];
+  SDZGSocket *socket2 = [self.aSwitch.sockets objectAtIndex:1];
+  [socket1 setSocketStatus:socket1.socketStatus];
+  [socket2 setSocketStatus:socket2.socketStatus];
 }
 
 - (void)responseMsg12Or14:(CC3xMessage *)message {
@@ -463,6 +386,57 @@ preparation before navigation
       default:
         break;
     }
+  }
+}
+
+- (void)responseMsg18Or1A:(CC3xMessage *)message {
+  dispatch_async(dispatch_get_main_queue(), ^{
+      int seconds = [SDZGTimerTask getShowSeconds:message.timerTaskList];
+      switch (message.socketId) {
+        case 1:
+          [self.viewSocket1 setTimer:seconds];
+          break;
+        case 2:
+          [self.viewSocket2 setTimer:seconds];
+          break;
+        default:
+          break;
+      }
+  });
+}
+
+- (void)responseMsg34Or36:(CC3xMessage *)message {
+  [self.powers addObject:@(message.power)];
+  self.viewOfElecRealTime.powers = self.powers;
+}
+
+- (void)responseMsg54Or56:(CC3xMessage *)message {
+  dispatch_async(dispatch_get_main_queue(), ^{
+      switch (message.socketId) {
+        case 1:
+          if (message.delay) {
+            [self.viewSocket1 countDown:message.delay * 60];
+          }
+          break;
+        case 2:
+          if (message.delay) {
+            [self.viewSocket2 countDown:message.delay * 60];
+          }
+          break;
+        default:
+          break;
+      }
+  });
+}
+
+- (void)responseMsg5EOr60:(CC3xMessage *)message {
+  if (![self.aSwitch.name isEqualToString:message.deviceName]) {
+    self.aSwitch.name = message.deviceName;
+    self.navigationItem.title = message.deviceName;
+  }
+  if (message.socketNames.count == 2) {
+    [self.viewSocket1 setSocketName:message.socketNames[0]];
+    [self.viewSocket2 setSocketName:message.socketNames[1]];
   }
 }
 

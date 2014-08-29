@@ -39,6 +39,11 @@
          selector:@selector(addOrEditTimerNotification:)
              name:kAddOrEditTimerNotification
            object:nil];
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(timerSwitchValueChanged:)
+             name:kTimerSwitchValueChanged
+           object:nil];
 }
 
 - (void)viewDidLoad {
@@ -174,6 +179,9 @@
                     valueWithCGPoint:CGPointMake(
                                          self.view.frame.size.width / 2,
                                          self.view.frame.size.height - 40)]];
+}
+
+- (void)timerSwitchValueChanged:(NSNotification *)notification {
 }
 
 #pragma mark - 定时列表查询请求

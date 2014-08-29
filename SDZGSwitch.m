@@ -127,4 +127,46 @@
 - (BOOL)actionEffective {
   return self.isEffective;
 }
+
+#pragma mark 定时获取需要显示的最近时间
++ (int)getShowSeconds:(NSArray *)timers {
+  if (timers && timers.count) {
+    //当前时间
+    NSDate *currentDate = [NSDate date];
+    NSCalendar *gregorian =
+        [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *comps =
+        [gregorian components:NSWeekdayCalendarUnit fromDate:currentDate];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd 00:00:00"];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    //当日零时
+    NSDate *zeroDate = [dateFormatter dateFromString:dateString];
+    //当前时间距离零时的秒数
+    NSTimeInterval diff =
+        [currentDate timeIntervalSince1970] - [zeroDate timeIntervalSince1970];
+    //公历，国外的习惯，周日是一周的开始，也就是说周日返回1，周六返回7
+    int weekday = [comps weekday];
+    if (weekday == 1) {
+      weekday = 8;
+    }
+    weekday -= 2;
+    //保存操作打开，且今天包含在定时列表、设定时间晚于当前时间并且操作打开的task集合
+    NSMutableArray *actionTimeList = [NSMutableArray array];
+    for (SDZGTimerTask *task in timers) {
+      if (task.week & (1 << weekday)) {
+        //时间还未到并且操作打开
+        if (diff < task.actionTime && task.isEffective) {
+          [actionTimeList addObject:@(task.actionTime)];
+        }
+      }
+    }
+    int min = 0;
+    if (actionTimeList.count) {
+      min = [[actionTimeList valueForKeyPath:@"@min.self"] integerValue];
+    }
+    return min;
+  }
+  return 0;
+}
 @end

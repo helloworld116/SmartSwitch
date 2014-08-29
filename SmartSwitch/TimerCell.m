@@ -15,6 +15,8 @@
 @property(strong, nonatomic) IBOutlet UILabel *lblRepeate;
 @property(strong, nonatomic) IBOutlet UILabel *lblExecuteCout;
 @property(strong, nonatomic) IBOutlet UISwitch *_switch;
+
+- (IBAction)switchValueChanged:(id)sender;
 @end
 
 @implementation TimerCell
@@ -46,5 +48,8 @@
   self._switch.on = [task actionEffective];
   self.lblAction.text = [task actionTypeString];
   self.lblRepeate.text = [task actionWeekString];
+}
+
+- (IBAction)switchValueChanged:(id)sender {
 }
 @end

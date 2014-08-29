@@ -45,7 +45,7 @@
   100  //发送UDP内网请求后，检查是否有响应数据的间隔，单位为秒
 #define kCheckPublicResponseInterval \
   100  //发送UDP外网请求后，检查是否有响应数据的间隔，单位为秒
-#define kTryCount -1  //请求失败后自动尝试次数
+#define kTryCount 3  //请求失败后自动尝试次数
 
 //日志
 #ifdef DEBUG

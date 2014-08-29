@@ -29,16 +29,37 @@
 }
 
 - (void)awakeFromNib {
-  NSString *imgHour1Name, *imgHour2Name, *imgMin1Name, *imgMin2Name,
-      *imgSec1Name, *imgSec2Name;
-  int hour = self.seconds / 3600;                           //小时
-  int minutes = (self.seconds - 3600 * hour) / 60;          //分钟
-  int seconds = self.seconds - 3600 * hour - 60 * minutes;  //秒
-  imgHour1Name = [NSString stringWithFormat:@"%d", hour / 10];
-  imgHour2Name = [NSString stringWithFormat:@"%d", hour % 10];
-  imgMin1Name = [NSString stringWithFormat:@"%d", minutes / 10];
-  imgMin2Name = [NSString stringWithFormat:@"%d", minutes % 10];
-  imgSec1Name = [NSString stringWithFormat:@"%d", seconds / 10];
-  imgSec2Name = [NSString stringWithFormat:@"%d", seconds % 10];
+}
+
+- (void)dispSeconds:(int)seconds {
+  dispatch_async(dispatch_get_main_queue(), ^{
+      self.seconds = seconds;
+      NSString *imgHour1Name, *imgHour2Name, *imgMin1Name, *imgMin2Name,
+          *imgSec1Name, *imgSec2Name;
+      int hour = self.seconds / 3600;                            //小时
+      int minutes = (self.seconds - 3600 * hour) / 60;           //分钟
+      int seconds2 = self.seconds - 3600 * hour - 60 * minutes;  //秒
+      imgHour1Name = [NSString stringWithFormat:@"%d", hour / 10];
+      imgHour2Name = [NSString stringWithFormat:@"%d", hour % 10];
+      imgMin1Name = [NSString stringWithFormat:@"%d", minutes / 10];
+      imgMin2Name = [NSString stringWithFormat:@"%d", minutes % 10];
+      imgSec1Name = [NSString stringWithFormat:@"%d", seconds2 / 10];
+      imgSec2Name = [NSString stringWithFormat:@"%d", seconds2 % 10];
+      [UIView animateWithDuration:0.3
+                       animations:^{
+                           self.imgViewHour1.image =
+                               [UIImage imageNamed:imgHour1Name];
+                           self.imgViewHour2.image =
+                               [UIImage imageNamed:imgHour2Name];
+                           self.imgViewMin1.image =
+                               [UIImage imageNamed:imgMin1Name];
+                           self.imgViewMin2.image =
+                               [UIImage imageNamed:imgMin2Name];
+                           self.imgViewSec1.image =
+                               [UIImage imageNamed:imgSec1Name];
+                           self.imgViewSec2.image =
+                               [UIImage imageNamed:imgSec2Name];
+                       }];
+  });
 }
 @end

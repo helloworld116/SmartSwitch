@@ -312,6 +312,16 @@ preparation before navigation
 - (void)responseMsg4EOr50:(CC3xMessage *)message {
   if (message.state == 0) {
     [self.viewOfCountDown countDown:self.actionMinitues * 60];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.view
+            makeToast:@"设置延时成功"
+             duration:1.f
+             position:[NSValue
+                          valueWithCGPoint:CGPointMake(
+                                               self.view.frame.size.width / 2,
+                                               self.view.frame.size.height -
+                                                   40)]];
+    });
   }
 }
 

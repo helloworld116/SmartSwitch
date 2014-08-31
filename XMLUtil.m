@@ -16,13 +16,13 @@
 @end
 
 @implementation XMLUtil
-+ (instancetype)sharedInstance {
-  static XMLUtil *xmlUtil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{ xmlUtil = [[XMLUtil alloc] init]; });
-  return xmlUtil;
-}
-
+//+ (instancetype)sharedInstance {
+//  static XMLUtil *xmlUtil;
+//  static dispatch_once_t onceToken;
+//  dispatch_once(&onceToken, ^{ xmlUtil = [[XMLUtil alloc] init]; });
+//  return xmlUtil;
+//}
+//
 //- (NSArray *)loadSwitches {
 //  NSString *xmlPath = [CC3xUtility xmlFilePath];
 //  NSData *xmlData = [[NSMutableData alloc] initWithContentsOfFile:xmlPath];
@@ -42,7 +42,7 @@
 //    NSString *name = nil;
 //    NSString *ip = nil;
 //    unsigned short port = 0;
-//    switchStatus state = SWITCH_UNKNOWN;
+//    SwitchStatus state = SWITCH_OFFLINE;
 //    BOOL local = NO;
 //    BOOL locked = NO;
 //    BOOL on = NO;

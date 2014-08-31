@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SwitchInfoViewController : UITableViewController
-
+@property(nonatomic, strong) SDZGSwitch *aSwitch;
 @end

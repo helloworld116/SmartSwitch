@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		150B315D19A5F0B0005794F3 /* UdpPort.m in Sources */ = {isa = PBXBuildFile; fileRef = 150B315C19A5F0B0005794F3 /* UdpPort.m */; };
 		1529525D199071EF00924FC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529525C199071EF00924FC3 /* Foundation.framework */; };
 		1529525F199071EF00924FC3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1529525E199071EF00924FC3 /* CoreGraphics.framework */; };
 		15295261199071EF00924FC3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15295260199071EF00924FC3 /* UIKit.framework */; };
@@ -40,6 +39,8 @@
 		152952D41990D01D00924FC3 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D31990D01D00924FC3 /* BaseViewController.m */; };
 		152952D71991BF4600924FC3 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D61991BF4600924FC3 /* MenuViewController.m */; };
 		152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */; };
+		15350EAE19B28EC400274760 /* SceneAddListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15350EAD19B28EC400274760 /* SceneAddListCell.m */; };
+		15350EB119B2905100274760 /* SceneAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15350EB019B2905100274760 /* SceneAddView.m */; };
 		156CB953199DE70D007A9C35 /* SwitchInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */; };
 		156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB955199DF84A007A9C35 /* WelcomeViewController.m */; };
 		1578096D19AC643C00F106FF /* HistoryElec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1578096C19AC643C00F106FF /* HistoryElec.m */; };
@@ -95,8 +96,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		150B315B19A5F0B0005794F3 /* UdpPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpPort.h; sourceTree = "<group>"; };
-		150B315C19A5F0B0005794F3 /* UdpPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpPort.m; sourceTree = "<group>"; };
 		15295259199071EF00924FC3 /* SmartSwitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartSwitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1529525C199071EF00924FC3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1529525E199071EF00924FC3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -154,6 +153,10 @@
 		152952D61991BF4600924FC3 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		152952D81991BFF800924FC3 /* SwitchAndSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchAndSceneViewController.h; sourceTree = "<group>"; };
 		152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchAndSceneViewController.m; sourceTree = "<group>"; };
+		15350EAC19B28EC400274760 /* SceneAddListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneAddListCell.h; sourceTree = "<group>"; };
+		15350EAD19B28EC400274760 /* SceneAddListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneAddListCell.m; sourceTree = "<group>"; };
+		15350EAF19B2905100274760 /* SceneAddView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneAddView.h; sourceTree = "<group>"; };
+		15350EB019B2905100274760 /* SceneAddView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneAddView.m; sourceTree = "<group>"; };
 		156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchInfoViewController.h; sourceTree = "<group>"; };
 		156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchInfoViewController.m; sourceTree = "<group>"; };
 		156CB954199DF84A007A9C35 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
@@ -234,8 +237,8 @@
 		47109D7319A8E80D00F24B42 /* ElecRealTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ElecRealTimeView.h; sourceTree = "<group>"; };
 		47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ElecRealTimeView.m; sourceTree = "<group>"; };
 		47B77F1B19A63B1C005EFDFD /* MacroUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroUtils.h; sourceTree = "<group>"; };
-		47C07AF719AB7ECE00941CBD /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DB.h; sourceTree = "<group>"; };
-		47C07AF819AB7ECE00941CBD /* DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DB.m; sourceTree = "<group>"; };
+		47C07AF719AB7ECE00941CBD /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DB.h; path = SmartSwitch/DB.h; sourceTree = "<group>"; };
+		47C07AF819AB7ECE00941CBD /* DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DB.m; path = SmartSwitch/DB.m; sourceTree = "<group>"; };
 		47ECC90E19A9D4FC0070AFE2 /* HistoryElecView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryElecView.h; sourceTree = "<group>"; };
 		47ECC90F19A9D4FC0070AFE2 /* HistoryElecView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryElecView.m; sourceTree = "<group>"; };
 		CABB3F26A985482997979951 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -419,9 +422,9 @@
 				152952C719908B7200924FC3 /* ViewUtil.m */,
 				4703A2DB19A0EA4E00F2E25F /* UdpRequest.h */,
 				4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */,
-				150B315B19A5F0B0005794F3 /* UdpPort.h */,
-				150B315C19A5F0B0005794F3 /* UdpPort.m */,
 				47B77F1B19A63B1C005EFDFD /* MacroUtils.h */,
+				47C07AF719AB7ECE00941CBD /* DB.h */,
+				47C07AF819AB7ECE00941CBD /* DB.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -432,6 +435,17 @@
 				152952CF19908BB800924FC3 /* PassValueDelegate.h */,
 			);
 			name = protocol;
+			sourceTree = "<group>";
+		};
+		15350EAB19B28E8200274760 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				15350EAC19B28EC400274760 /* SceneAddListCell.h */,
+				15350EAD19B28EC400274760 /* SceneAddListCell.m */,
+				15350EAF19B2905100274760 /* SceneAddView.h */,
+				15350EB019B2905100274760 /* SceneAddView.m */,
+			);
+			name = view;
 			sourceTree = "<group>";
 		};
 		1587F44919921C660061EB86 /* 开关和场景 */ = {
@@ -480,6 +494,7 @@
 		15BC9E671999B99C006516D8 /* 场景 */ = {
 			isa = PBXGroup;
 			children = (
+				15350EAB19B28E8200274760 /* view */,
 				1587F45A199313560061EB86 /* SceneTableView.h */,
 				1587F45B199313570061EB86 /* SceneTableView.m */,
 				1587F460199315760061EB86 /* SceneListCell.h */,
@@ -570,8 +585,6 @@
 				15B7A31219A31E6600C00342 /* SDZGSwitch.m */,
 				15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */,
 				15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */,
-				47C07AF719AB7ECE00941CBD /* DB.h */,
-				47C07AF819AB7ECE00941CBD /* DB.m */,
 				1578096B19AC643C00F106FF /* HistoryElec.h */,
 				1578096C19AC643C00F106FF /* HistoryElec.m */,
 			);
@@ -717,6 +730,7 @@
 			files = (
 				15BC9E74199B74CE006516D8 /* TimerCell.m in Sources */,
 				1529526D199071F000924FC3 /* AppDelegate.m in Sources */,
+				15350EB119B2905100274760 /* SceneAddView.m in Sources */,
 				152952D41990D01D00924FC3 /* BaseViewController.m in Sources */,
 				15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */,
 				15BC9E651998BD61006516D8 /* SocketView.m in Sources */,
@@ -739,13 +753,13 @@
 				1587F442199208D70061EB86 /* ShareViewController.m in Sources */,
 				1587F44519920B460061EB86 /* AddModelViewController.m in Sources */,
 				1587F4321991CCA40061EB86 /* SDZGSidePanelController.m in Sources */,
+				15350EAE19B28EC400274760 /* SceneAddListCell.m in Sources */,
 				1587F4531992292E0061EB86 /* RegisterViewController.m in Sources */,
 				15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */,
 				1587F43F199208690061EB86 /* AboutViewController.m in Sources */,
 				1587F450199229210061EB86 /* LoginViewController.m in Sources */,
 				152952C819908B7200924FC3 /* SendResponseHandler.m in Sources */,
 				15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */,
-				150B315D19A5F0B0005794F3 /* UdpPort.m in Sources */,
 				152952B3199089B100924FC3 /* CRC.c in Sources */,
 				1578096D19AC643C00F106FF /* HistoryElec.m in Sources */,
 				15295269199071EF00924FC3 /* main.m in Sources */,

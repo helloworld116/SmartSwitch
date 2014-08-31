@@ -21,7 +21,8 @@
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
 @property(strong, nonatomic) NSTimer *updateTimer;
-@property(strong, atomic) UdpRequest *request0BOr0D, *request11Or13;
+@property(strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
+@property(strong, nonatomic) DBUtil *db;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -41,8 +42,7 @@
   return self;
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
+- (void)setup {
   self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * 2,
                                            self.scrollView.frame.size.height);
   self.scrollView.delegate = self;
@@ -53,6 +53,13 @@
   self.tableViewOfSwitch = (SwitchTableView *)switchTableView;
   self.tableViewOfSwitch.switchTableViewDelegate = self;
   [self.scrollView addSubview:switchTableView];
+
+  self.db = [DBUtil sharedInstance];
+}
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  [self setup];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -192,7 +199,7 @@
                                              target:self
                                            selector:@selector(sendMsg0BOr0D)
                                            userInfo:nil
-                                            repeats:NO];
+                                            repeats:YES];
   [self.updateTimer fire];
   [[NSRunLoop currentRunLoop] addTimer:self.updateTimer
                                forMode:NSRunLoopCommonModes];
@@ -200,8 +207,10 @@
 //扫描设备
 - (void)sendMsg0BOr0D {
   //先局域网内扫描，1秒后内网没有响应的请求外网，更新设备状态
-  self.request0BOr0D = [[UdpRequest alloc] init];
-  self.request0BOr0D.delegate = self;
+  if (!self.request0BOr0D) {
+    self.request0BOr0D = [[UdpRequest alloc] init];
+    self.request0BOr0D.delegate = self;
+  }
   [self.request0BOr0D sendMsg0B:ActiveMode];
 
   //  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC),
@@ -234,8 +243,11 @@
 }
 
 - (void)sendMsg11Or13:(SDZGSwitch *)aSwitch socketId:(int)socketId {
-  self.request11Or13 = [UdpRequest manager];
-  self.request11Or13.delegate = self;
+  if (!self.request11Or13) {
+    self.request11Or13 = [UdpRequest manager];
+    self.request11Or13.delegate = self;
+  }
+
   [self.request11Or13 sendMsg11Or13:aSwitch
                            socketId:socketId
                            sendMode:ActiveMode];

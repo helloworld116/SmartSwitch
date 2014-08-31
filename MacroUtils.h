@@ -30,6 +30,7 @@
 #import "PassValueDelegate.h"
 #import "ViewUtil.h"
 #import "FirstTimeConfig.h"
+#import "DB.h"
 #endif
 
 #define kSharedAppliction \
@@ -42,10 +43,10 @@
 // UDP过期时间,单位秒
 #define kUDPTimeOut -1
 #define kCheckPrivateResponseInterval \
-  100  //发送UDP内网请求后，检查是否有响应数据的间隔，单位为秒
+  0  //发送UDP内网请求后，检查是否有响应数据的间隔，单位为秒
 #define kCheckPublicResponseInterval \
-  100  //发送UDP外网请求后，检查是否有响应数据的间隔，单位为秒
-#define kTryCount 3  //请求失败后自动尝试次数
+  0  //发送UDP外网请求后，检查是否有响应数据的间隔，单位为秒
+#define kTryCount -1  //请求失败后自动尝试次数
 
 //日志
 #ifdef DEBUG
@@ -67,6 +68,10 @@
                                        YES) objectAtIndex:0]
 //延迟最大时间
 #define kDelayMax 1440
+
+#define DEFAULT_SWITCH_NAME NSLocalizedString(@"Smart Switch", nil)
+#define DEFAULT_SOCKET1_NAME NSLocalizedString(@"Socket1", nil)
+#define DEFAULT_SOCKET2_NAME NSLocalizedString(@"Socket2", nil)
 
 //在家测试
 #define isHome 0

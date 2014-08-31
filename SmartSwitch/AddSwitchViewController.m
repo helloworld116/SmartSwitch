@@ -7,13 +7,20 @@
 //
 
 #import "AddSwitchViewController.h"
+#import <GCDAsyncUdpSocket.h>
 
-@interface AddSwitchViewController ()<UITextFieldDelegate, UdpRequestDelegate>
+@interface AddSwitchViewController ()<UITextFieldDelegate, UdpRequestDelegate,
+                                      GCDAsyncUdpSocketDelegate>
 @property(strong, nonatomic) IBOutlet UIView *contentView;
 @property(strong, nonatomic) IBOutlet UITextField *textWIFI;
 @property(strong, nonatomic) IBOutlet UITextField *textPassword;
 @property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
+@property(strong, nonatomic) IBOutlet UIView *viewOfLoading;
+@property(strong, nonatomic) IBOutlet UIView *viewOfInput;
+@property(strong, nonatomic) IBOutlet UIView *viewOfContent;
 @property(assign, nonatomic) BOOL isShowPassword;
+@property(nonatomic, strong) IBOutlet UIProgressView *progressView;
+@property(nonatomic, strong) IBOutlet UILabel *lblMessage;
 
 @property(strong, nonatomic) FirstTimeConfig *config;
 @property(strong, nonatomic) NSString *wifi;
@@ -21,6 +28,7 @@
 //为设备设置好wifi后，会多次收到设备wifi配置成功的消息，只在第一次配置成功的时候处理
 @property(assign, atomic) int count;
 @property(strong, nonatomic) UdpRequest *request;
+@property(strong, nonatomic) GCDAsyncUdpSocket *socket;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
@@ -52,6 +60,7 @@
     rect.size = CGSizeMake(rect.size.width, rect.size.width + 88.f);
     self.contentView.frame = rect;
   }
+  [self.contentView bringSubviewToFront:self.viewOfInput];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -73,6 +82,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
+  [self.socket close];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -109,11 +119,17 @@ preparation before navigation
 }
 
 - (IBAction)doConfig:(id)sender {
-  if (!self.request) {
-    self.request = [UdpRequest manager];
-    self.request.delegate = self;
-  }
-  [self startTransmitting];
+  //  self.socket = [[GCDAsyncUdpSocket alloc]
+  //      initWithDelegate:self
+  //         delegateQueue:dispatch_get_global_queue(0, 0)];
+  //  [CC3xUtility setupUdpSocket:self.socket port:APP_PORT];
+  //  [self startTransmitting];
+
+  [UIView animateWithDuration:0.3f
+                   animations:^{ self.viewOfLoading.hidden = NO; }];
+}
+
+- (void)stopConfig:(id)sender {
 }
 
 #pragma mark - 返回
@@ -221,45 +237,40 @@ preparation before navigation
   }
 }
 
-#pragma mark - UDPDelegate
-- (void)responseMsgId2:(CC3xMessage *)msg address:(NSData *)address {
-  self.count++;
-  if (self.count == 1) {
-    //    [[MessageUtil shareInstance] sendMsg05:self.udpSocket
-    //                                   address:address
-    //                                  sendMode:ActiveMode];
-  }
-}
-
-- (void)responseMsgId6:(CC3xMessage *)msg {
-  if (msg.state == 0) {
-    //设备添加成功
-  }
-}
-
-- (void)noResponseMsgId6 {
-}
-
-- (void)noSendMsgId5 {
-}
-
 #pragma mark - UdpRequestDelegate
 - (void)responseMsg:(CC3xMessage *)message address:(NSData *)address {
   switch (message.msgId) {
-    case 0x2:
-      self.count++;
-      debugLog(@"mac is %@ ip is %@ and port is %d", message.mac, message.ip,
-               message.port);
-      if (self.count == 1) {
-        [self.request sendMsg05:message.mac port:message.port mode:ActiveMode];
-      }
-      break;
-
     case 0x6:
+      if (message.state == 0) {
+        // TODO:配置成功
+      }
       debugLog(@"mac is %@ state is %d", message.mac, message.state);
       break;
     default:
       break;
   }
 }
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock
+       didReceiveData:(NSData *)data
+          fromAddress:(NSData *)address
+    withFilterContext:(id)filterContext {
+  CC3xMessage *message = (CC3xMessage *)filterContext;
+  switch (message.msgId) {
+    case 0x2:
+      self.count++;
+      debugLog(@"count is %d mac is %@ ip is %@ and port is %d", self.count,
+               message.mac, message.ip, message.port);
+      if (!self.request) {
+        self.request = [UdpRequest manager];
+        self.request.delegate = self;
+      }
+      [self.request sendMsg05:message.ip port:message.port mode:ActiveMode];
+      break;
+
+    default:
+      break;
+  }
+}
+
 @end

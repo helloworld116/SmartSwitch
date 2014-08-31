@@ -41,10 +41,11 @@
                                            selector:@selector(switchUpdate:)
                                                name:kSwitchUpdate
                                              object:nil];
-  UIView *view =
-      [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width, 1)];
-  view.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
-  self.tableFooterView = view;
+  //  UIView *view =
+  //      [[UIView alloc] initWithFrame:CGRectMake(0, 1, self.frame.size.width,
+  //      1)];
+  //  view.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];
+  //  self.tableFooterView = view;
 }
 
 - (void)dealloc {

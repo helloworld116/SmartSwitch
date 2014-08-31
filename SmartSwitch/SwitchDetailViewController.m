@@ -12,6 +12,7 @@
 #import "SocketView.h"
 #import "DelayViewController.h"
 #import "TimerViewController.h"
+#import "SwitchInfoViewController.h"
 #define kElecRefreshInterval 2
 #define kSwitchRefreshInterval 5
 
@@ -122,45 +123,45 @@
   self.viewOfElecRealTime.lblCurrent = self.lblCurrentValue;
 }
 
-static NSTimeInterval seconds = 0.5;
+static NSTimeInterval seconds = 0.1;
 - (void)firstSend {
-  //  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
-  //  self.queue =
-  //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
-  //  //实时电量
-  //
-  //  dispatch_async(self.queue, ^{
-  //      [self sendMsg33Or35];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  //设备名称
-  //  dispatch_async(self.queue, ^{
-  //      [self sendMsg5DOr5F];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  //定时
-  //  dispatch_async(self.queue, ^{
-  //      [self send17Or19:1];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  dispatch_async(self.queue, ^{
-  //      [self send17Or19:2];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  //延时
-  //  dispatch_async(self.queue, ^{
-  //      [self sendMsg53Or55:1];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  dispatch_async(self.queue, ^{
-  //      [self sendMsg53Or55:2];
-  //      [NSThread sleepForTimeInterval:seconds];
-  //  });
-  //  //定时查询
-  //  [self setTimer];
+  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
+  self.queue =
+      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
+  //实时电量
+
+  dispatch_async(self.queue, ^{
+      [self sendMsg33Or35];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  //设备名称
+  dispatch_async(self.queue, ^{
+      [self sendMsg5DOr5F];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  //定时
+  dispatch_async(self.queue, ^{
+      [self send17Or19:1];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  dispatch_async(self.queue, ^{
+      [self send17Or19:2];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  //延时
+  dispatch_async(self.queue, ^{
+      [self sendMsg53Or55:1];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  dispatch_async(self.queue, ^{
+      [self sendMsg53Or55:2];
+      [NSThread sleepForTimeInterval:seconds];
+  });
+  //定时查询
+  [self setTimer];
 
   // TEST
-  [self sendMsg33Or35];
+  //  [self sendMsg33Or35];
   //  [self sendMsg5DOr5F];
   //  [self send17Or19:1];
   //  [self send17Or19:2];
@@ -179,7 +180,7 @@ static NSTimeInterval seconds = 0.5;
                                           repeats:YES];
   [self.timerElec fire];
   [[NSRunLoop currentRunLoop] addTimer:self.timerElec
-                               forMode:NSRunLoopCommonModes];
+                               forMode:NSDefaultRunLoopMode];
   [self.timerElec fire];
 
   self.timerSwitch = [NSTimer timerWithTimeInterval:kSwitchRefreshInterval
@@ -187,10 +188,9 @@ static NSTimeInterval seconds = 0.5;
                                            selector:@selector(sendMsg0BOr0D)
                                            userInfo:nil
                                             repeats:YES];
-  //  [self.timerSwitch fire];
   [[NSRunLoop currentRunLoop] addTimer:self.timerSwitch
-                               forMode:NSRunLoopCommonModes];
-  [self.timerElec setFireDate:[NSDate dateWithTimeIntervalSinceNow:2]];
+                               forMode:NSDefaultRunLoopMode];
+  [self.timerSwitch setFireDate:[NSDate dateWithTimeIntervalSinceNow:2]];
 }
 
 - (void)invalidateTimer {
@@ -221,8 +221,9 @@ preparation before navigation
 }
 
 - (void)showAddMenu:(id)sender {
-  UIViewController *nextVC = [self.storyboard
+  SwitchInfoViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"SwitchInfoViewController"];
+  nextVC.aSwitch = self.aSwitch;
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
@@ -326,8 +327,10 @@ preparation before navigation
 
 //查询设备名称
 - (void)sendMsg5DOr5F {
-  self.request5DOr5F = [UdpRequest manager];
-  self.request5DOr5F.delegate = self;
+  if (!self.request5DOr5F) {
+    self.request5DOr5F = [UdpRequest manager];
+    self.request5DOr5F.delegate = self;
+  }
   [self.request5DOr5F sendMsg5DOr5F:self.aSwitch sendMode:ActiveMode];
 }
 
@@ -367,8 +370,8 @@ preparation before navigation
   self.aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
   SDZGSocket *socket1 = [self.aSwitch.sockets objectAtIndex:0];
   SDZGSocket *socket2 = [self.aSwitch.sockets objectAtIndex:1];
-  [socket1 setSocketStatus:socket1.socketStatus];
-  [socket2 setSocketStatus:socket2.socketStatus];
+  [self.viewSocket1 setSocketStatus:socket1.socketStatus];
+  [self.viewSocket2 setSocketStatus:socket2.socketStatus];
 }
 
 - (void)responseMsg12Or14:(CC3xMessage *)message {

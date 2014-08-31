@@ -28,10 +28,7 @@
 // 115.28.178.252
 #define SERVER_PORT 20002
 // 21845
-#define APP_PORT 43691
-
-#define APP_PORT_MIN 43691
-#define APP_PORT_MAX 43700
+#define APP_PORT 43690
 
 #define DEVICE_PORT 56797
 
@@ -41,9 +38,6 @@
 
 #define REFRESH_DEV_TIME 15
 
-#define DEFAULT_SWITCH_NAME NSLocalizedString(@"Smart Switch", nil)
-#define DEFAULT_SOCKET1_NAME NSLocalizedString(@"Socket1", nil)
-#define DEFAULT_SOCKET2_NAME NSLocalizedString(@"Socket2", nil)
 #define DEFAULT_IMAGENAME @"icon_plug"
 
 #define BROADCAST_ADDRESS @"255.255.255.255"

@@ -84,11 +84,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SmartSwitch/SwitchAndSceneViewController.m"
-            timestampString = "430980127.116926"
+            timestampString = "431076020.930586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
             landmarkName = "-responseMsg12Or14:"
             landmarkType = "5">
          </BreakpointContent>

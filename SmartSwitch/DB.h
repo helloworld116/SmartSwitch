@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DB : NSObject
+@interface DBUtil : NSObject
++ (instancetype)sharedInstance;
 
+- (void)saveSwitchs:(NSArray *)switchs;
+
+- (NSArray *)getSwitchs;
 @end

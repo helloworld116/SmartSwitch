@@ -1141,10 +1141,12 @@ static dispatch_queue_t delegateQueue;
       delay = kCheckPublicResponseInterval;
       break;
   }
-  dispatch_time_t delayInNanoSeconds =
-      dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC);
-  dispatch_after(delayInNanoSeconds, GLOBAL_QUEUE,
-                 ^{ [self checkWithTag:tag]; });
+  if (delay) {
+    dispatch_time_t delayInNanoSeconds =
+        dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC);
+    dispatch_after(delayInNanoSeconds, GLOBAL_QUEUE,
+                   ^{ [self checkWithTag:tag]; });
+  }
 }
 
 - (void)checkWithTag:(long)tag {

@@ -9,7 +9,7 @@
 #import "AboutViewController.h"
 
 @interface AboutViewController ()
-@property (strong, nonatomic) IBOutlet UILabel *lblInfo;
+@property(strong, nonatomic) IBOutlet UILabel *lblInfo;
 - (IBAction)back:(id)sender;
 - (IBAction)update:(id)sender;
 @end
@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
   // Do any additional setup after loading the view.
+  self.navigationItem.title = @"关于";
   [self.sidePanelController setLeftPanel:nil];
 }
 
@@ -55,5 +56,12 @@ preparation before navigation
 }
 
 - (IBAction)update:(id)sender {
+  [self.view
+      makeToast:@"已是最新版本"
+       duration:1.f
+       position:[NSValue
+                    valueWithCGPoint:CGPointMake(
+                                         self.view.frame.size.width / 2,
+                                         self.view.frame.size.height - 40)]];
 }
 @end

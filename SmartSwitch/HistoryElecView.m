@@ -72,7 +72,6 @@
 
 - (void)layoutSubviews {
   [super layoutSubviews];
-  debugLog(@"layout subviews");
   if (self.times.count > 0 && self.values.count > 0) {
     [self strokeChartInScrollView];
   }

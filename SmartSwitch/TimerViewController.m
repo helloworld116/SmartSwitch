@@ -72,6 +72,9 @@
       removeObserver:self
                 name:kAddOrEditTimerNotification
               object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:kTimerSwitchValueChanged
+                                                object:nil];
 }
 
 #pragma mark - Table view data source

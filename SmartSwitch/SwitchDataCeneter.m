@@ -17,6 +17,7 @@
   if (self) {
     // TODO: 从本地文件加载
 
+    self.switchs = [[DBUtil sharedInstance] getSwitchs];
     self.switchsDict = [[NSMutableDictionary alloc] init];
     for (SDZGSwitch *aSwitch in self.switchs) {
       if (aSwitch.mac) {
@@ -35,19 +36,21 @@
 }
 
 - (void)updateSwitch:(SDZGSwitch *)aSwitch {
-  debugLog(@"update switch ceneter");
-  NSDictionary *userInfo;
-  if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
-    //修改
-    userInfo = @{ @"type" : @0, @"mac" : aSwitch.mac };
-  } else {
-    //新增一条记录
-    userInfo = @{ @"type" : @1 };
+  @synchronized(self) {
+    debugLog(@"update switch ceneter");
+    NSDictionary *userInfo;
+    if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
+      //修改
+      userInfo = @{ @"type" : @0, @"mac" : aSwitch.mac };
+    } else {
+      //新增一条记录
+      userInfo = @{ @"type" : @1 };
+    }
+    [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
+    self.switchs = [self.switchsDict allValues];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+                                                        object:self
+                                                      userInfo:userInfo];
   }
-  [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
-  self.switchs = [self.switchsDict allValues];
-  [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
-                                                      object:self
-                                                    userInfo:userInfo];
 }
 @end

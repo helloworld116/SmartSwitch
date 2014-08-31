@@ -9,8 +9,8 @@
 #import "MenuViewController.h"
 
 @interface MenuCell : UITableViewCell
-@property (strong, nonatomic) IBOutlet UIImageView *imgMenu;
-@property (strong, nonatomic) IBOutlet UILabel *lblMenuName;
+@property(strong, nonatomic) IBOutlet UIImageView *imgMenu;
+@property(strong, nonatomic) IBOutlet UILabel *lblMenuName;
 @end
 
 @implementation MenuCell
@@ -20,11 +20,11 @@
 @end
 
 @interface MenuViewController ()<UITableViewDelegate, UITableViewDataSource>
-@property (strong, nonatomic) NSArray *menuNames;
-@property (strong, nonatomic) NSArray *imageNames;
+@property(strong, nonatomic) NSArray *menuNames;
+@property(strong, nonatomic) NSArray *imageNames;
 
-@property (strong, nonatomic) IBOutlet UIView *topView;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property(strong, nonatomic) IBOutlet UIView *topView;
+@property(strong, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)toLoginPage:(id)sender;
 @end
@@ -115,15 +115,17 @@
       break;
     case 1:
       nextVC = [self.storyboard
-          instantiateViewControllerWithIdentifier:@"AddModelNavController"];
+          instantiateViewControllerWithIdentifier:@"AddSenceNavController"];
       break;
     case 2:
       nextVC = [self.storyboard
           instantiateViewControllerWithIdentifier:@"ShareNavController"];
       break;
     case 3:
-      nextVC = [self.storyboard
-          instantiateViewControllerWithIdentifier:@"BuyNavController"];
+      //      nextVC = [self.storyboard
+      //          instantiateViewControllerWithIdentifier:@"BuyNavController"];
+      [[UIApplication sharedApplication]
+          openURL:[NSURL URLWithString:@"http://shop111398559.taobao.com/"]];
       break;
     case 4:
       nextVC = [self.storyboard
@@ -142,10 +144,12 @@
           instantiateViewControllerWithIdentifier:@"AddSwitchNavController"];
       break;
   }
-  kSharedAppliction.centerViewController =
-      [self.sidePanelController centerPanel];
-  [self.sidePanelController setCenterPanel:nextVC];
-  [self.sidePanelController showCenterPanelAnimated:YES];
+  if (indexPath.row != 3) {
+    kSharedAppliction.centerViewController =
+        [self.sidePanelController centerPanel];
+    [self.sidePanelController setCenterPanel:nextVC];
+    [self.sidePanelController showCenterPanelAnimated:YES];
+  }
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 - (IBAction)toLoginPage:(id)sender {

@@ -32,6 +32,7 @@
 }
 
 - (void)setup {
+  [self.sidePanelController setLeftPanel:nil];
   self.tableViewOfSceneList.dataSource = self;
   self.tableViewOfSceneList.delegate = self;
   self.textFieldSceneName.delegate = self;
@@ -114,6 +115,8 @@
 
 - (IBAction)back:(id)sender {
   [self dismissViewControllerAnimated:YES completion:^{}];
+  [self.sidePanelController
+      setCenterPanel:kSharedAppliction.centerViewController];
 }
 - (IBAction)save:(id)sender {
 }

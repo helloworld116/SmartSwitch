@@ -22,7 +22,7 @@
 
 @property(strong, nonatomic) NSTimer *updateTimer;
 @property(strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
-@property(strong, nonatomic) DBUtil *db;
+@property(strong, nonatomic) NSArray *switchs;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -54,7 +54,7 @@
   self.tableViewOfSwitch.switchTableViewDelegate = self;
   [self.scrollView addSubview:switchTableView];
 
-  self.db = [DBUtil sharedInstance];
+  self.switchs = [SwitchDataCeneter sharedInstance].switchs;
 }
 
 - (void)viewDidLoad {
@@ -70,23 +70,19 @@
     [self.sidePanelController showLeftPanelAnimated:YES];
   }
   //查询开关状态
-  [self updateSwitchStatus];
+  //  [self updateSwitchStatus];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
   self.tableViewOfSwitch.frame = self.scrollView.bounds;
-  //  NSLog(@"self.scrollView contentOffset is %@",
-  //        NSStringFromCGPoint(self.scrollView.contentOffset));
-  //  NSLog(@"self.scrollView contentSize is %@",
-  //        NSStringFromCGSize(self.scrollView.contentSize));
-  //  NSLog(@"self.scrollView contentInset is %@",
-  //        NSStringFromUIEdgeInsets(self.scrollView.contentInset));
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
   [self.updateTimer invalidate];
   [super viewWillDisappear:animated];
+  [[DBUtil sharedInstance]
+      saveSwitchs:[SwitchDataCeneter sharedInstance].switchs];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -251,78 +247,6 @@
   [self.request11Or13 sendMsg11Or13:aSwitch
                            socketId:socketId
                            sendMode:ActiveMode];
-}
-
-#pragma mark - block
-- (void)setBlock {
-  //  SwitchAndSceneViewController __weak *weakself = self;
-  //  // msg0B
-  //  self.msg0BsuccessBlock = ^(CC3xMessage *message) {
-  //      if (message.version == 2) {
-  //        message.state;
-  //        SDZGSwitch *aSwitch = [[SDZGSwitch alloc] init];
-  //        aSwitch.mac = message.mac;
-  //        aSwitch.ip = message.ip;
-  //        aSwitch.port = message.port;
-  //        aSwitch.name = message.deviceName;
-  //        aSwitch.version = message.version;
-  //        if (message.msgId == 0xc && aSwitch.switchStatus != SWITCH_NEW) {
-  //          if (aSwitch.lockStatus == LockStatusOn) {
-  //            aSwitch.switchStatus = SWITCH_LOCAL_LOCK;
-  //          } else {
-  //            aSwitch.switchStatus = SWITCH_LOCAL;
-  //          }
-  //        } else if (message.msgId == 0xe && aSwitch.switchStatus !=
-  //        SWITCH_NEW &&
-  //                   (aSwitch.switchStatus == SWITCH_UNKNOWN ||
-  //                    aSwitch.switchStatus == SWITCH_OFFLINE)) {
-  //          if (aSwitch.lockStatus == LockStatusOn) {
-  //            aSwitch.switchStatus = SWITCH_REMOTE_LOCK;
-  //          } else {
-  //            aSwitch.switchStatus = SWITCH_REMOTE;
-  //          }
-  //        } else if (aSwitch.switchStatus == SWITCH_UNKNOWN) {
-  //          aSwitch.switchStatus = SWITCH_OFFLINE;
-  //        }
-  //        if (aSwitch.sockets) {
-  //        } else {
-  //          aSwitch.sockets = [@[] mutableCopy];
-  //        }
-  //        SDZGSocket *socket1 = [[SDZGSocket alloc] init];
-  //        socket1.socketId = 1;
-  //        socket1.socketStatus = SocketStatusOn;
-  //        //      message.onStatus << 0 & 1;
-  //        [aSwitch.sockets addObject:socket1];
-  //
-  //        SDZGSocket *socket2 = [[SDZGSocket alloc] init];
-  //        socket2.socketId = 2;
-  //        socket2.socketStatus = message.onStatus << 1 & 1;
-  //        [aSwitch.sockets addObject:socket2];
-  //
-  //        [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
-  //      }
-  //  };
-  //  self.msg0BnoResponseBlock = ^(int count) {
-  //      if (count <= kTryCount) {
-  //        [[UdpRequest manager] sendMsg0B:PassiveMode];
-  //      } else {
-  //        // TODO: 提示错误消息
-  //      }
-  //  };
-  //  self.msg0BnoRequestBlock = ^(long tag) {};
-  //  self.msg0BerrorBlock = ^(NSString *errorMsg) {};
-  //
-  //  // msg11Or13
-  //  self.msg11Or13successBlock = ^(CC3xMessage *message) { message.state; };
-  //  self.msg11Or13noResponseBlock = ^(int count) {
-  //      if (count <= kTryCount) {
-  //        [[UdpRequest manager] sendMsg0B:PassiveMode];
-  //      } else {
-  //        // TODO: 提示错误消息
-  //      }
-  //  };
-  //  self.msg11Or13noRequestBlock = ^(long tag) {};
-  //  self.msg11Or13errorBlock = ^(NSString *errorMsg) {};
 }
 
 #pragma mark - UdpRequestDelegate

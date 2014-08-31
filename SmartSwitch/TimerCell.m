@@ -51,5 +51,11 @@
 }
 
 - (IBAction)switchValueChanged:(id)sender {
+  //    kTimerSwitchValueChanged
+
+  [[NSNotificationCenter defaultCenter]
+      postNotificationName:kTimerSwitchValueChanged
+                    object:self
+                  userInfo:nil];
 }
 @end

@@ -89,8 +89,6 @@
     self.request = [UdpRequest manager];
     self.request.delegate = self;
   }
-  debugLog(@"begintime is %d and endtime is %f", (int)self.param.beginTime,
-           self.param.endTime);
   [self.request sendMsg63:self.aSwitch
                 beginTime:self.param.beginTime
                   endTime:self.param.endTime
@@ -129,8 +127,6 @@ preparation before navigation
 
 - (void)responseMsg64:(CC3xMessage *)message {
   if (message.state == 0) {
-    //          message.historyElecCount
-    //          message.historyElecs
     HistoryElecData *data =
         [self.historyElec parseResponse:message.historyElecs param:self.param];
     self.viewOfHistoryElec.values = data.values;

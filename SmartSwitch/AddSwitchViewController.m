@@ -17,11 +17,10 @@
 @property(strong, nonatomic) IBOutlet UIButton *btnShowPassword;  //展示选中图片
 @property(strong, nonatomic) IBOutlet UIView *viewOfLoading;
 @property(strong, nonatomic) IBOutlet UIView *viewOfInput;
-@property(strong, nonatomic) IBOutlet UIView *viewOfContent;
-@property(assign, nonatomic) BOOL isShowPassword;
 @property(nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property(nonatomic, strong) IBOutlet UILabel *lblMessage;
 
+@property(assign, nonatomic) BOOL isShowPassword;
 @property(strong, nonatomic) FirstTimeConfig *config;
 @property(strong, nonatomic) NSString *wifi;
 @property(strong, nonatomic) NSString *password;
@@ -29,12 +28,13 @@
 @property(assign, atomic) int count;
 @property(strong, nonatomic) UdpRequest *request;
 @property(strong, nonatomic) GCDAsyncUdpSocket *socket;
+@property(strong, nonatomic) NSTimer *timer;
 
 - (IBAction)showOrHiddenPassword:(id)sender;
 - (IBAction)doConfig:(id)sender;
 - (IBAction)back:(id)sender;
 - (IBAction)touchBackground:(id)sender;
-
+- (IBAction)stopConfig:(id)sender;
 @end
 
 @implementation AddSwitchViewController
@@ -48,10 +48,7 @@
   return self;
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
-  // Do any additional setup after loading the view.
-  self.navigationItem.title = @"添加设备";
+- (void)setup {
   [self.sidePanelController setLeftPanel:nil];
   self.textWIFI.delegate = self;
   self.textPassword.delegate = self;
@@ -61,6 +58,18 @@
     self.contentView.frame = rect;
   }
   [self.contentView bringSubviewToFront:self.viewOfInput];
+  CGRect rect = self.viewOfLoading.frame;
+  self.viewOfLoading.frame =
+      CGRectMake(rect.origin.x, 0, rect.size.width, rect.size.height);
+  [self.contentView bringSubviewToFront:self.viewOfLoading];
+  self.progressView.progress = 0.f;
+}
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  // Do any additional setup after loading the view.
+  self.navigationItem.title = @"添加设备";
+  [self setup];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,8 +85,6 @@
   NSString *ssid = [FirstTimeConfig getSSID];
   self.textWIFI.text = ssid;
 #endif
-  self.textPassword.text = @"sdzg2014";
-  self.password = @"sdzg2014";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -119,17 +126,64 @@ preparation before navigation
 }
 
 - (IBAction)doConfig:(id)sender {
-  //  self.socket = [[GCDAsyncUdpSocket alloc]
-  //      initWithDelegate:self
-  //         delegateQueue:dispatch_get_global_queue(0, 0)];
-  //  [CC3xUtility setupUdpSocket:self.socket port:APP_PORT];
-  //  [self startTransmitting];
-
+  [self touchBackground:nil];
+  NSCharacterSet *charSet = [NSCharacterSet whitespaceCharacterSet];
+  self.password =
+      [self.textPassword.text stringByTrimmingCharactersInSet:charSet];
+  //界面
+  CGRect rect = self.viewOfLoading.frame;
+  rect = CGRectMake(rect.origin.x, 0, rect.size.width, rect.size.height);
   [UIView animateWithDuration:0.3f
-                   animations:^{ self.viewOfLoading.hidden = NO; }];
+                   animations:^{ self.viewOfLoading.frame = rect; }];
+  [self.contentView bringSubviewToFront:self.viewOfLoading];
+  self.progressView.progress = 0.f;
+  rect = self.lblMessage.frame;
+  rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, 20);
+  self.lblMessage.frame = rect;
+  self.lblMessage.text = @"配置中...";
+  self.timer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                target:self
+                                              selector:@selector(changeProgress)
+                                              userInfo:nil
+                                               repeats:YES];
+  [self stopAction];
+  self.socket = [[GCDAsyncUdpSocket alloc]
+      initWithDelegate:self
+         delegateQueue:dispatch_get_global_queue(0, 0)];
+  [CC3xUtility setupUdpSocket:self.socket port:APP_PORT];
+  [self startTransmitting];
 }
 
-- (void)stopConfig:(id)sender {
+- (void)changeProgress {
+  self.progressView.progress += 1.f / 60;  //默认1分钟
+  if (self.progressView.progress == 1.f) {
+    [self.timer invalidate];
+    //停止发送
+    [self stopAction];
+    CGRect rect = self.lblMessage.frame;
+    rect = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, 100);
+    self.lblMessage.frame = rect;
+    self.lblMessage.text = @"配" @"置"
+        @"结束。请检查设备黄灯状态。\n常亮：配置成功，请"
+        @"回"
+        @"到系统页刷新查看。\n慢闪：设备无法配置到路由，"
+        @"请"
+        @"检查密码后重启设备并设置。\n快闪：设备未收到配"
+        @"置请求，请重启设备并配置。";
+  }
+}
+
+- (IBAction)stopConfig:(id)sender {
+  CGRect rect = self.viewOfLoading.frame;
+  rect = CGRectMake(rect.origin.x, rect.size.height, rect.size.width,
+                    rect.size.height);
+  [UIView animateWithDuration:0.3f
+                   animations:^{ self.viewOfLoading.frame = rect; }];
+  [self.timer invalidate];
+  //停止发送
+  [self stopAction];
+  [self.socket close];
+  self.socket = nil;
 }
 
 #pragma mark - 返回
@@ -160,9 +214,9 @@ preparation before navigation
       self.config = [[FirstTimeConfig alloc] init];
     }
     [self sendAction];
-    [NSThread detachNewThreadSelector:@selector(waitForAckThread:)
-                             toTarget:self
-                           withObject:nil];
+    //    [NSThread detachNewThreadSelector:@selector(waitForAckThread:)
+    //                             toTarget:self
+    //                           withObject:nil];
   }
   @catch (NSException *exception) {
     LogInfo(@"%s exception == %@", __FUNCTION__, [exception description]);
@@ -198,29 +252,22 @@ preparation before navigation
   LogInfo(@"%s end", __PRETTY_FUNCTION__);
 }
 
-- (void)waitForAckThread:(id)sender {
-  @try {
-    LogInfo(@"%s begin", __PRETTY_FUNCTION__);
-    Boolean val = [self.config waitForAck];
-    LogInfo(@"Bool value == %d", val);
-    if (val) {
-      [self stopAction];
-    }
-  }
-  @catch (NSException *exception) {
-    LogInfo(@"%s exception == %@", __FUNCTION__, [exception description]);
-  }
-  @finally {
-  }
-
-  if ([NSThread isMainThread] == NO) {
-    NSLog(@"this is not main thread");
-    [NSThread exit];
-  } else {
-    NSLog(@"this is main thread");
-  }
-  LogInfo(@"%s end", __PRETTY_FUNCTION__);
-}
+//- (void)waitForAckThread:(id)sender {
+//  @try {
+//    LogInfo(@"%s begin", __PRETTY_FUNCTION__);
+//    Boolean val = [self.config waitForAck];
+//    LogInfo(@"Bool value == %d", val);
+//    if (val) {
+//      [self stopAction];
+//    }
+//  }
+//  @catch (NSException *exception) {
+//    LogInfo(@"%s exception == %@", __FUNCTION__, [exception description]);
+//  }
+//  @finally {
+//  }
+//  LogInfo(@"%s end", __PRETTY_FUNCTION__);
+//}
 
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -243,6 +290,17 @@ preparation before navigation
     case 0x6:
       if (message.state == 0) {
         // TODO:配置成功
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self stopConfig:nil];
+            [self.view
+                makeToast:@"添加成功"
+                 duration:1.f
+                 position:[NSValue valueWithCGPoint:
+                                       CGPointMake(
+                                           self.view.frame.size.width / 2,
+                                           self.view.frame.size.height - 40)]];
+            [self performSelector:@selector(back:) withObject:nil afterDelay:1];
+        });
       }
       debugLog(@"mac is %@ state is %d", message.mac, message.state);
       break;

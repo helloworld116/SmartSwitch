@@ -13,16 +13,16 @@
 
 @interface SwitchAndSceneViewController ()<
     SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property(strong, nonatomic) SceneTableView *tableViewOfScene;
-@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property(strong, nonatomic) IBOutlet UIButton *btnScene;
+@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property (strong, nonatomic) SceneTableView *tableViewOfScene;
+@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property (strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property(strong, nonatomic) NSTimer *updateTimer;
-@property(strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
-@property(strong, nonatomic) NSArray *switchs;
+@property (strong, nonatomic) NSTimer *updateTimer;
+@property (strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
+@property (strong, nonatomic) NSArray *switchs;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -55,6 +55,11 @@
   [self.scrollView addSubview:switchTableView];
 
   self.switchs = [SwitchDataCeneter sharedInstance].switchs;
+  if (self.switchs) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+                                                        object:self
+                                                      userInfo:nil];
+  }
 }
 
 - (void)viewDidLoad {

@@ -8,9 +8,11 @@
 
 #import "DB.h"
 #import <FMDB/FMDB.h>
+#import "Scene.h"
+#import "SceneDetail.h"
 
 @interface DBUtil ()
-@property(nonatomic, strong) FMDatabase *db;
+@property (nonatomic, strong) FMDatabase *db;
 @end
 
 @implementation DBUtil
@@ -241,15 +243,16 @@
         socket.socketId = [socketResult intForColumn:@"socketid"];
         socket.name = [socketResult stringForColumn:@"name"];
         socket.imageName = [socketResult stringForColumn:@"imagename"];
-        socket.delayTime = [socketResult intForColumn:@"delaytime"];
-        socket.delayAction = [socketResult intForColumn:@"delayaction"];
+        //        socket.delayTime = [socketResult intForColumn:@"delaytime"];
+        //        socket.delayAction = [socketResult
+        //        intForColumn:@"delayaction"];
         socket.socketStatus = [socketResult intForColumn:@"socketstatus"];
         socket.timerList = [@[] mutableCopy];
 
         NSString *timertaskSql =
             @"select * from timertask where mac =? and socketid=?";
-        FMResultSet *timertaskResult =
-            [self.db executeQuery:timertaskSql, aSwitch.mac, socket.socketId];
+        FMResultSet *timertaskResult = [self.db
+            executeQuery:timertaskSql, aSwitch.mac, @(socket.socketId)];
         while (timertaskResult.next) {
           SDZGTimerTask *timerTask = [[SDZGTimerTask alloc] init];
           timerTask.week = [timertaskResult intForColumn:@"week"];
@@ -267,5 +270,36 @@
     [self.db close];
   }
   return switchs;
+}
+
+- (void)deleteSwitch:(NSString *)mac {
+  if ([self.db open]) {
+    NSString *sql = @"delete from switch where mac =?";
+    [self.db executeUpdate:sql, mac];
+
+    sql = @"delete from socket where mac = ?";
+    [self.db executeUpdate:sql, mac];
+
+    sql = @"delete from timertask where mac = ?";
+    [self.db executeUpdate:sql, mac];
+    [self.db close];
+  }
+}
+
+- (NSArray *)getScene {
+  NSMutableArray *scenes = [@[] mutableCopy];
+  if ([self.db open]) {
+    NSString *sql = @"select * from scene";
+    FMResultSet *sceneResultSet = [self.db executeQuery:sql];
+    while (sceneResultSet.next) {
+      Scene *scene = [[Scene alloc] init];
+      scene.indentifier = [sceneResultSet intForColumn:@"id"];
+      scene.name = [sceneResultSet stringForColumn:@"name"];
+
+      sql = @"select *";
+    }
+    [self.db close];
+  }
+  return scenes;
 }
 @end

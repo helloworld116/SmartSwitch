@@ -8,8 +8,8 @@
 
 #import "SwitchDataCeneter.h"
 @interface SwitchDataCeneter ()
-@property(strong, atomic) NSMutableDictionary *switchsDict;
-@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property (strong, atomic) NSMutableDictionary *switchsDict;
+@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @end
 
 @implementation SwitchDataCeneter
@@ -17,9 +17,10 @@
   self = [super init];
   if (self) {
     // TODO: 从本地文件加载
-    //    self.switchs = [[DBUtil sharedInstance] getSwitchs];
+    self.switchs = [[DBUtil sharedInstance] getSwitchs];
     self.switchsDict = [[NSMutableDictionary alloc] init];
-    for (SDZGSwitch *aSwitch in self.switchs) {
+    //这里一定不能使用self.switchs,因为覆写了switchs的get方法
+    for (SDZGSwitch *aSwitch in _switchs) {
       if (aSwitch.mac) {
         [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
       }

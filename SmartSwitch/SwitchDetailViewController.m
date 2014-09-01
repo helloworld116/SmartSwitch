@@ -19,27 +19,27 @@
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate,
                                          UdpRequestDelegate, SocketViewDelegate>
-@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property(strong, nonatomic) IBOutlet UIView *contentView;
-@property(strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
-@property(strong, nonatomic) IBOutlet SocketView *viewSocket1;
-@property(strong, nonatomic) IBOutlet SocketView *viewSocket2;
-@property(strong, nonatomic) IBOutlet UILabel *lblCurrentValue;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
+@property (strong, nonatomic) IBOutlet SocketView *viewSocket1;
+@property (strong, nonatomic) IBOutlet SocketView *viewSocket2;
+@property (strong, nonatomic) IBOutlet UILabel *lblCurrentValue;
 - (IBAction)showHistoryElec:(id)sender;
 
-@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property(assign, nonatomic) BOOL reloading;
-@property(strong, nonatomic) NSTimer *timerElec;
-@property(strong, nonatomic) NSTimer *timerSwitch;
-@property(strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
+@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property (assign, nonatomic) BOOL reloading;
+@property (strong, nonatomic) NSTimer *timerElec;
+@property (strong, nonatomic) NSTimer *timerSwitch;
+@property (strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
     *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
 
 //数据
-@property(strong, nonatomic) NSMutableArray *powers;
-@property(strong, nonatomic) SDZGSwitch *aSwitch;  //选中的switch
-@property(strong, nonatomic)
-    NSIndexPath *selectIndexPath;  //从列表到详情选中的indexPath
-@property(strong, nonatomic) dispatch_queue_t queue;
+@property (strong, nonatomic) NSMutableArray *powers;
+@property (strong, nonatomic) SDZGSwitch *aSwitch; //选中的switch
+@property (strong, nonatomic)
+    NSIndexPath *selectIndexPath; //从列表到详情选中的indexPath
+@property (strong, nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation SwitchDetailViewController
@@ -120,7 +120,7 @@
                   socketName:socket2.name
                       status:socket2.socketStatus
                    timerList:socket2.timerList
-                       delay:socket1.delayTime];
+                       delay:socket2.delayTime];
   self.viewSocket2.delegate = self;
 
   self.viewOfElecRealTime.lblCurrent = self.lblCurrentValue;
@@ -269,12 +269,12 @@ preparation before navigation
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading;  // should return if data source model is reloading
+  return _reloading; // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date];  // should return date data source was last changed
+  return [NSDate date]; // should return date data source was last changed
 }
 #pragma mark - 发送UDP
 //开关状态

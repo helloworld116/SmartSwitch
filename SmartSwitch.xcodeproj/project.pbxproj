@@ -82,6 +82,7 @@
 		15E7F61319933A4300C46854 /* libFTC_DEBUG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15E7F61119933A4300C46854 /* libFTC_DEBUG.a */; };
 		4703A2DD19A0EA4E00F2E25F /* UdpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */; };
 		47109D7519A8E80D00F24B42 /* ElecRealTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */; };
+		47859F1E19B4E49500A1A16D /* Scene.m in Sources */ = {isa = PBXBuildFile; fileRef = 47859F1D19B4E49500A1A16D /* Scene.m */; };
 		47C07AF919AB7ECE00941CBD /* DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C07AF819AB7ECE00941CBD /* DB.m */; };
 		47ECC91019A9D4FC0070AFE2 /* HistoryElecView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47ECC90F19A9D4FC0070AFE2 /* HistoryElecView.m */; };
 		A5C618E8CDA540B5B4FD8868 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3A51A2AE54D4395A7991CCD /* libPods.a */; };
@@ -241,6 +242,8 @@
 		4703A2DC19A0EA4E00F2E25F /* UdpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UdpRequest.m; sourceTree = "<group>"; };
 		47109D7319A8E80D00F24B42 /* ElecRealTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ElecRealTimeView.h; sourceTree = "<group>"; };
 		47109D7419A8E80D00F24B42 /* ElecRealTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ElecRealTimeView.m; sourceTree = "<group>"; };
+		47859F1C19B4E49500A1A16D /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		47859F1D19B4E49500A1A16D /* Scene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scene.m; sourceTree = "<group>"; };
 		47B77F1B19A63B1C005EFDFD /* MacroUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroUtils.h; sourceTree = "<group>"; };
 		47C07AF719AB7ECE00941CBD /* DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DB.h; path = SmartSwitch/DB.h; sourceTree = "<group>"; };
 		47C07AF819AB7ECE00941CBD /* DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DB.m; path = SmartSwitch/DB.m; sourceTree = "<group>"; };
@@ -459,6 +462,8 @@
 			children = (
 				15350EB619B4510200274760 /* SceneDetail.h */,
 				15350EB719B4510200274760 /* SceneDetail.m */,
+				47859F1C19B4E49500A1A16D /* Scene.h */,
+				47859F1D19B4E49500A1A16D /* Scene.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -757,6 +762,7 @@
 				15BCC0B619AB161700776E7D /* TimeDisplayView.m in Sources */,
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
+				47859F1E19B4E49500A1A16D /* Scene.m in Sources */,
 				152952D71991BF4600924FC3 /* MenuViewController.m in Sources */,
 				15350EB819B4510200274760 /* SceneDetail.m in Sources */,
 				1587F456199230BB0061EB86 /* SDZGUserProtocolViewController.m in Sources */,

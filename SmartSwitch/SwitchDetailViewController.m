@@ -36,7 +36,9 @@
 
 //数据
 @property(strong, nonatomic) NSMutableArray *powers;
-@property(strong, nonatomic) SDZGSwitch *aSwitch;
+@property(strong, nonatomic) SDZGSwitch *aSwitch;  //选中的switch
+@property(strong, nonatomic)
+    NSIndexPath *selectIndexPath;  //从列表到详情选中的indexPath
 @property(strong, nonatomic) dispatch_queue_t queue;
 @end
 
@@ -100,24 +102,25 @@
 }
 
 - (void)setupDefaultValue {
+  self.selectIndexPath = [SwitchDataCeneter sharedInstance].selectedIndexPath;
   self.aSwitch = [[SwitchDataCeneter sharedInstance].switchs
-      objectAtIndex:[SwitchDataCeneter sharedInstance].selectedIndexPath.row];
+      objectAtIndex:self.selectIndexPath.row];
   self.powers = [@[] mutableCopy];
   // TODO: 名称从数据库中取
   SDZGSocket *socket1 = [self.aSwitch.sockets objectAtIndex:0];
   [self.viewSocket1 socketId:socket1.socketId
                   socketName:socket1.name
                       status:socket1.socketStatus
-                       timer:0
-                       delay:0];
+                   timerList:socket1.timerList
+                       delay:socket1.delayTime];
   self.viewSocket1.delegate = self;
 
   SDZGSocket *socket2 = [self.aSwitch.sockets objectAtIndex:1];
   [self.viewSocket2 socketId:socket2.socketId
                   socketName:socket2.name
                       status:socket2.socketStatus
-                       timer:0
-                       delay:0];
+                   timerList:socket2.timerList
+                       delay:socket1.delayTime];
   self.viewSocket2.delegate = self;
 
   self.viewOfElecRealTime.lblCurrent = self.lblCurrentValue;
@@ -367,15 +370,20 @@ preparation before navigation
 }
 
 - (void)responseMsgCOrE:(CC3xMessage *)message {
-  self.aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
-  SDZGSocket *socket1 = [self.aSwitch.sockets objectAtIndex:0];
-  SDZGSocket *socket2 = [self.aSwitch.sockets objectAtIndex:1];
+  SDZGSwitch *aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
+  //修改界面
+  SDZGSocket *socket1 = [aSwitch.sockets objectAtIndex:0];
+  SDZGSocket *socket2 = [aSwitch.sockets objectAtIndex:1];
   [self.viewSocket1 setSocketStatus:socket1.socketStatus];
   [self.viewSocket2 setSocketStatus:socket2.socketStatus];
+  //更新数据中心的数据
+  self.aSwitch = [[[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch]
+      objectAtIndex:self.selectIndexPath.row];
 }
 
 - (void)responseMsg12Or14:(CC3xMessage *)message {
   if (message.state == 0) {
+    //更新界面
     SDZGSocket *socket =
         [self.aSwitch.sockets objectAtIndex:(message.socketId - 1)];
     socket.socketStatus = !socket.socketStatus;
@@ -389,12 +397,18 @@ preparation before navigation
       default:
         break;
     }
+    //更新数据中心的数据
+    self.aSwitch = [[[SwitchDataCeneter sharedInstance]
+        updateSocketStaus:socket.socketStatus
+                 socketId:message.socketId
+                      mac:self.aSwitch.mac]
+        objectAtIndex:self.selectIndexPath.row];
   }
 }
 
 - (void)responseMsg18Or1A:(CC3xMessage *)message {
+  int seconds = [SDZGTimerTask getShowSeconds:message.timerTaskList];
   dispatch_async(dispatch_get_main_queue(), ^{
-      int seconds = [SDZGTimerTask getShowSeconds:message.timerTaskList];
       switch (message.socketId) {
         case 1:
           [self.viewSocket1 setTimer:seconds];
@@ -406,6 +420,12 @@ preparation before navigation
           break;
       }
   });
+  //更新数据中心的数据
+  self.aSwitch =
+      [[[SwitchDataCeneter sharedInstance] updateTimerList:message.timerTaskList
+                                                       mac:message.mac
+                                                  socketId:message.socketId]
+          objectAtIndex:self.selectIndexPath.row];
 }
 
 - (void)responseMsg34Or36:(CC3xMessage *)message {
@@ -430,17 +450,29 @@ preparation before navigation
           break;
       }
   });
+  //更新数据中心的数据
+  self.aSwitch =
+      [[[SwitchDataCeneter sharedInstance] updateDelayTime:message.delay
+                                               delayAction:message.onStatus
+                                                       mac:message.mac
+                                                  socketId:message.socketId]
+          objectAtIndex:self.selectIndexPath.row];
 }
 
 - (void)responseMsg5EOr60:(CC3xMessage *)message {
-  if (![self.aSwitch.name isEqualToString:message.deviceName]) {
-    self.aSwitch.name = message.deviceName;
-    self.navigationItem.title = message.deviceName;
-  }
-  if (message.socketNames.count == 2) {
-    [self.viewSocket1 setSocketName:message.socketNames[0]];
-    [self.viewSocket2 setSocketName:message.socketNames[1]];
-  }
+  dispatch_async(dispatch_get_main_queue(), ^{
+      self.navigationItem.title = message.deviceName;
+      if (message.socketNames.count == 2) {
+        [self.viewSocket1 setSocketName:message.socketNames[0]];
+        [self.viewSocket2 setSocketName:message.socketNames[1]];
+      }
+  });
+  //更新数据中心的数据
+  self.aSwitch =
+      [[[SwitchDataCeneter sharedInstance] updateSwitchName:message.deviceName
+                                                socketNames:message.socketNames
+                                                        mac:message.mac]
+          objectAtIndex:self.selectIndexPath.row];
 }
 
 #pragma mark - SocketViewDelegate SocketView事件

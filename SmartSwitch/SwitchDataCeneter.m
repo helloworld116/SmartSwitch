@@ -9,6 +9,7 @@
 #import "SwitchDataCeneter.h"
 @interface SwitchDataCeneter ()
 @property(strong, atomic) NSMutableDictionary *switchsDict;
+@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @end
 
 @implementation SwitchDataCeneter
@@ -16,8 +17,7 @@
   self = [super init];
   if (self) {
     // TODO: 从本地文件加载
-
-    self.switchs = [[DBUtil sharedInstance] getSwitchs];
+    //    self.switchs = [[DBUtil sharedInstance] getSwitchs];
     self.switchsDict = [[NSMutableDictionary alloc] init];
     for (SDZGSwitch *aSwitch in self.switchs) {
       if (aSwitch.mac) {
@@ -35,22 +35,193 @@
   return instance;
 }
 
-- (void)updateSwitch:(SDZGSwitch *)aSwitch {
+//- (void)updateSwitch:(SDZGSwitch *)aSwitch {
+//  @synchronized(self) {
+//    debugLog(@"update switch ceneter");
+//    NSDictionary *userInfo;
+//    if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
+//      //修改
+//      userInfo = @{ @"type" : @0, @"mac" : aSwitch.mac };
+//    } else {
+//      //新增一条记录
+//      userInfo = @{ @"type" : @1 };
+//    }
+//    [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
+//    self.switchs = [self.switchsDict allValues];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+//                                                        object:self
+//                                                      userInfo:userInfo];
+//  }
+//}
+
+/**
+ *  socket开关状态更改
+ *
+ *  @param socketStaus <#socketStaus description#>
+ *  @param socketId    <#socketId description#>
+ *  @param mac         <#mac description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateSocketStaus:(SocketStatus)socketStaus
+                      socketId:(int)socketId
+                           mac:(NSString *)mac {
   @synchronized(self) {
-    debugLog(@"update switch ceneter");
-    NSDictionary *userInfo;
-    if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
-      //修改
-      userInfo = @{ @"type" : @0, @"mac" : aSwitch.mac };
-    } else {
-      //新增一条记录
-      userInfo = @{ @"type" : @1 };
-    }
-    [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
-    self.switchs = [self.switchsDict allValues];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
-                                                        object:self
-                                                      userInfo:userInfo];
+    //一定存在
+    SDZGSwitch *aSwitch = [self.switchsDict objectForKey:mac];
+    SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
+    socket.socketStatus = socketStaus;
+    return [self.switchsDict allValues];
   }
 }
+
+/**
+ *  加解锁后执行
+ *
+ *  @param lockStatus <#lockStatus description#>
+ *  @param mac        <#mac description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateSwitchLockStaus:(LockStatus)lockStatus mac:(NSString *)mac {
+  @synchronized(self) {
+    //一定存在
+    SDZGSwitch *aSwitch = [self.switchsDict objectForKey:mac];
+    aSwitch.lockStatus = lockStatus;
+    return [self.switchsDict allValues];
+  }
+}
+
+/**
+ *  查询到设备状态后执行
+ *
+ *  @param aSwitch <#aSwitch description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateSwitch:(SDZGSwitch *)aSwitch {
+  @synchronized(self) {
+    if ([[self.switchsDict allKeys] containsObject:aSwitch.mac]) {
+      SDZGSwitch *oldSwitch = [self.switchsDict objectForKey:aSwitch.mac];
+      oldSwitch.ip = aSwitch.ip;
+      oldSwitch.port = aSwitch.port;
+      oldSwitch.name = aSwitch.name;
+      oldSwitch.lockStatus = aSwitch.lockStatus;
+      oldSwitch.version = aSwitch.version;
+      oldSwitch.networkStatus = aSwitch.networkStatus;
+
+      NSArray *oldSockets = oldSwitch.sockets;
+      NSArray *aSockets = aSwitch.sockets;
+      for (int i = 0; i < oldSockets.count; i++) {
+        SDZGSocket *oldSocket = oldSockets[i];
+        SDZGSocket *aSocket = aSockets[i];
+        oldSocket.socketStatus = aSocket.socketStatus;
+      }
+      [self.switchsDict setObject:oldSwitch forKey:aSwitch.mac];
+    } else {
+      [self.switchsDict setObject:aSwitch forKey:aSwitch.mac];
+    }
+    return [self.switchsDict allValues];
+  }
+}
+
+/**
+ *  定时任务修改后执行
+ *
+ *  @param timerList <#timerList description#>
+ *  @param mac       <#mac description#>
+ *  @param socketId  <#socketId description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateTimerList:(NSArray *)timerList
+                         mac:(NSString *)mac
+                    socketId:(int)socketId {
+  @synchronized(self) {
+    //一定存在
+    SDZGSwitch *aSwitch = [self.switchsDict objectForKey:mac];
+    SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
+    socket.timerList = [timerList mutableCopy];
+    [self.switchsDict setObject:aSwitch forKey:mac];
+    return [self.switchsDict allValues];
+  }
+}
+
+/**
+ *  延迟时间更改后执行
+ *
+ *  @param delayTime   <#delayTime description#>
+ *  @param delayAction <#delayAction description#>
+ *  @param mac         <#mac description#>
+ *  @param socketId    <#socketId description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateDelayTime:(int)delayTime
+                 delayAction:(DelayAction)delayAction
+                         mac:(NSString *)mac
+                    socketId:(int)socketId {
+  @synchronized(self) {
+    //一定存在
+    SDZGSwitch *aSwitch = [self.switchsDict objectForKey:mac];
+    SDZGSocket *socket = [aSwitch.sockets objectAtIndex:socketId - 1];
+    socket.delayTime = delayTime;
+    socket.delayAction = delayAction;
+    [self.switchsDict setObject:aSwitch forKey:mac];
+    return [self.switchsDict allValues];
+  }
+}
+
+/**
+ *  设备名字更改后执行
+ *
+ *  @param switchName  <#switchName description#>
+ *  @param socketNames <#socketNames description#>
+ *  @param mac         <#mac description#>
+ *
+ *  @return <#return value description#>
+ */
+- (NSArray *)updateSwitchName:(NSString *)switchName
+                  socketNames:(NSArray *)socketNames
+                          mac:(NSString *)mac {
+  @synchronized(self) {
+    //一定存在
+    SDZGSwitch *aSwitch = [self.switchsDict objectForKey:mac];
+    aSwitch.name = switchName;
+    NSArray *sockets = aSwitch.sockets;
+    for (int i = 0; i < socketNames.count; i++) {
+      SDZGSocket *socket = sockets[i];
+      socket.name = socketNames[i];
+    }
+    [self.switchsDict setObject:aSwitch forKey:mac];
+    return [self.switchsDict allValues];
+  }
+}
+
+- (NSArray *)switchs {
+  return [self.switchsDict allValues];
+}
+
+- (void)saveSwitchsToDB {
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                 ^{
+      [self beginBackgroundUpdateTask];
+      [[DBUtil sharedInstance] saveSwitchs:self.switchs];
+      [self endBackgroundUpdateTask];
+  });
+}
+
+- (void)beginBackgroundUpdateTask {
+  self.backgroundUpdateTask = [[UIApplication sharedApplication]
+      beginBackgroundTaskWithExpirationHandler:^{
+          [self endBackgroundUpdateTask];
+      }];
+}
+
+- (void)endBackgroundUpdateTask {
+  [[UIApplication sharedApplication]
+      endBackgroundTask:self.backgroundUpdateTask];
+  self.backgroundUpdateTask = UIBackgroundTaskInvalid;
+}
+
 @end

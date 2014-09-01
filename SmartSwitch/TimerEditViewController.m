@@ -9,6 +9,7 @@
 #import "TimerEditViewController.h"
 #import "CycleViewController.h"
 #import <NSDate+Calendar.h>
+#import "SwitchDataCeneter.h"
 
 @interface TimerEditViewController ()<PassValueDelegate, UdpRequestDelegate>
 @property(strong, nonatomic) IBOutlet UIView *cellView1;
@@ -199,6 +200,10 @@
                         userInfo:userInfo];
         [self.navigationController popViewControllerAnimated:YES];
     });
+    //更新数据
+    [[SwitchDataCeneter sharedInstance] updateTimerList:self.timers
+                                                    mac:self.aSwtich.mac
+                                               socketId:self.socketId];
   }
 }
 @end

@@ -56,36 +56,34 @@
 
 #pragma mark - NotificationCenter
 - (void)switchUpdate:(NSNotification *)notification {
-  if (notification.object == [SwitchDataCeneter sharedInstance]) {
-    self.switchs = [SwitchDataCeneter sharedInstance].switchs;
-    // TODO:后期在处理
-    dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
-    //      NSDictionary *userInfo = [notification userInfo];
-    //      NSString *mac = userInfo[@"mac"];
-    //    int type = [userInfo[@"type"] intValue];
-    //    if (type == 1) {
-    //      //新增
-    //      dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
-    //    } else {
-    //      for (SwitchListCell *visibleCell in self.visibleCells) {
-    //        int row = [self indexPathForCell:visibleCell].row;
-    //        SDZGSwitch *aSwitch = [self.switchs objectAtIndex:row];
-    //        if ([aSwitch.mac isEqualToString:mac]) {
-    //          NSIndexPath *indexPath = [self indexPathForCell:visibleCell];
-    //          debugLog(@"indexPath row is %d", indexPath.row);
-    //          if (indexPath) {
-    //            dispatch_async(dispatch_get_main_queue(), ^{
-    //                [self beginUpdates];
-    //                [self reloadRowsAtIndexPaths:@[ indexPath ]
-    //                            withRowAnimation:UITableViewRowAnimationNone];
-    //                [self endUpdates];
-    //            });
-    //          }
-    //        }
-    //        break;
-    //      }
-    //    }
-  }
+  self.switchs = [SwitchDataCeneter sharedInstance].switchs;
+  // TODO:后期在处理
+  dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
+  //      NSDictionary *userInfo = [notification userInfo];
+  //      NSString *mac = userInfo[@"mac"];
+  //    int type = [userInfo[@"type"] intValue];
+  //    if (type == 1) {
+  //      //新增
+  //      dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
+  //    } else {
+  //      for (SwitchListCell *visibleCell in self.visibleCells) {
+  //        int row = [self indexPathForCell:visibleCell].row;
+  //        SDZGSwitch *aSwitch = [self.switchs objectAtIndex:row];
+  //        if ([aSwitch.mac isEqualToString:mac]) {
+  //          NSIndexPath *indexPath = [self indexPathForCell:visibleCell];
+  //          debugLog(@"indexPath row is %d", indexPath.row);
+  //          if (indexPath) {
+  //            dispatch_async(dispatch_get_main_queue(), ^{
+  //                [self beginUpdates];
+  //                [self reloadRowsAtIndexPaths:@[ indexPath ]
+  //                            withRowAnimation:UITableViewRowAnimationNone];
+  //                [self endUpdates];
+  //            });
+  //          }
+  //        }
+  //        break;
+  //      }
+  //    }
 }
 
 #pragma mark - UITableViewDataSource

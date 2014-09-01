@@ -9,13 +9,36 @@
 #import "AddSenceViewController.h"
 #import "SceneAddListCell.h"
 #import "SceneAddView.h"
+#import "SceneDetail.h"
 
-@interface AddSenceViewController ()<UITableViewDelegate, UITableViewDataSource,
-                                     UITextFieldDelegate>
+@interface SceneTextField : UITextField
+
+@end
+
+@implementation SceneTextField
+//控制文本所在的的位置，左右缩 10
+- (CGRect)textRectForBounds:(CGRect)bounds {
+  return CGRectInset(bounds, 10, 0);
+}
+
+//控制编辑文本时所在的位置，左右缩 10
+- (CGRect)editingRectForBounds:(CGRect)bounds {
+  return CGRectInset(bounds, 10, 0);
+}
+
+@end
+
+@interface AddSenceViewController ()<
+    UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate,
+    UITextFieldDelegate, SceneAddViewDelegate, SceneAddListCellDeleage>
+- (IBAction)backgroundTouch:(id)sender;
 - (IBAction)back:(id)sender;
 @property(strong, nonatomic) IBOutlet UITableView *tableViewOfSceneList;
-@property(strong, nonatomic) IBOutlet UITextField *textFieldSceneName;
+@property(strong, nonatomic) IBOutlet SceneTextField *textFieldSceneName;
 @property(strong, nonatomic) IBOutlet SceneAddView *viewOfAddScene;
+
+@property(nonatomic, strong) NSMutableArray *detailList;  //保存记录
+@property(nonatomic, strong) NSIndexPath *editIndexPath;  //长按短按时的index
 - (IBAction)save:(id)sender;
 
 @end
@@ -36,6 +59,12 @@
   self.tableViewOfSceneList.dataSource = self;
   self.tableViewOfSceneList.delegate = self;
   self.textFieldSceneName.delegate = self;
+  self.detailList = [@[] mutableCopy];
+  self.viewOfAddScene.delegate = self;
+  // TODO:修改时将数据添加到detailList中
+  //    if (<#condition#>) {
+  //        <#statements#>
+  //    }
 }
 
 - (void)viewDidLoad {
@@ -58,7 +87,7 @@
 #pragma mark - TableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return 1;
+  return self.detailList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -66,6 +95,9 @@
   static NSString *CellId = @"SceneAddListCell";
   SceneAddListCell *listCell = (SceneAddListCell *)
       [self.tableViewOfSceneList dequeueReusableCellWithIdentifier:CellId];
+  listCell.delegate = self;
+  SceneDetail *detail = [self.detailList objectAtIndex:indexPath.row];
+  listCell.lblAction.text = [detail description];
   UILongPressGestureRecognizer *longPressGesture =
       [[UILongPressGestureRecognizer alloc]
           initWithTarget:self
@@ -75,22 +107,58 @@
   return listCell;
 }
 
+#pragma mark - SceneAddListCellDelegate
+- (void)selectedCell:(SceneAddListCell *)cell {
+  NSIndexPath *indexPath = [self.tableViewOfSceneList indexPathForCell:cell];
+  SceneDetail *detail = [self.detailList objectAtIndex:indexPath.row];
+  [self.viewOfAddScene selectTableViewWithMac:detail.mac
+                                     socketId:detail.socketId
+                                      onOrOff:detail.onOrOff
+                                    editIndex:indexPath.row];
+  [self addSceneViewBringToFront];
+}
+
 #pragma mark - SceneAddListCellHandler
 - (void)handlerLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
   CGPoint p = [gestureRecognizer locationInView:self.tableViewOfSceneList];
   NSIndexPath *indexPath = [self.tableViewOfSceneList indexPathForRowAtPoint:p];
+  self.editIndexPath = indexPath;
   if (indexPath && gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-    NSLog(@"indexPath is %d", indexPath.row);
+    UIAlertView *alertView =
+        [[UIAlertView alloc] initWithTitle:@"温馨提示"
+                                   message:@"确定删除该条记录"
+                                  delegate:self
+                         cancelButtonTitle:@"取消"
+                         otherButtonTitles:@"确定", nil];
+    [alertView show];
   }
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet
+- (void)alertView:(UIAlertView *)alertView
     clickedButtonAtIndex:(NSInteger)buttonIndex {
-  NSLog(@"index is %d", buttonIndex);
+  switch (buttonIndex) {
+    case 0:
+      //取消
+      break;
+    case 1:
+      [self.detailList removeObjectAtIndex:self.editIndexPath.row];
+      [self.tableViewOfSceneList reloadData];
+      break;
+    default:
+      break;
+  }
 }
 
 #pragma mark - 场景添加视图显示和消失
 - (void)addScene:(id)sender {
+  [self.viewOfAddScene selectTableViewWithMac:nil
+                                     socketId:0
+                                      onOrOff:YES
+                                    editIndex:-1];
+  [self addSceneViewBringToFront];
+}
+
+- (void)addSceneViewBringToFront {
   CGRect addSceneViewRect = self.viewOfAddScene.frame;
   CGFloat originY = 0;
   if (addSceneViewRect.origin.y == self.view.frame.size.height) {
@@ -113,11 +181,68 @@
   return YES;
 }
 
+#pragma mark - SceneAddViewDelegate
+- (void)selectedSwitch:(SDZGSwitch *)aSwitch
+                socket:(SDZGSocket *)socket
+               onOrOff:(BOOL)onOrOff
+             editIndex:(NSInteger)editIndex {
+  SceneDetail *detail = [[SceneDetail alloc] initWithMac:aSwitch.mac
+                                                socketId:socket.socketId
+                                              switchName:aSwitch.name
+                                              socketName:socket.name
+                                                 onOrOff:onOrOff];
+  if (editIndex == -1) {  //-1表示添加，其他则为修改，并且index即为编辑的索引
+    [self.detailList addObject:detail];
+  } else {
+    [self.detailList replaceObjectAtIndex:editIndex withObject:detail];
+  }
+  [self.tableViewOfSceneList reloadData];
+}
+
+- (IBAction)backgroundTouch:(id)sender {
+  [self.textFieldSceneName resignFirstResponder];
+}
+
 - (IBAction)back:(id)sender {
   [self dismissViewControllerAnimated:YES completion:^{}];
   [self.sidePanelController
       setCenterPanel:kSharedAppliction.centerViewController];
 }
 - (IBAction)save:(id)sender {
+  if ([self check]) {
+  }
+}
+
+//检查数据是否完善
+- (BOOL)check {
+  NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSString *sceneName =
+      [self.textFieldSceneName.text stringByTrimmingCharactersInSet:charSet];
+  if ([sceneName length] == 0) {
+    [self.view
+        makeToast:@"请输入场景名称"
+         duration:1.f
+         position:[NSValue
+                      valueWithCGPoint:CGPointMake(
+                                           self.view.frame.size.width / 2,
+                                           self.view.frame.size.height - 40)]];
+    self.textFieldSceneName.text = @"";  //去除可能的空格或换行
+    [self.textFieldSceneName performSelector:@selector(becomeFirstResponder)
+                                  withObject:nil
+                                  afterDelay:1.f];
+    return NO;
+  }
+  if (self.detailList.count == 0) {
+    [self.view
+        makeToast:@"请先添加一条操作"
+         duration:1.f
+         position:[NSValue
+                      valueWithCGPoint:CGPointMake(
+                                           self.view.frame.size.width / 2,
+                                           self.view.frame.size.height - 40)]];
+    [self performSelector:@selector(addScene:) withObject:nil afterDelay:1.f];
+    return NO;
+  }
+  return YES;
 }
 @end

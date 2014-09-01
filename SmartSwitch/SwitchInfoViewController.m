@@ -7,6 +7,7 @@
 //
 
 #import "SwitchInfoViewController.h"
+#import "SwitchDataCeneter.h"
 @interface SwitchInfoView : UIView
 
 @end
@@ -278,9 +279,16 @@
         self.textFieldSocket2Name.text = self.socket2Name;
       }
   });
+  [[SwitchDataCeneter sharedInstance] updateSwitchName:message.deviceName
+                                           socketNames:message.socketNames
+                                                   mac:self.aSwitch.mac];
 }
 
 - (void)responseMsg40Or42:(CC3xMessage *)message {
+  [[SwitchDataCeneter sharedInstance] updateSwitchName:self.switchName
+                                           socketNames:@[]
+                                                   mac:self.aSwitch.mac];
+
   message.socketId;  // 0代表插座名字，1-n表示插孔n的名字
   message.state;
   debugLog(@"socketId is %d", message.socketId);

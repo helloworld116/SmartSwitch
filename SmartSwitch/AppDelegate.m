@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SwitchDataCeneter.h"
 @interface AppDelegate ()
 @property(nonatomic, strong) NetUtil *netUtil;
 @end
@@ -51,6 +52,7 @@
   // application to its current state in case it is terminated later.
   // If your application supports background execution, this method is called
   // instead of applicationWillTerminate: when the user quits.
+  [[SwitchDataCeneter sharedInstance] saveSwitchsToDB];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

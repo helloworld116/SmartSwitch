@@ -70,7 +70,7 @@
     [self.sidePanelController showLeftPanelAnimated:YES];
   }
   //查询开关状态
-  //  [self updateSwitchStatus];
+  [self updateSwitchStatus];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -277,8 +277,12 @@
     }
     SDZGSocket *socket =
         [editSwitch.sockets objectAtIndex:(message.socketId - 1)];
-    socket.socketStatus = !socket.socketStatus;
-    [[SwitchDataCeneter sharedInstance] updateSwitch:editSwitch];
+    [[SwitchDataCeneter sharedInstance] updateSocketStaus:!socket.socketStatus
+                                                 socketId:socket.socketId
+                                                      mac:message.mac];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+                                                        object:self
+                                                      userInfo:nil];
   }
 }
 
@@ -286,6 +290,9 @@
   if (message.version == 2 && message.state == 0) {
     SDZGSwitch *aSwitch = [SDZGSwitch parseMessageCOrEToSwitch:message];
     [[SwitchDataCeneter sharedInstance] updateSwitch:aSwitch];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+                                                        object:self
+                                                      userInfo:nil];
   }
 }
 @end

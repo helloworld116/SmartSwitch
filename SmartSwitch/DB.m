@@ -196,11 +196,11 @@
                              @(socket.delayTime), @(socket.delayAction),
                              @(socket.socketStatus), socket.imageName];
       for (SDZGTimerTask *timer in socket.timerList) {
-        sql = @"insert into " @"timertask(mac,socketid,weeek,actiontime,"
+        sql = @"insert into " @"timertask(mac,socketid,week,actiontime,"
             @"actiontype,iseffective) values(?,?,?,?,?,?)";
         [self.db executeUpdate:sql, aSwitch.mac, @(socket.socketId),
-                               @(timer.week), @(timer.timerActionType),
-                               @(timer.isEffective)];
+                               @(timer.week), @(timer.actionTime),
+                               @(timer.timerActionType), @(timer.isEffective)];
       }
     }
     [self.db close];
@@ -247,7 +247,7 @@
         socket.timerList = [@[] mutableCopy];
 
         NSString *timertaskSql =
-            @"select * from timer where mac =? and socketid=?";
+            @"select * from timertask where mac =? and socketid=?";
         FMResultSet *timertaskResult =
             [self.db executeQuery:timertaskSql, aSwitch.mac, socket.socketId];
         while (timertaskResult.next) {

@@ -23,14 +23,14 @@
  *  @param socketId
  *  @param name         名称
  *  @param status       开关状态
- *  @param timerSeconds 定时（单位秒钟）
- *  @param delaySeconds 延时（单位秒钟）
+ *  @param timerSeconds 定时列表
+ *  @param delaySeconds 延时（单位分钟）
  */
 - (void)socketId:(int)socketId
       socketName:(NSString *)name
           status:(SocketStatus)status
-           timer:(int)timerSeconds
-           delay:(int)delaySeconds;
+       timerList:(NSArray *)timerList
+           delay:(int)delay;
 
 /**
  *  延迟倒计时

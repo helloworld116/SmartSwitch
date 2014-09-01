@@ -9,6 +9,7 @@
 #import "TimerViewController.h"
 #import "TimerCell.h"
 #import "TimerEditViewController.h"
+#import "SwitchDataCeneter.h"
 #define kAddTimer -1
 
 @interface TimerViewController ()<UdpRequestDelegate, UIActionSheetDelegate>
@@ -31,6 +32,10 @@
 
 - (void)setup {
   self.timers = [@[] mutableCopy];
+  SDZGSocket *socket = [self.aSwitch.sockets objectAtIndex:self.socketId - 1];
+  if (socket.timerList && socket.timerList.count) {
+    [self.timers addObjectsFromArray:socket.timerList];
+  }
   self.request = [UdpRequest manager];
   self.request.delegate = self;
   [self sendMsg17Or19];
@@ -221,13 +226,13 @@
 
 - (void)responseMsg18Or1A:(CC3xMessage *)message {
   if (message.timerTaskList) {
+    [self.timers removeAllObjects];
     [self.timers addObjectsFromArray:message.timerTaskList];
+    [[SwitchDataCeneter sharedInstance] updateTimerList:message.timerTaskList
+                                                    mac:self.aSwitch.mac
+                                               socketId:self.socketId];
   }
-  dispatch_async(dispatch_get_main_queue(), ^{
-      if (self.timers.count) {
-        [self.tableView reloadData];
-      }
-  });
+  dispatch_async(dispatch_get_main_queue(), ^{ [self.tableView reloadData]; });
 }
 
 - (void)responseMsg1EOr20:(CC3xMessage *)message {
@@ -238,6 +243,9 @@
                               withRowAnimation:UITableViewRowAnimationLeft];
         [self.tableView endUpdates];
     });
+    [[SwitchDataCeneter sharedInstance] updateTimerList:self.timers
+                                                    mac:self.aSwitch.mac
+                                               socketId:self.socketId];
   }
 }
 @end

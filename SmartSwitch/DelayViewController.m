@@ -8,6 +8,7 @@
 
 #import "DelayViewController.h"
 #import "DelayTimeCountDownView.h"
+#import "SwitchDataCeneter.h"
 
 @interface DelayTextField : UITextField
 
@@ -322,6 +323,10 @@ preparation before navigation
                                                self.view.frame.size.height -
                                                    40)]];
     });
+    [[SwitchDataCeneter sharedInstance] updateDelayTime:self.actionMinitues
+                                            delayAction:self.actionState
+                                                    mac:self.aSwitch.mac
+                                               socketId:self.socketId];
   }
 }
 
@@ -329,5 +334,9 @@ preparation before navigation
   if (message.delay > 0) {
     [self.viewOfCountDown countDown:message.delay * 60];
   }
+  [[SwitchDataCeneter sharedInstance] updateDelayTime:message.delay
+                                          delayAction:message.onStatus
+                                                  mac:self.aSwitch.mac
+                                             socketId:self.socketId];
 }
 @end

@@ -41,6 +41,8 @@
 		152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 152952D91991BFF800924FC3 /* SwitchAndSceneViewController.m */; };
 		15350EAE19B28EC400274760 /* SceneAddListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 15350EAD19B28EC400274760 /* SceneAddListCell.m */; };
 		15350EB119B2905100274760 /* SceneAddView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15350EB019B2905100274760 /* SceneAddView.m */; };
+		15350EB819B4510200274760 /* SceneDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 15350EB719B4510200274760 /* SceneDetail.m */; };
+		15350EBA19B47E9D00274760 /* api.txt in Resources */ = {isa = PBXBuildFile; fileRef = 15350EB919B47E9D00274760 /* api.txt */; };
 		156CB953199DE70D007A9C35 /* SwitchInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */; };
 		156CB956199DF84A007A9C35 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 156CB955199DF84A007A9C35 /* WelcomeViewController.m */; };
 		1578096D19AC643C00F106FF /* HistoryElec.m in Sources */ = {isa = PBXBuildFile; fileRef = 1578096C19AC643C00F106FF /* HistoryElec.m */; };
@@ -157,6 +159,9 @@
 		15350EAD19B28EC400274760 /* SceneAddListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneAddListCell.m; sourceTree = "<group>"; };
 		15350EAF19B2905100274760 /* SceneAddView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneAddView.h; sourceTree = "<group>"; };
 		15350EB019B2905100274760 /* SceneAddView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneAddView.m; sourceTree = "<group>"; };
+		15350EB619B4510200274760 /* SceneDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDetail.h; sourceTree = "<group>"; };
+		15350EB719B4510200274760 /* SceneDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDetail.m; sourceTree = "<group>"; };
+		15350EB919B47E9D00274760 /* api.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.txt; sourceTree = "<group>"; };
 		156CB951199DE70D007A9C35 /* SwitchInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchInfoViewController.h; sourceTree = "<group>"; };
 		156CB952199DE70D007A9C35 /* SwitchInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchInfoViewController.m; sourceTree = "<group>"; };
 		156CB954199DF84A007A9C35 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
@@ -275,6 +280,7 @@
 		15295250199071EF00924FC3 = {
 			isa = PBXGroup;
 			children = (
+				15350EB919B47E9D00274760 /* api.txt */,
 				152952BB19908B5E00924FC3 /* Util */,
 				152952B419908B2100924FC3 /* thridparty */,
 				1529529A1990897B00924FC3 /* CC3x */,
@@ -448,6 +454,15 @@
 			name = view;
 			sourceTree = "<group>";
 		};
+		15350EB219B450D000274760 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				15350EB619B4510200274760 /* SceneDetail.h */,
+				15350EB719B4510200274760 /* SceneDetail.m */,
+			);
+			name = model;
+			sourceTree = "<group>";
+		};
 		1587F44919921C660061EB86 /* 开关和场景 */ = {
 			isa = PBXGroup;
 			children = (
@@ -494,6 +509,7 @@
 		15BC9E671999B99C006516D8 /* 场景 */ = {
 			isa = PBXGroup;
 			children = (
+				15350EB219B450D000274760 /* model */,
 				15350EAB19B28E8200274760 /* view */,
 				1587F45A199313560061EB86 /* SceneTableView.h */,
 				1587F45B199313570061EB86 /* SceneTableView.m */,
@@ -673,6 +689,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15350EBA19B47E9D00274760 /* api.txt in Resources */,
 				15295278199071F000924FC3 /* Images.xcassets in Resources */,
 				15A7AC99199CA38900EED480 /* Localizable.strings in Resources */,
 				15295267199071EF00924FC3 /* InfoPlist.strings in Resources */,
@@ -741,6 +758,7 @@
 				152952CD19908B7200924FC3 /* ViewUtil.m in Sources */,
 				152952A81990899400924FC3 /* CC3xSwitch.m in Sources */,
 				152952D71991BF4600924FC3 /* MenuViewController.m in Sources */,
+				15350EB819B4510200274760 /* SceneDetail.m in Sources */,
 				1587F456199230BB0061EB86 /* SDZGUserProtocolViewController.m in Sources */,
 				15BCC0B319AAF91900776E7D /* TimerCountdownView.m in Sources */,
 				152952AF1990899F00924FC3 /* CC3xAPManager.m in Sources */,

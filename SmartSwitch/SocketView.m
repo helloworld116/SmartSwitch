@@ -58,13 +58,13 @@
 - (void)socketId:(int)socketId
       socketName:(NSString *)name
           status:(SocketStatus)status
-           timer:(int)timerSeconds
-           delay:(int)delaySeconds {
+       timerList:(NSArray *)timerList
+           delay:(int)delay {
   self.socketId = socketId;
   [self setSocketName:name];
   [self setSocketStatus:status];
-  [self setTimer:timerSeconds];
-  [self countDown:delaySeconds];
+  [self setTimer:[SDZGTimerTask getShowSeconds:timerList]];
+  [self countDown:delay * 60];
 }
 
 - (void)countDown:(int)seconds {

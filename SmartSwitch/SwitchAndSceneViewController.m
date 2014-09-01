@@ -81,8 +81,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
   [self.updateTimer invalidate];
   [super viewWillDisappear:animated];
-  [[DBUtil sharedInstance]
-      saveSwitchs:[SwitchDataCeneter sharedInstance].switchs];
 }
 
 - (void)didReceiveMemoryWarning {

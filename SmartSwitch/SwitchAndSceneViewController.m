@@ -10,19 +10,22 @@
 #import "SwitchTableView.h"
 #import "SceneTableView.h"
 #import "SwitchDataCeneter.h"
+#import "SceneDataCenter.h"
+#import "AddSenceViewController.h"
 
 @interface SwitchAndSceneViewController ()<
-    SwitchTableViewDelegate, UIScrollViewDelegate, UdpRequestDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+    UIScrollViewDelegate, UdpRequestDelegate, SwitchTableViewDelegate,
+    SceneTableViewDelegate>
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
-@property (strong, nonatomic) SwitchTableView *tableViewOfSwitch;
-@property (strong, nonatomic) SceneTableView *tableViewOfScene;
-@property (strong, nonatomic) IBOutlet UIButton *btnSwitch;
-@property (strong, nonatomic) IBOutlet UIButton *btnScene;
+@property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
+@property(strong, nonatomic) SceneTableView *tableViewOfScene;
+@property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
+@property(strong, nonatomic) IBOutlet UIButton *btnScene;
 
-@property (strong, nonatomic) NSTimer *updateTimer;
-@property (strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
-@property (strong, nonatomic) NSArray *switchs;
+@property(strong, nonatomic) NSTimer *updateTimer;
+@property(strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
+@property(strong, nonatomic) NSArray *switchs;
 
 - (IBAction)showSwitchView:(id)sender;
 - (IBAction)showSceneView:(id)sender;
@@ -113,6 +116,7 @@
                                       self.scrollView.frame.size.height);
 
     self.tableViewOfScene = (SceneTableView *)sceneTableView;
+    self.tableViewOfScene.sceneDelegate = self;
     [self.scrollView addSubview:sceneTableView];
   }
   self.scrollView.contentOffset =
@@ -167,6 +171,19 @@
 
 - (void)socketAction:(SDZGSwitch *)aSwitch socketId:(int)socketId {
   [self sendMsg11Or13:aSwitch socketId:socketId];
+}
+
+#pragma mark - SceneTableViewDelegate
+- (void)showSceneDetail:(NSIndexPath *)indexPath {
+  AddSenceViewController *nextVC = [self.storyboard
+      instantiateViewControllerWithIdentifier:@"AddSenceViewController"];
+  nextVC.scene =
+      [[[SceneDataCenter sharedInstance] scenes] objectAtIndex:indexPath.row];
+  [self.navigationController pushViewController:nextVC animated:YES];
+}
+
+- (void)sceneAction:(NSIndexPath *)indexPath {
+  debugLog(@"%s", __func__);
 }
 
 #pragma mark - UIScrollViewDelegate

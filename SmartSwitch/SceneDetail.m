@@ -9,6 +9,8 @@
 #import "SceneDetail.h"
 
 @implementation SceneDetail
+static double interval = 0.5;
+
 - (id)initWithMac:(NSString *)mac
          socketId:(int)socketId
        switchName:(NSString *)switchName
@@ -21,6 +23,15 @@
     self.socketId = socketId;
     self.socketName = socketName;
     self.onOrOff = onOrOff;
+    self.interval = interval;
+  }
+  return self;
+}
+
+- (id)init {
+  self = [super init];
+  if (self) {
+    self.interval = interval;
   }
   return self;
 }

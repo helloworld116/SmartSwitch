@@ -643,7 +643,7 @@ typedef struct {
 
   memcpy(msg.ip, bytes, sizeof(msg.ip));
   free(bytes);
-  msg.port = SERVER_PORT;
+  msg.port = htons(SERVER_PORT);
 
   const char *defaultSwitchName = [DEFAULT_SWITCH_NAME UTF8String];
   memset(msg.deviceName, 0, 32);

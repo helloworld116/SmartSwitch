@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface Scene : NSObject
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, assign) NSInteger indentifier;
-@property (nonatomic, strong) NSArray *detailList;
+@property(nonatomic, strong) NSString *name;
+@property(nonatomic, assign)
+    NSInteger indentifier;  //数据库的索引，便于后续添加或修改操作
+@property(nonatomic, strong) NSArray *detailList;
 @end

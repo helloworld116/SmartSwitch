@@ -18,12 +18,12 @@
 @implementation SceneTextField
 //控制文本所在的的位置，左右缩 10
 - (CGRect)textRectForBounds:(CGRect)bounds {
-  return CGRectInset(bounds, 10, 0);
+  return CGRectInset(bounds, 15, 0);
 }
 
 //控制编辑文本时所在的位置，左右缩 10
 - (CGRect)editingRectForBounds:(CGRect)bounds {
-  return CGRectInset(bounds, 10, 0);
+  return CGRectInset(bounds, 15, 0);
 }
 
 @end
@@ -36,6 +36,7 @@
 @property(strong, nonatomic) IBOutlet UITableView *tableViewOfSceneList;
 @property(strong, nonatomic) IBOutlet SceneTextField *textFieldSceneName;
 @property(strong, nonatomic) IBOutlet SceneAddView *viewOfAddScene;
+@property(strong, nonatomic) NSString *sceneName;
 
 @property(nonatomic, strong) NSMutableArray *detailList;  //保存记录
 @property(nonatomic, strong) NSIndexPath *editIndexPath;  //长按短按时的index
@@ -61,10 +62,12 @@
   self.textFieldSceneName.delegate = self;
   self.detailList = [@[] mutableCopy];
   self.viewOfAddScene.delegate = self;
-  // TODO:修改时将数据添加到detailList中
-  //    if (<#condition#>) {
-  //        <#statements#>
-  //    }
+  if (!self.scene) {
+    self.scene = [[Scene alloc] init];
+  } else {
+    self.textFieldSceneName.text = self.scene.name;
+    [self.detailList addObjectsFromArray:self.scene.detailList];
+  }
 }
 
 - (void)viewDidLoad {
@@ -204,12 +207,27 @@
 }
 
 - (IBAction)back:(id)sender {
+  [self.navigationController popViewControllerAnimated:YES];
   [self dismissViewControllerAnimated:YES completion:^{}];
   [self.sidePanelController
       setCenterPanel:kSharedAppliction.centerViewController];
 }
 - (IBAction)save:(id)sender {
   if ([self check]) {
+    self.scene.name = self.sceneName;
+    self.scene.detailList = self.detailList;
+    BOOL result = [[DBUtil sharedInstance] saveScene:self.scene];
+    if (result) {
+      [self.view makeToast:@"执行成功"
+                  duration:1.f
+                  position:[NSValue valueWithCGPoint:
+                                        CGPointMake(
+                                            self.view.frame.size.width / 2,
+                                            self.view.frame.size.height - 40)]];
+      [[NSNotificationCenter defaultCenter]
+          postNotificationName:kSceneDataChanged
+                        object:nil];
+    }
   }
 }
 
@@ -243,6 +261,7 @@
     [self performSelector:@selector(addScene:) withObject:nil afterDelay:1.f];
     return NO;
   }
+  self.sceneName = sceneName;
   return YES;
 }
 @end

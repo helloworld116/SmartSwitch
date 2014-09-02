@@ -231,7 +231,11 @@
       (UIButton *)[[self.scrollViewDay subviews] objectAtIndex:selectedDay - 1];
   btn.selected = YES;
   self.btnSelectedDay = btn;
-  self.scrollViewDay.contentOffset = CGPointMake((selectedDay - 4) * 55, 0);
+  if (selectedDay > 4) {
+    self.scrollViewDay.contentOffset = CGPointMake((selectedDay - 4) * 55, 0);
+  } else {
+    self.scrollViewDay.contentOffset = CGPointMake(0, 0);
+  }
 }
 
 #pragma mark - 按钮事件

@@ -31,6 +31,7 @@
 #import "ViewUtil.h"
 #import "FirstTimeConfig.h"
 #import "DB.h"
+#import "DESUtil.h"
 #endif
 
 #define kSharedAppliction \
@@ -75,3 +76,11 @@
 
 //在家测试
 #define isHome 0
+
+//通知
+#define kSceneDataChanged @"SceneDataChanged"
+
+//加密
+#define __BASE64(text) [DESUtil base64StringFromText:text]
+#define __TEXT(base64) [DESUtil textFromBase64String:base64]
+#define __HEXSTRING(str) [DESUtil hexStringFromString:str]

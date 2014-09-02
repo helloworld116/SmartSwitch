@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface SceneDetail : NSObject
-@property (nonatomic, strong) NSString *mac;
-@property (nonatomic, strong) NSString *switchName;
-@property (nonatomic, assign) int socketId;
-@property (nonatomic, strong) NSString *socketName;
-@property (nonatomic, assign) BOOL onOrOff;
+@property(nonatomic, strong) NSString *mac;
+@property(nonatomic, strong) NSString *switchName;
+@property(nonatomic, assign) int socketId;
+@property(nonatomic, strong) NSString *socketName;
+@property(nonatomic, assign) BOOL onOrOff;
+@property(nonatomic, assign) double interval;  //执行时间间隔
 
 - (id)initWithMac:(NSString *)mac
          socketId:(int)socketId

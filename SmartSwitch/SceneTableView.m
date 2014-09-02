@@ -8,11 +8,13 @@
 
 #import "SceneTableView.h"
 #import "SceneListCell.h"
+#import "SceneDataCenter.h"
 
 @interface SceneTableView ()<UITableViewDataSource, UITableViewDelegate,
-                             UIActionSheetDelegate>
+                             UIActionSheetDelegate, SceneCellDelegate>
 
-@property(strong, nonatomic) NSMutableArray *scenes;
+@property(strong, nonatomic) NSArray *scenes;
+@property(strong, nonatomic) NSIndexPath *longPressIndexPath;
 @end
 
 @implementation SceneTableView
@@ -20,8 +22,24 @@
 - (void)awakeFromNib {
   self.dataSource = self;
   self.delegate = self;
+  self.scenes = [[SceneDataCenter sharedInstance] scenes];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(sceneUpdate:)
+                                               name:kSceneDataChanged
+                                             object:nil];
 }
 
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:kSceneDataChanged
+                                                object:nil];
+}
+
+- (void)sceneUpdate:(NSNotification *)notification {
+  self.scenes = [[SceneDataCenter sharedInstance] scenes];
+  dispatch_async(dispatch_get_main_queue(), ^{ [self reloadData]; });
+}
 /*
 #pragma mark - Navigation
 
@@ -41,7 +59,7 @@ preparation before navigation
 
 - (NSInteger)tableView:(UITableView *)tableView
     numberOfRowsInSection:(NSInteger)section {
-  return 10;
+  return self.scenes.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
@@ -49,6 +67,9 @@ preparation before navigation
   static NSString *CellId = @"SceneListCell";
   SceneListCell *listCell =
       (SceneListCell *)[tableView dequeueReusableCellWithIdentifier:CellId];
+  listCell.delegate = self;
+  Scene *scene = [self.scenes objectAtIndex:indexPath.row];
+  [listCell setScene:scene];
   UILongPressGestureRecognizer *longPressGesture =
       [[UILongPressGestureRecognizer alloc]
           initWithTarget:self
@@ -61,6 +82,17 @@ preparation before navigation
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  if ([self.sceneDelegate respondsToSelector:@selector(showSceneDetail:)]) {
+    [self.sceneDelegate showSceneDetail:indexPath];
+  }
+}
+
+#pragma mark - SceneCellDelegate
+- (void)sceneAction:(SceneListCell *)cell {
+  NSIndexPath *indexPath = [self indexPathForCell:cell];
+  if ([self.sceneDelegate respondsToSelector:@selector(sceneAction:)]) {
+    [self.sceneDelegate sceneAction:indexPath];
+  }
 }
 
 #pragma mark - SceneListCellHandler
@@ -68,14 +100,13 @@ preparation before navigation
   CGPoint p = [gestureRecognizer locationInView:self];
   NSIndexPath *indexPath = [self indexPathForRowAtPoint:p];
   if (indexPath && gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-    NSLog(@"indexPath is %d", indexPath.row);
+    self.longPressIndexPath = indexPath;
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
                  initWithTitle:@"请选择如何操作该条指令"
                       delegate:self
              cancelButtonTitle:@"取消"
         destructiveButtonTitle:nil
              otherButtonTitles:@"插入", @"重设", @"删除", nil];
-    //  [actionSheet showFromRect:self.bounds inView:self animated:YES];
     [actionSheet showInView:self];
   }
 }
@@ -83,5 +114,31 @@ preparation before navigation
 - (void)actionSheet:(UIActionSheet *)actionSheet
     clickedButtonAtIndex:(NSInteger)buttonIndex {
   NSLog(@"index is %d", buttonIndex);
+  switch (buttonIndex) {
+    case 0:
+      //插入
+      break;
+    case 1:
+      //重设
+      break;
+    case 2: {
+      Scene *scene = [self.scenes objectAtIndex:self.longPressIndexPath.row];
+      BOOL result = [[DBUtil sharedInstance] deleteScene:scene];
+      if (result) {
+        [[NSNotificationCenter defaultCenter]
+            postNotificationName:kSceneDataChanged
+                          object:nil];
+        [self makeToast:@"删除成功"
+               duration:1.f
+               position:[NSValue
+                            valueWithCGPoint:CGPointMake(
+                                                 self.frame.size.width / 2,
+                                                 self.frame.size.height - 40)]];
+      }
+      break;
+    }
+    default:
+      break;
+  }
 }
 @end

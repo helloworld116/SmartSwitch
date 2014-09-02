@@ -29,4 +29,13 @@
   // Configure the view for the selected state
 }
 
+- (void)setScene:(Scene *)scene {
+  self.lblName.text = scene.name;
+}
+
+- (IBAction)doScene:(id)sender {
+  if ([self.delegate respondsToSelector:@selector(sceneAction:)]) {
+    [self.delegate sceneAction:self];
+  }
+}
 @end

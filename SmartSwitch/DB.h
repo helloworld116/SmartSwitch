@@ -14,4 +14,12 @@
 - (void)saveSwitchs:(NSArray *)switchs;
 
 - (NSArray *)getSwitchs;
+
+- (void)deleteSwitch:(NSString *)mac;
+
+- (NSArray *)getScenes;
+
+- (BOOL)saveScene:(id)scene;
+
+- (BOOL)deleteScene:(id)object;
 @end

@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol SceneTableViewDelegate<NSObject>
+@required
+- (void)showSceneDetail:(NSIndexPath *)indexPath;
+- (void)sceneAction:(NSIndexPath *)indexPath;
+@end
 
 @interface SceneTableView : UITableView
-
+@property(nonatomic, assign) id<SceneTableViewDelegate> sceneDelegate;
 @end

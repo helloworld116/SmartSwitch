@@ -12,7 +12,7 @@
 #import "SceneDetail.h"
 
 @interface DBUtil ()
-@property (nonatomic, strong) FMDatabase *db;
+@property(nonatomic, strong) FMDatabase *db;
 @end
 
 @implementation DBUtil
@@ -127,7 +127,7 @@
   if ([self.db open]) {
     NSString *sql = @"create table scenedetail(id integer primary key "
         @"autoincrement,sceneid integer,mac text,action "
-        @"integer,socketid integer);";
+        @"integer,socketid integer,interval real);";
     BOOL success = [self.db executeUpdate:sql];
     if (success) {
       debugLog(@"创建表sceneeetail成功");
@@ -286,20 +286,84 @@
   }
 }
 
-- (NSArray *)getScene {
+- (NSArray *)getScenes {
   NSMutableArray *scenes = [@[] mutableCopy];
   if ([self.db open]) {
-    NSString *sql = @"select * from scene";
+    NSString *sql = @"select * from scene order by id asc";
     FMResultSet *sceneResultSet = [self.db executeQuery:sql];
     while (sceneResultSet.next) {
       Scene *scene = [[Scene alloc] init];
       scene.indentifier = [sceneResultSet intForColumn:@"id"];
       scene.name = [sceneResultSet stringForColumn:@"name"];
-
-      sql = @"select *";
+      sql = @"select switch.name as switchname,socket.name as "
+          @"socketname,scenedetail.mac as mac,scenedetail.interval as "
+          @"interval,scenedetail.action as "
+          @"action,scenedetail.socketid as socketid from "
+          @"switch,socket,scenedetail where switch.mac=scenedetail.mac and "
+          @"socket.socketid=scenedetail.socketid and scenedetail.sceneid = ? "
+          @"order by scenedetail.id asc;";
+      NSMutableArray *sceneDetails = [@[] mutableCopy];
+      FMResultSet *sceneDetailResultSet =
+          [self.db executeQuery:sql, @(scene.indentifier)];
+      while (sceneDetailResultSet.next) {
+        SceneDetail *detail = [[SceneDetail alloc] init];
+        detail.mac = [sceneDetailResultSet stringForColumn:@"mac"];
+        detail.switchName =
+            [sceneDetailResultSet stringForColumn:@"switchname"];
+        detail.socketId = [sceneDetailResultSet intForColumn:@"socketid"];
+        detail.socketName =
+            [sceneDetailResultSet stringForColumn:@"socketname"];
+        detail.onOrOff = [sceneDetailResultSet boolForColumn:@"action"];
+        detail.interval = [sceneDetailResultSet doubleForColumn:@"interval"];
+        [sceneDetails addObject:detail];
+      }
+      scene.detailList = sceneDetails;
+      [scenes addObject:scene];
     }
     [self.db close];
   }
   return scenes;
+}
+
+- (BOOL)saveScene:(id)object {
+  BOOL result = YES;
+  Scene *scene = (Scene *)object;
+  if ([self.db open]) {
+    //先查询，如果存在进行修改操作，否则执行添加操作
+    int sceneId;
+    if (scene.indentifier) {
+      sceneId = scene.indentifier;
+      NSString *sql = @"update scene set name=? where id = ?";
+      [self.db executeUpdate:sql, scene.name, @(scene.indentifier)];
+      sql = @"delete from scenedetail where sceneid = ?";
+      [self.db executeUpdate:sql, @(scene.indentifier)];
+    } else {
+      NSString *sql = @"insert into scene(name) values (?)";
+      [self.db executeUpdate:sql, scene.name];
+      sceneId = (int)[self.db lastInsertRowId];
+    }
+    for (SceneDetail *detail in scene.detailList) {
+      NSString *sql =
+          @"insert into scenedetail(sceneid,mac,action,socketid,interval) "
+          @"values(?,?,?,?,?)";
+      [self.db executeUpdate:sql, @(sceneId), detail.mac, @(detail.onOrOff),
+                             @(detail.socketId), @(detail.interval)];
+    }
+    [self.db close];
+  }
+  return result;
+}
+
+- (BOOL)deleteScene:(id)object {
+  BOOL result = NO;
+  Scene *scene = (Scene *)object;
+  if ([self.db open]) {
+    NSString *sql = @"delete from scene where id=?";
+    result = [self.db executeUpdate:sql, @(scene.indentifier)];
+    sql = @"delete from scenedetail where sceneid = ?";
+    [self.db executeUpdate:sql, @(scene.indentifier)];
+    [self.db close];
+  }
+  return result;
 }
 @end

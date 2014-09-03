@@ -16,6 +16,7 @@
 #import <EGORefreshTableHeaderView.h>
 #import <HexColor.h>
 #import <UIView+Toast.h>
+#import <AFNetworking.h>
 
 #import "AppDelegate.h"
 #import "CC3xUtility.h"
@@ -81,6 +82,5 @@
 #define kSceneDataChanged @"SceneDataChanged"
 
 //加密
-#define __BASE64(text) [DESUtil base64StringFromText:text]
-#define __TEXT(base64) [DESUtil textFromBase64String:base64]
-#define __HEXSTRING(str) [DESUtil hexStringFromString:str]
+#define __ENCRYPT(str) [DESUtil encryptString:str]
+#define __DECRYPT(str) [DESUtil decryptString:str]

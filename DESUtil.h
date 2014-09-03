@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface DESUtil : NSObject
-+ (NSString *)textFromBase64String:(NSString *)base64;
-
-+ (NSString *)base64StringFromText:(NSString *)text;
-
-+ (NSString *)hexStringFromString:(NSString *)string;
++ (NSString *)encryptString:(NSString *)string;
++ (NSString *)decryptString:(NSString *)string;
 @end

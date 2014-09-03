@@ -69,6 +69,7 @@
 		15A7AC9E199CAE3100EED480 /* DelayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A7AC9D199CAE3100EED480 /* DelayViewController.m */; };
 		15ACA9E819B59ACB00E8405C /* SceneDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9E719B59ACB00E8405C /* SceneDataCenter.m */; };
 		15ACA9EB19B5B60500E8405C /* DESUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9EA19B5B60500E8405C /* DESUtil.m */; };
+		15ACA9F219B7120B00E8405C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9F119B7120B00E8405C /* UserInfo.m */; };
 		15B7A30A19A2F69B00C00342 /* SwitchDataCeneter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */; };
 		15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A31219A31E6600C00342 /* SDZGSwitch.m */; };
 		15B941B119A6E0D8007339F8 /* UdpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B941B019A6E0D8007339F8 /* UdpViewController.m */; };
@@ -218,6 +219,8 @@
 		15ACA9E719B59ACB00E8405C /* SceneDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDataCenter.m; sourceTree = "<group>"; };
 		15ACA9E919B5B60500E8405C /* DESUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DESUtil.h; sourceTree = "<group>"; };
 		15ACA9EA19B5B60500E8405C /* DESUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DESUtil.m; sourceTree = "<group>"; };
+		15ACA9F019B7120B00E8405C /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
+		15ACA9F119B7120B00E8405C /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
 		15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataCeneter.h; sourceTree = "<group>"; };
 		15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataCeneter.m; sourceTree = "<group>"; };
 		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDZGSwitch.h; path = ../SDZGSwitch.h; sourceTree = "<group>"; };
@@ -492,6 +495,7 @@
 		1587F44D199229050061EB86 /* 用户相关 */ = {
 			isa = PBXGroup;
 			children = (
+				15ACA9EF19B711EA00E8405C /* model */,
 				1587F44E199229210061EB86 /* LoginViewController.h */,
 				1587F44F199229210061EB86 /* LoginViewController.m */,
 				1587F4511992292D0061EB86 /* RegisterViewController.h */,
@@ -500,6 +504,15 @@
 				1587F455199230BB0061EB86 /* SDZGUserProtocolViewController.m */,
 			);
 			name = "用户相关";
+			sourceTree = "<group>";
+		};
+		15ACA9EF19B711EA00E8405C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				15ACA9F019B7120B00E8405C /* UserInfo.h */,
+				15ACA9F119B7120B00E8405C /* UserInfo.m */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 		15BB6B251994DFD9004D447A /* 自定义控件 */ = {
@@ -812,6 +825,7 @@
 				15BC9E6A1999BA03006516D8 /* HistoryElectricityViewController.m in Sources */,
 				15ACA9EB19B5B60500E8405C /* DESUtil.m in Sources */,
 				1587F462199315760061EB86 /* SceneListCell.m in Sources */,
+				15ACA9F219B7120B00E8405C /* UserInfo.m in Sources */,
 				152952A71990899400924FC3 /* CC3xServerInfo.m in Sources */,
 				152952A91990899400924FC3 /* CC3xTimerTask.m in Sources */,
 				15ACA9E819B59ACB00E8405C /* SceneDataCenter.m in Sources */,

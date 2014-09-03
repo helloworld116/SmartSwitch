@@ -7,13 +7,14 @@
 //
 
 #import "LoginViewController.h"
+#import "UserInfo.h"
 
 @interface LoginViewController ()<UITextFieldDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIView *view1;
-@property (strong, nonatomic) IBOutlet UIView *view2;
-@property (strong, nonatomic) IBOutlet UITextField *textFieldUsername;
-@property (strong, nonatomic) IBOutlet UITextField *textFieldPassword;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIView *view1;
+@property(strong, nonatomic) IBOutlet UIView *view2;
+@property(strong, nonatomic) IBOutlet UITextField *textFieldUsername;
+@property(strong, nonatomic) IBOutlet UITextField *textFieldPassword;
 
 - (IBAction)back:(id)sender;
 - (IBAction)toRegisterPage:(id)sender;
@@ -22,7 +23,7 @@
 - (IBAction)login:(id)sender;
 - (IBAction)touchBackground:(id)sender;
 
-@property (strong, nonatomic) UITextField *activeField;
+@property(strong, nonatomic) UITextField *activeField;
 @end
 
 @implementation LoginViewController
@@ -112,6 +113,9 @@
 }
 
 - (IBAction)login:(id)sender {
+  UserInfo *userInfo =
+      [[UserInfo alloc] initWithUsername:@"happy" password:@"12345678"];
+  [userInfo send];
 }
 
 - (IBAction)touchBackground:(id)sender {

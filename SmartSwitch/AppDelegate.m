@@ -34,12 +34,8 @@
                                    [UIFont boldSystemFontOfSize:22],
                                UITextAttributeTextColor : [UIColor whiteColor]
                              }];
-  const void *tt =
-      [[__BASE64(@"test") dataUsingEncoding:NSUTF8StringEncoding] bytes];
-  debugLog(@"%s", tt);
+  debugLog(@"test is %@", __ENCRYPT(@"test"));
 
-  debugLog(@"............test en is %@",
-           [__BASE64(@"test") dataUsingEncoding:NSUTF8StringEncoding]);
   return YES;
 }
 

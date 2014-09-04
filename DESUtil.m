@@ -73,10 +73,10 @@ static Byte iv[] = {1, 2, 3, 4, 5, 6, 7, 8};
   void *buffer = malloc(bufferSize);
 
   size_t numBytesDecrypted = 0;
-  CCCryptorStatus cryptStatus = CCCrypt(
-      kCCDecrypt, kCCAlgorithmDES, kCCOptionPKCS7Padding | kCCOptionECBMode,
-      keyPtr, kCCBlockSizeDES, iv, [data bytes], dataLength, buffer, bufferSize,
-      &numBytesDecrypted);
+  CCCryptorStatus cryptStatus =
+      CCCrypt(kCCDecrypt, kCCAlgorithmDES, kCCOptionPKCS7Padding, keyPtr,
+              kCCBlockSizeDES, iv, [data bytes], dataLength, buffer, bufferSize,
+              &numBytesDecrypted);
 
   if (cryptStatus == kCCSuccess) {
     return [NSData dataWithBytesNoCopy:buffer length:numBytesDecrypted];
@@ -92,8 +92,11 @@ static Byte iv[] = {1, 2, 3, 4, 5, 6, 7, 8};
     // IOS 自带DES加密 Begin
     data = [self DESEncrypt:data WithKey:key];
     // IOS 自带DES加密 End
-    Byte *byte = (Byte *)[data bytes];
-    return [self parseByte2HexString:byte];
+    //十六进制数据
+    NSString *str = [data description];
+    str = [str substringWithRange:NSMakeRange(1, str.length - 2)];
+    str = [str stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return str;
   } else {
     return LocalStr_None;
   }
@@ -101,11 +104,10 @@ static Byte iv[] = {1, 2, 3, 4, 5, 6, 7, 8};
 
 + (NSString *)decryptString:(NSString *)string {
   if (string && ![string isEqualToString:LocalStr_None]) {
-    //    NSData *data = [self dataWithBase64EncodedString:base64];
-    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *data = [self hexString2Data:string];
     // IOS 自带DES解密 Begin
     data = [self DESDecrypt:data WithKey:key];
-    // IOS 自带DES加密 End
+    // IOS 自带DES解密 End
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
   } else {
     return LocalStr_None;
@@ -123,7 +125,6 @@ static Byte iv[] = {1, 2, 3, 4, 5, 6, 7, 8};
         [hexStr appendFormat:@"0%@", hexByte];
       else
         [hexStr appendFormat:@"%@", hexByte];
-
       i++;
     }
   }
@@ -148,4 +149,17 @@ static Byte iv[] = {1, 2, 3, 4, 5, 6, 7, 8};
   return hexStr;
 }
 
++ (NSData *)hexString2Data:(NSString *)hexString {
+  NSMutableData *data = [[NSMutableData alloc] init];
+  unsigned char whole_byte;
+  char byte_chars[3] = {'\0', '\0', '\0'};
+  int i;
+  for (i = 0; i < [hexString length] / 2; i++) {
+    byte_chars[0] = [hexString characterAtIndex:i * 2];
+    byte_chars[1] = [hexString characterAtIndex:i * 2 + 1];
+    whole_byte = strtol(byte_chars, NULL, 16);
+    [data appendBytes:&whole_byte length:1];
+  }
+  return data;
+}
 @end

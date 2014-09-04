@@ -34,8 +34,8 @@
                                    [UIFont boldSystemFontOfSize:22],
                                UITextAttributeTextColor : [UIColor whiteColor]
                              }];
-  debugLog(@"test is %@", __ENCRYPT(@"test"));
-
+  //  debugLog(@"12345678 is %@", __ENCRYPT(@"12345678"));
+  //  debugLog(@".... is %@", __DECRYPT(__ENCRYPT(@"12345678")));
   return YES;
 }
 

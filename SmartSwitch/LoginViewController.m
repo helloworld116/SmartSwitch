@@ -114,7 +114,7 @@
 
 - (IBAction)login:(id)sender {
   UserInfo *userInfo =
-      [[UserInfo alloc] initWithUsername:@"happy" password:@"12345678"];
+      [[UserInfo alloc] initWithUsername:@"happy" password:@"1234567"];
   [userInfo send];
 }
 

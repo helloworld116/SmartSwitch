@@ -84,3 +84,10 @@
 //加密
 #define __ENCRYPT(str) [DESUtil encryptString:str]
 #define __DECRYPT(str) [DESUtil decryptString:str]
+
+// json
+#define __JSON(str)                                                   \
+  [NSJSONSerialization                                                \
+      JSONObjectWithData:[str dataUsingEncoding:NSUTF8StringEncoding] \
+                 options:kNilOptions                                  \
+                   error:nil]

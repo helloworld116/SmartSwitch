@@ -78,8 +78,14 @@
 //在家测试
 #define isHome 0
 
+//是否当前版本第一次打开
+#define kWelcomePageShow @"WelcomePageShow"
+#define kCurrentVersion @"CurrentVersion"
 //通知
 #define kSceneDataChanged @"SceneDataChanged"
+#define kLoginResponse @"LoginResponse"
+#define kRegisterResponse @"RegisterResponse"
+#define kLoginSuccess @"LoginSuccess"
 
 //加密
 #define __ENCRYPT(str) [DESUtil encryptString:str]

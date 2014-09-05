@@ -82,6 +82,13 @@
 }
 
 - (void)enterMainViewController:(id)sender {
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setObject:@YES forKey:kWelcomePageShow];
+
+  NSString *appVersion =
+      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+  [userDefaults setObject:appVersion forKey:kCurrentVersion];
+
   UIViewController *mainViewController = [self.storyboard
       instantiateViewControllerWithIdentifier:@"SDZGSidePanelController"];
   [mainViewController

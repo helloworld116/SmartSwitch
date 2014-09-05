@@ -1,14 +1,14 @@
 //
-//  LoginResponse.m
+//  ServerResponse.m
 //  SmartSwitch
 //
-//  Created by sdzg on 14-9-4.
+//  Created by sdzg on 14-9-5.
 //  Copyright (c) 2014年 itouchco.com. All rights reserved.
 //
 
-#import "LoginResponse.h"
+#import "ServerResponse.h"
 
-@implementation LoginResponse
+@implementation ServerResponse
 - (id)initWithResponseString:(NSString *)response {
   self = [super init];
   if (self) {
@@ -19,4 +19,5 @@
   }
   return self;
 }
+
 @end

@@ -85,6 +85,7 @@ preparation before navigation
   if ([self.sceneDelegate respondsToSelector:@selector(showSceneDetail:)]) {
     [self.sceneDelegate showSceneDetail:indexPath];
   }
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - SceneCellDelegate

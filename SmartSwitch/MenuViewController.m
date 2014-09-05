@@ -22,7 +22,9 @@
 @interface MenuViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property(strong, nonatomic) NSArray *menuNames;
 @property(strong, nonatomic) NSArray *imageNames;
-
+@property(strong, nonatomic) IBOutlet UIButton *btnLoginLeft;
+@property(strong, nonatomic) IBOutlet UIButton *btnLoginRight;
+@property(strong, nonatomic) IBOutlet UILabel *lblUsername;
 @property(strong, nonatomic) IBOutlet UIView *topView;
 @property(strong, nonatomic) IBOutlet UITableView *tableView;
 
@@ -63,6 +65,11 @@
       initWithFrame:CGRectMake(0, 1, self.view.frame.size.width, 1)];
   view.backgroundColor = [UIColor colorWithHexString:@"#1e353d"];
   self.tableView.tableFooterView = view;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(loginSuccess:)
+                                               name:kLoginSuccess
+                                             object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -72,6 +79,12 @@
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
   // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:kLoginSuccess
+                                                object:nil];
 }
 
 #pragma mark - UITableViewDataSource
@@ -156,5 +169,15 @@
   UIViewController *nextVC = [self.storyboard
       instantiateViewControllerWithIdentifier:@"LoginNavController"];
   [self presentViewController:nextVC animated:YES completion:^{}];
+}
+
+#pragma mark - 登陆成功后的通知
+- (void)loginSuccess:(NSNotification *)notification {
+  NSDictionary *userInfo = [notification userInfo];
+  NSString *username = [userInfo objectForKey:@"username"];
+  self.lblUsername.text = username;
+  self.lblUsername.hidden = NO;
+  self.btnLoginLeft.enabled = NO;
+  self.btnLoginRight.hidden = YES;
 }
 @end

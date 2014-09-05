@@ -70,7 +70,8 @@
 		15ACA9E819B59ACB00E8405C /* SceneDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9E719B59ACB00E8405C /* SceneDataCenter.m */; };
 		15ACA9EB19B5B60500E8405C /* DESUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9EA19B5B60500E8405C /* DESUtil.m */; };
 		15ACA9F219B7120B00E8405C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9F119B7120B00E8405C /* UserInfo.m */; };
-		15ACA9F519B8746900E8405C /* LoginResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9F419B8746800E8405C /* LoginResponse.m */; };
+		15ACA9F819B9528700E8405C /* ServerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9F719B9528700E8405C /* ServerResponse.m */; };
+		15ACA9FB19B9BB8100E8405C /* SceneActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15ACA9FA19B9BB8100E8405C /* SceneActionView.m */; };
 		15B7A30A19A2F69B00C00342 /* SwitchDataCeneter.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */; };
 		15B7A31319A31E6600C00342 /* SDZGSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B7A31219A31E6600C00342 /* SDZGSwitch.m */; };
 		15B941B119A6E0D8007339F8 /* UdpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15B941B019A6E0D8007339F8 /* UdpViewController.m */; };
@@ -222,8 +223,10 @@
 		15ACA9EA19B5B60500E8405C /* DESUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DESUtil.m; sourceTree = "<group>"; };
 		15ACA9F019B7120B00E8405C /* UserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfo.h; sourceTree = "<group>"; };
 		15ACA9F119B7120B00E8405C /* UserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfo.m; sourceTree = "<group>"; };
-		15ACA9F319B8746800E8405C /* LoginResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginResponse.h; sourceTree = "<group>"; };
-		15ACA9F419B8746800E8405C /* LoginResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginResponse.m; sourceTree = "<group>"; };
+		15ACA9F619B9528700E8405C /* ServerResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerResponse.h; sourceTree = "<group>"; };
+		15ACA9F719B9528700E8405C /* ServerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerResponse.m; sourceTree = "<group>"; };
+		15ACA9F919B9BB8100E8405C /* SceneActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneActionView.h; sourceTree = "<group>"; };
+		15ACA9FA19B9BB8100E8405C /* SceneActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneActionView.m; sourceTree = "<group>"; };
 		15B7A30819A2F69B00C00342 /* SwitchDataCeneter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchDataCeneter.h; sourceTree = "<group>"; };
 		15B7A30919A2F69B00C00342 /* SwitchDataCeneter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchDataCeneter.m; sourceTree = "<group>"; };
 		15B7A31119A31E6600C00342 /* SDZGSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDZGSwitch.h; path = ../SDZGSwitch.h; sourceTree = "<group>"; };
@@ -467,6 +470,8 @@
 				15350EAD19B28EC400274760 /* SceneAddListCell.m */,
 				15350EAF19B2905100274760 /* SceneAddView.h */,
 				15350EB019B2905100274760 /* SceneAddView.m */,
+				15ACA9F919B9BB8100E8405C /* SceneActionView.h */,
+				15ACA9FA19B9BB8100E8405C /* SceneActionView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -514,8 +519,8 @@
 			children = (
 				15ACA9F019B7120B00E8405C /* UserInfo.h */,
 				15ACA9F119B7120B00E8405C /* UserInfo.m */,
-				15ACA9F319B8746800E8405C /* LoginResponse.h */,
-				15ACA9F419B8746800E8405C /* LoginResponse.m */,
+				15ACA9F619B9528700E8405C /* ServerResponse.h */,
+				15ACA9F719B9528700E8405C /* ServerResponse.m */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -782,7 +787,6 @@
 				1529526D199071F000924FC3 /* AppDelegate.m in Sources */,
 				15350EB119B2905100274760 /* SceneAddView.m in Sources */,
 				152952D41990D01D00924FC3 /* BaseViewController.m in Sources */,
-				15ACA9F519B8746900E8405C /* LoginResponse.m in Sources */,
 				15BC9E6219989E73006516D8 /* SwitchDetailViewController.m in Sources */,
 				15BC9E651998BD61006516D8 /* SocketView.m in Sources */,
 				152952DA1991BFF800924FC3 /* SwitchAndSceneViewController.m in Sources */,
@@ -839,12 +843,14 @@
 				1587F439199208570061EB86 /* HelpViewController.m in Sources */,
 				1587F44819920B590061EB86 /* BuyViewController.m in Sources */,
 				1578097019AD7D9200F106FF /* DelayTimeCountDownView.m in Sources */,
+				15ACA9F819B9528700E8405C /* ServerResponse.m in Sources */,
 				15E7F6101993189A00C46854 /* SwitchExpandCell.m in Sources */,
 				15BB6B281994DFF5004D447A /* InsetsTextField.m in Sources */,
 				47109D7519A8E80D00F24B42 /* ElecRealTimeView.m in Sources */,
 				1587F45C199313570061EB86 /* SceneTableView.m in Sources */,
 				152952CC19908B7200924FC3 /* XMLUtil.m in Sources */,
 				1587F43C199208600061EB86 /* SettingViewController.m in Sources */,
+				15ACA9FB19B9BB8100E8405C /* SceneActionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

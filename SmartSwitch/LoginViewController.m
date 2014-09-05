@@ -24,6 +24,8 @@
 - (IBAction)touchBackground:(id)sender;
 
 @property(strong, nonatomic) UITextField *activeField;
+@property(strong, nonatomic) NSString *username;
+@property(strong, nonatomic) NSString *password;
 @end
 
 @implementation LoginViewController
@@ -71,6 +73,11 @@
          selector:@selector(keyboardWillBeHidden:)
              name:UIKeyboardWillHideNotification
            object:nil];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(loginResponse:)
+                                               name:kLoginResponse
+                                             object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -83,6 +90,9 @@
       removeObserver:self
                 name:UIKeyboardWillHideNotification
               object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                  name:kLoginResponse
+                                                object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,9 +123,35 @@
 }
 
 - (IBAction)login:(id)sender {
-  UserInfo *userInfo =
-      [[UserInfo alloc] initWithUsername:@"happy" password:@"1234567"];
-  [userInfo send];
+  if ([self check]) {
+    UserInfo *userInfo = [[UserInfo alloc] initWithUsername:self.username
+                                                   password:self.password];
+    [userInfo loginRequest];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+  }
+}
+
+- (BOOL)check {
+  [self touchBackground:nil];
+  NSCharacterSet *charSet = [NSCharacterSet whitespaceCharacterSet];
+  NSString *username =
+      [self.textFieldUsername.text stringByTrimmingCharactersInSet:charSet];
+  NSString *password =
+      [self.textFieldPassword.text stringByTrimmingCharactersInSet:charSet];
+  if (username.length && password.length) {
+    self.username = username;
+    self.password = password;
+    return YES;
+  } else {
+    [self.view
+        makeToast:@"用户名或密码不能为空"
+         duration:1.f
+         position:[NSValue
+                      valueWithCGPoint:CGPointMake(
+                                           self.view.frame.size.width / 2,
+                                           self.view.frame.size.height - 40)]];
+    return NO;
+  }
 }
 
 - (IBAction)touchBackground:(id)sender {
@@ -166,5 +202,39 @@
   UIEdgeInsets contentInsets = UIEdgeInsetsZero;
   self.scrollView.contentInset = contentInsets;
   self.scrollView.scrollIndicatorInsets = contentInsets;
+}
+
+#pragma mark - 登陆消息通知
+- (void)loginResponse:(NSNotification *)notification {
+  [MBProgressHUD hideHUDForView:self.view animated:YES];
+  NSDictionary *info = [notification userInfo];
+  int status = [[info objectForKey:@"status"] intValue];
+  if (status == 1) {
+    ServerResponse *reponse = [info objectForKey:@"data"];
+    switch (reponse.status) {
+      case 1: {
+        //登陆成功
+        NSDictionary *userInfo = @{ @"username" : self.username };
+        [[NSNotificationCenter defaultCenter] postNotificationName:kLoginSuccess
+                                                            object:self
+                                                          userInfo:userInfo];
+
+        [self back:nil];
+        break;
+      }
+      default:
+        [self.view
+            makeToast:reponse.errorMsg
+             duration:1.f
+             position:[NSValue
+                          valueWithCGPoint:CGPointMake(
+                                               self.view.frame.size.width / 2,
+                                               self.view.frame.size.height -
+                                                   40)]];
+        break;
+    }
+  } else if (status == 0) {
+    NSError *error = (NSError *)[info objectForKey:@"data"];
+  }
 }
 @end

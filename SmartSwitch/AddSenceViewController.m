@@ -207,10 +207,13 @@
 }
 
 - (IBAction)back:(id)sender {
-  [self.navigationController popViewControllerAnimated:YES];
-  [self dismissViewControllerAnimated:YES completion:^{}];
-  [self.sidePanelController
-      setCenterPanel:kSharedAppliction.centerViewController];
+  if (self.type == 3) {
+    [self.navigationController popViewControllerAnimated:YES];
+  } else {
+    [self dismissViewControllerAnimated:YES completion:^{}];
+    [self.sidePanelController
+        setCenterPanel:kSharedAppliction.centerViewController];
+  }
 }
 - (IBAction)save:(id)sender {
   if ([self check]) {

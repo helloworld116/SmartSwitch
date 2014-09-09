@@ -12,16 +12,18 @@
 #import "SwitchDataCeneter.h"
 #import "SceneDataCenter.h"
 #import "AddSenceViewController.h"
+#import "SceneActionView.h"
 
 @interface SwitchAndSceneViewController ()<
     UIScrollViewDelegate, UdpRequestDelegate, SwitchTableViewDelegate,
-    SceneTableViewDelegate>
+    SceneTableViewDelegate, SceneActionViewDelegate>
 @property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property(strong, nonatomic) SwitchTableView *tableViewOfSwitch;
 @property(strong, nonatomic) SceneTableView *tableViewOfScene;
 @property(strong, nonatomic) IBOutlet UIButton *btnSwitch;
 @property(strong, nonatomic) IBOutlet UIButton *btnScene;
+@property(strong, nonatomic) IBOutlet SceneActionView *viewOfSceneAction;
 
 @property(strong, nonatomic) NSTimer *updateTimer;
 @property(strong, nonatomic) UdpRequest *request0BOr0D, *request11Or13;
@@ -63,6 +65,8 @@
                                                         object:self
                                                       userInfo:nil];
   }
+  //场景执行页面
+  self.viewOfSceneAction.delegate = self;
 }
 
 - (void)viewDidLoad {
@@ -179,11 +183,28 @@
       instantiateViewControllerWithIdentifier:@"AddSenceViewController"];
   nextVC.scene =
       [[[SceneDataCenter sharedInstance] scenes] objectAtIndex:indexPath.row];
+  nextVC.type = 3;
   [self.navigationController pushViewController:nextVC animated:YES];
 }
 
 - (void)sceneAction:(NSIndexPath *)indexPath {
   debugLog(@"%s", __func__);
+  Scene *scene =
+      [[[SceneDataCenter sharedInstance] scenes] objectAtIndex:indexPath.row];
+  self.viewOfSceneAction.sceneDetails = scene.detailList;
+  CGRect rect =
+      CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+  [UIView animateWithDuration:0.3f
+                   animations:^{ self.viewOfSceneAction.frame = rect; }];
+}
+
+#pragma mark - SceneActionViewDelegate
+- (void)cancelAction {
+  CGRect rect =
+      CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width,
+                 self.view.frame.size.height);
+  [UIView animateWithDuration:0.3f
+                   animations:^{ self.viewOfSceneAction.frame = rect; }];
 }
 
 #pragma mark - UIScrollViewDelegate

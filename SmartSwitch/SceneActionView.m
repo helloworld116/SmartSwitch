@@ -7,6 +7,8 @@
 //
 
 #import "SceneActionView.h"
+@implementation SceneActionCell
+@end
 
 @implementation SceneActionView
 
@@ -18,8 +20,17 @@
   return self;
 }
 
+- (void)sceneDetails:(NSArray *)sceneDetails {
+  _sceneDetails = sceneDetails;
+  int count = sceneDetails.count;
+//self.tableView
+}
+
 - (IBAction)cancel:(id)sender {
-  [self layoutSubviews];
+  //  [self layoutSubviews];
+  if ([self.delegate respondsToSelector:@selector(cancelAction)]) {
+    [self.delegate cancelAction];
+  }
 }
 
 @end

@@ -107,7 +107,7 @@ preparation before navigation
                       delegate:self
              cancelButtonTitle:@"取消"
         destructiveButtonTitle:nil
-             otherButtonTitles:@"插入", @"重设", @"删除", nil];
+             otherButtonTitles:@"删除", nil];
     [actionSheet showInView:self];
   }
 }

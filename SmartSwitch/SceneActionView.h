@@ -7,8 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+@interface SceneActionCell : UITableViewCell
+@property(nonatomic, strong) IBOutlet UILabel *lblInfo;
+@property(nonatomic, strong) IBOutlet UILabel *lblStatus;
+@end
+
+@protocol SceneActionViewDelegate<NSObject>
+- (void)cancelAction;
+@end
 
 @interface SceneActionView : UIView
+@property(nonatomic, strong) NSArray *sceneDetails;
+@property(nonatomic, assign) id<SceneActionViewDelegate> delegate;
 @property(nonatomic, strong) IBOutlet UIView *viewBackground;
 @property(nonatomic, strong) IBOutlet UILabel *lblTitle;
 @property(nonatomic, strong) IBOutlet UITableView *tableView;

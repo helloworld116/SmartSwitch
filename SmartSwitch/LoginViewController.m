@@ -117,9 +117,27 @@
 }
 
 - (IBAction)weiboLogin:(id)sender {
+  [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo
+                    authOptions:nil
+                         result:^(BOOL result, id<ISSPlatformUser> userInfo,
+                                  id<ICMErrorInfo> error) {
+                             if (result) {
+                               NSLog(@".......nickname is %@ and uid is %@",
+                                     [userInfo nickname], [userInfo uid]);
+                             }
+                         }];
 }
 
 - (IBAction)qqLogin:(id)sender {
+  [ShareSDK getUserInfoWithType:ShareTypeQQSpace
+                    authOptions:nil
+                         result:^(BOOL result, id<ISSPlatformUser> userInfo,
+                                  id<ICMErrorInfo> error) {
+                             if (result) {
+                               NSLog(@".......nickname is %@ and uid is %@",
+                                     [userInfo nickname], [userInfo uid]);
+                             }
+                         }];
 }
 
 - (IBAction)login:(id)sender {

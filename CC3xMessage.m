@@ -1406,7 +1406,9 @@ typedef struct {
       [[NSString alloc] initWithBytes:msg.socket2Name
                                length:sizeof(msg.socket1Name)
                              encoding:NSUTF8StringEncoding];
-  message.socketNames = @[ socket1Name, socket2Name ];
+  if (socket1Name && socket2Name) {
+    message.socketNames = @[ socket1Name, socket2Name ];
+  }
   message.crc = msg.crc;
   return message;
 }

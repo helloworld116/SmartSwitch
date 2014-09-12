@@ -44,5 +44,19 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>QQ41B55669</string>
+				<string>wb4142586958</string>
+				<string>tencent1102403177</string>
+				<string>wb801307650</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

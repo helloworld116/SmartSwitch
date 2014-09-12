@@ -230,7 +230,9 @@
       aSwitch.imageName = [switchResult stringForColumn:@"imagename"];
       aSwitch.password = [switchResult stringForColumn:@"password"];
       aSwitch.port = [switchResult intForColumn:@"port"];
-      aSwitch.networkStatus = [switchResult intForColumn:@"networkstatus"];
+      //      aSwitch.networkStatus = [switchResult
+      //      intForColumn:@"networkstatus"];
+      aSwitch.networkStatus = SWITCH_OFFLINE;
       aSwitch.lockStatus = [switchResult intForColumn:@"lockstatus"];
       aSwitch.version = [switchResult intForColumn:@"version"];
       aSwitch.tag = [switchResult intForColumn:@"tag"];
@@ -246,7 +248,9 @@
         //        socket.delayTime = [socketResult intForColumn:@"delaytime"];
         //        socket.delayAction = [socketResult
         //        intForColumn:@"delayaction"];
-        socket.socketStatus = [socketResult intForColumn:@"socketstatus"];
+        //        socket.socketStatus = [socketResult
+        //        intForColumn:@"socketstatus"];
+        socket.socketStatus = SocketStatusOff;
         socket.timerList = [@[] mutableCopy];
 
         NSString *timertaskSql =

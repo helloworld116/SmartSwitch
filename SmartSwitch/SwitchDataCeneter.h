@@ -86,4 +86,13 @@
  *  退出前保存到数据库
  */
 - (void)saveSwitchsToDB;
+
+/**
+ *  删除
+ *
+ *  @param aSwtich <#aSwtich description#>
+ *
+ *  @return <#return value description#>
+ */
+- (BOOL)removeSwitch:(SDZGSwitch *)aSwtich;
 @end

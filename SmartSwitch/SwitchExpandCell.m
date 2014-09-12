@@ -50,6 +50,12 @@
 }
 
 - (IBAction)socketTouched:(id)sender {
+  //是否震动 userdefault
+  BOOL shake =
+      [[[NSUserDefaults standardUserDefaults] valueForKey:kShake] boolValue];
+  if (shake) {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+  }
   if ([self.expandCellDelegate
           respondsToSelector:@selector(socketAction:socketId:)]) {
     UIButton *btn = (UIButton *)sender;

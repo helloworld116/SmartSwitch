@@ -137,6 +137,7 @@ static dispatch_queue_t delegateQueue;
                       port:self.port
                withTimeout:kUDPTimeOut
                        tag:self.tag];
+  dispatch_sync(GLOBAL_QUEUE, ^{ [NSThread sleepForTimeInterval:0.1]; });
 }
 
 - (void)sendMsg05:(NSString *)ip port:(uint16_t)port mode:(SENDMODE)mode {

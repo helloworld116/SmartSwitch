@@ -7,6 +7,22 @@
 //
 
 #import "SettingViewController.h"
+@interface SettingCell : UITableViewCell
+@property(nonatomic, strong) IBOutlet UILabel *lblTitle;
+@property(nonatomic, strong) IBOutlet UISwitch *aSwitch;
+@end
+
+@implementation SettingCell
+- (void)awakeFromNib {
+  [self.aSwitch addTarget:self
+                   action:@selector(changeSwitch:)
+         forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)changeSwitch:(id)sender {
+  [[NSUserDefaults standardUserDefaults] setBool:[sender isOn] forKey:kShake];
+}
+@end
 
 @interface SettingViewController ()
 - (IBAction)back:(id)sender;
@@ -52,5 +68,32 @@ preparation before navigation
       setCenterPanel:kSharedAppliction.centerViewController];
   [[NSNotificationCenter defaultCenter] postNotificationName:@"back"
                                                       object:self];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *cellId = @"SettingCell";
+  SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+  cell.aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kShake];
+  return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView
+    numberOfRowsInSection:(NSInteger)section {
+  return 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView
+    titleForHeaderInSection:(NSInteger)section {
+  NSString *message;
+  switch (section) {
+    case 0:
+      message = @"通用设置";
+      break;
+
+    default:
+      break;
+  }
+  return message;
 }
 @end

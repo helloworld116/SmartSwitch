@@ -35,6 +35,12 @@
   //                        imageWithContentsOfFile:[[NSBundle mainBundle]
   //                                                    pathForResource:@"yanshi01"
   //                                                             ofType:@"png"]]];
+  //  [page1
+  //      setBgImage:[UIImage imageWithContentsOfFile:
+  //                              [[NSBundle mainBundle]
+  //                                  pathForResource:@"yanshi01"
+  //                                           ofType:@"png"
+  //                                      inDirectory:@"Images.xcassets/image"]]];
   [page1 setBgImage:[UIImage imageNamed:@"yanshi01"]];
   EAIntroPage *page2 = [EAIntroPage page];
   //  [page2 setBgImage:[UIImage
@@ -83,7 +89,7 @@
 
 - (void)enterMainViewController:(id)sender {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setObject:@YES forKey:kWelcomePageShow];
+  [userDefaults setObject:@YES forKey:kWelcomePageShowed];
 
   NSString *appVersion =
       [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];

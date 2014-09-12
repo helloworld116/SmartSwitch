@@ -19,27 +19,27 @@
 @interface SwitchDetailViewController ()<UIScrollViewDelegate,
                                          EGORefreshTableHeaderDelegate,
                                          UdpRequestDelegate, SocketViewDelegate>
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
-@property (strong, nonatomic) IBOutlet SocketView *viewSocket1;
-@property (strong, nonatomic) IBOutlet SocketView *viewSocket2;
-@property (strong, nonatomic) IBOutlet UILabel *lblCurrentValue;
+@property(strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property(strong, nonatomic) IBOutlet UIView *contentView;
+@property(strong, nonatomic) IBOutlet ElecRealTimeView *viewOfElecRealTime;
+@property(strong, nonatomic) IBOutlet SocketView *viewSocket1;
+@property(strong, nonatomic) IBOutlet SocketView *viewSocket2;
+@property(strong, nonatomic) IBOutlet UILabel *lblCurrentValue;
 - (IBAction)showHistoryElec:(id)sender;
 
-@property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
-@property (assign, nonatomic) BOOL reloading;
-@property (strong, nonatomic) NSTimer *timerElec;
-@property (strong, nonatomic) NSTimer *timerSwitch;
-@property (strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
+@property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
+@property(assign, nonatomic) BOOL reloading;
+@property(strong, nonatomic) NSTimer *timerElec;
+@property(strong, nonatomic) NSTimer *timerSwitch;
+@property(strong, nonatomic) UdpRequest *request0BOr0D, *request33Or35,
     *request11Or13, *request17Or19, *request53Or55, *request5DOr5F;
 
 //数据
-@property (strong, nonatomic) NSMutableArray *powers;
-@property (strong, nonatomic) SDZGSwitch *aSwitch; //选中的switch
-@property (strong, nonatomic)
-    NSIndexPath *selectIndexPath; //从列表到详情选中的indexPath
-@property (strong, nonatomic) dispatch_queue_t queue;
+@property(strong, nonatomic) NSMutableArray *powers;
+@property(strong, nonatomic) SDZGSwitch *aSwitch;  //选中的switch
+@property(strong, nonatomic)
+    NSIndexPath *selectIndexPath;  //从列表到详情选中的indexPath
+@property(strong, nonatomic) dispatch_queue_t queue;
 @end
 
 @implementation SwitchDetailViewController
@@ -128,50 +128,52 @@
 
 static NSTimeInterval seconds = 0.1;
 - (void)firstSend {
-  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
-  self.queue =
-      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
-  //实时电量
-
-  dispatch_async(self.queue, ^{
-      [self sendMsg33Or35];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  //设备名称
-  dispatch_async(self.queue, ^{
-      [self sendMsg5DOr5F];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  //定时
-  dispatch_async(self.queue, ^{
-      [self send17Or19:1];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  dispatch_async(self.queue, ^{
-      [self send17Or19:2];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  //延时
-  dispatch_async(self.queue, ^{
-      [self sendMsg53Or55:1];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  dispatch_async(self.queue, ^{
-      [self sendMsg53Or55:2];
-      [NSThread sleepForTimeInterval:seconds];
-  });
-  //定时查询
-  [self setTimer];
+  //  // TODO: 优先级 及时电量>名称>定时>延时>开关状态
+  //  self.queue =
+  //      dispatch_queue_create("com.dispatch.serial", DISPATCH_QUEUE_SERIAL);
+  //  //实时电量
+  //
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg33Or35];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //设备名称
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg5DOr5F];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //定时
+  //  dispatch_async(self.queue, ^{
+  //      [self send17Or19:1];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_async(self.queue, ^{
+  //      [self send17Or19:2];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //延时
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg53Or55:1];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  dispatch_async(self.queue, ^{
+  //      [self sendMsg53Or55:2];
+  //      [NSThread sleepForTimeInterval:seconds];
+  //  });
+  //  //定时查询
+  //  [self setTimer];
 
   // TEST
-  //  [self sendMsg33Or35];
-  //  [self sendMsg5DOr5F];
-  //  [self send17Or19:1];
-  //  [self send17Or19:2];
-  //  [self sendMsg53Or55:1];
-  //  [self sendMsg53Or55:2];
-  //  [self sendMsg0BOr0D];
-  //  [self setTimer];
+  dispatch_async(GLOBAL_QUEUE, ^{
+      [self sendMsg33Or35];
+      [self sendMsg5DOr5F];
+      [self send17Or19:1];
+      [self send17Or19:2];
+      [self sendMsg53Or55:1];
+      [self sendMsg53Or55:2];
+      [self sendMsg0BOr0D];
+  });
+  [self setTimer];
 }
 
 #pragma mark - Timer
@@ -269,12 +271,12 @@ preparation before navigation
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:
             (EGORefreshTableHeaderView *)view {
-  return _reloading; // should return if data source model is reloading
+  return _reloading;  // should return if data source model is reloading
 }
 
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
-  return [NSDate date]; // should return date data source was last changed
+  return [NSDate date];  // should return date data source was last changed
 }
 #pragma mark - 发送UDP
 //开关状态

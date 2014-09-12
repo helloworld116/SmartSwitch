@@ -17,6 +17,7 @@
 #import <HexColor.h>
 #import <UIView+Toast.h>
 #import <AFNetworking.h>
+#import <ShareSDK/ShareSDK.h>
 
 #import "AppDelegate.h"
 #import "CC3xUtility.h"
@@ -79,8 +80,9 @@
 #define isHome 0
 
 //是否当前版本第一次打开
-#define kWelcomePageShow @"WelcomePageShow"
+#define kWelcomePageShowed @"WelcomePageShowed"
 #define kCurrentVersion @"CurrentVersion"
+#define kShake @"Shake"
 //通知
 #define kSceneDataChanged @"SceneDataChanged"
 #define kLoginResponse @"LoginResponse"

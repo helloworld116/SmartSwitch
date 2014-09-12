@@ -14,11 +14,13 @@
 
 @interface SwitchTableView ()<UITableViewDelegate, UITableViewDataSource,
                               SwitchListCellDelegate, SwitchExpandCellDelegate,
-                              EGORefreshTableHeaderDelegate>
+                              EGORefreshTableHeaderDelegate,
+                              UIActionSheetDelegate>
 @property(strong, nonatomic) NSArray *switchs;
 @property(assign, nonatomic) BOOL isOpen;  //是否展开
 @property(strong, nonatomic)
     NSIndexPath *selectedIndexPath;  //展开的cell所在的indexPath
+@property(strong, nonatomic) NSIndexPath *longPressIndexPath;
 
 @property(strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property(assign, nonatomic) BOOL reloading;
@@ -126,18 +128,35 @@
     cell.btnExpand.transform = CGAffineTransformMakeRotation(0);
   }
   [cell setCellInfo:aSwitch];
+  UILongPressGestureRecognizer *longPressGesture =
+      [[UILongPressGestureRecognizer alloc]
+          initWithTarget:self
+                  action:@selector(handlerLongPress:)];
+  longPressGesture.minimumPressDuration = 0.5;
+  [cell addGestureRecognizer:longPressGesture];
   return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView
     didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  [SwitchDataCeneter sharedInstance].selectedIndexPath = indexPath;
-  [tableView deselectRowAtIndexPath:indexPath animated:YES];
-  if ([self.switchTableViewDelegate
-          respondsToSelector:@selector(showSwitchDetail:)]) {
-    [self.switchTableViewDelegate showSwitchDetail:indexPath];
+  SDZGSwitch *aSwitch =
+      [[SwitchDataCeneter sharedInstance].switchs objectAtIndex:indexPath.row];
+  if (aSwitch.networkStatus == SWITCH_OFFLINE) {
+    [self
+        makeToast:@"设备不在线"
+         duration:1.f
+         position:[NSValue valueWithCGPoint:CGPointMake(
+                                                self.frame.size.width / 2,
+                                                self.frame.size.height - 40)]];
+  } else {
+    [SwitchDataCeneter sharedInstance].selectedIndexPath = indexPath;
+    if ([self.switchTableViewDelegate
+            respondsToSelector:@selector(showSwitchDetail:)]) {
+      [self.switchTableViewDelegate showSwitchDetail:indexPath];
+    }
   }
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - SwitchListCellDelegate
@@ -238,6 +257,62 @@
 - (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:
                 (EGORefreshTableHeaderView *)view {
   return [NSDate date];  // should return date data source was last changed
+}
+
+#pragma mark - SceneListCellHandler
+- (void)handlerLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+  CGPoint p = [gestureRecognizer locationInView:self];
+  NSIndexPath *indexPath = [self indexPathForRowAtPoint:p];
+  SDZGSwitch *aSwitch = [self.switchs objectAtIndex:indexPath.row];
+
+  if (indexPath && gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    self.longPressIndexPath = indexPath;
+    if (aSwitch.lockStatus == LockStatusOn) {
+      UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                   initWithTitle:@"请选择操作"
+                        delegate:self
+               cancelButtonTitle:@"取消"
+          destructiveButtonTitle:nil
+               otherButtonTitles:@"解锁", @"闪烁", @"删除", nil];
+      [actionSheet showInView:self];
+    } else {
+      UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                   initWithTitle:@"请选择操作"
+                        delegate:self
+               cancelButtonTitle:@"取消"
+          destructiveButtonTitle:nil
+               otherButtonTitles:@"加锁", @"闪烁", @"删除", nil];
+      [actionSheet showInView:self];
+    }
+  }
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet
+    clickedButtonAtIndex:(NSInteger)buttonIndex {
+  SDZGSwitch *aSwitch =
+      [self.switchs objectAtIndex:self.longPressIndexPath.row];
+  switch (buttonIndex) {
+    case 0:
+      //加锁
+      if ([self.switchTableViewDelegate
+              respondsToSelector:@selector(changeSwitchLockStatus:)]) {
+        [self.switchTableViewDelegate changeSwitchLockStatus:aSwitch];
+      }
+      break;
+    case 1:
+      //闪烁
+      if ([self.switchTableViewDelegate
+              respondsToSelector:@selector(blinkSwitch:)]) {
+        [self.switchTableViewDelegate blinkSwitch:aSwitch];
+      }
+      break;
+    case 2:
+      //删除
+      [[SwitchDataCeneter sharedInstance] removeSwitch:aSwitch];
+      break;
+    default:
+      break;
+  }
 }
 
 @end

@@ -8,8 +8,8 @@
 
 #import "SwitchDataCeneter.h"
 @interface SwitchDataCeneter ()
-@property (strong, atomic) NSMutableDictionary *switchsDict;
-@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
+@property(strong, atomic) NSMutableDictionary *switchsDict;
+@property(nonatomic, assign) UIBackgroundTaskIdentifier backgroundUpdateTask;
 @end
 
 @implementation SwitchDataCeneter
@@ -225,4 +225,14 @@
   self.backgroundUpdateTask = UIBackgroundTaskInvalid;
 }
 
+- (BOOL)removeSwitch:(SDZGSwitch *)aSwtich {
+  @synchronized(self) {
+    [self.switchsDict removeObjectForKey:aSwtich.mac];
+    [[DBUtil sharedInstance] deleteSwitch:aSwtich.mac];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
+                                                        object:self
+                                                      userInfo:nil];
+  }
+  return YES;
+}
 @end

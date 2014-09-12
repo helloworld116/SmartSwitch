@@ -56,5 +56,43 @@ preparation before navigation
 }
 
 - (IBAction)share:(id)sender {
+  NSArray *shareList = [ShareSDK
+      getShareListWithType:ShareTypeWeixiSession, ShareTypeWeixiTimeline,
+                           ShareTypeSinaWeibo, ShareTypeQQ,
+                           ShareTypeTencentWeibo, ShareTypeYiXinSession,
+                           ShareTypeMail, ShareTypeSMS, ShareTypeCopy, nil];
+  //定义容器
+  id<ISSContainer> container = [ShareSDK container];
+  [container setIPhoneContainerWithViewController:self];
+
+  //定义分享内容
+  id<ISSContent> publishContent = nil;
+
+  NSString *contentString = @"无线开关APP下载地址http://www.pgyer.com/"
+                            @"6L9J";
+  NSString *titleString = @"分享无线开关APP下载地址";
+  NSString *urlString = @"http://www.ShareSDK.cn";
+  NSString *description = @"Sample";
+
+  publishContent = [ShareSDK content:contentString
+                      defaultContent:@""
+                               image:nil
+                               title:titleString
+                                 url:urlString
+                         description:description
+                           mediaType:SSPublishContentMediaTypeText];
+
+  //定义分享设置
+  id<ISSShareOptions> shareOptions =
+      [ShareSDK simpleShareOptionsWithTitle:@"分享内容"
+                          shareViewDelegate:nil];
+
+  [ShareSDK showShareActionSheet:container
+                       shareList:shareList
+                         content:publishContent
+                   statusBarTips:YES
+                     authOptions:nil
+                    shareOptions:shareOptions
+                          result:nil];
 }
 @end

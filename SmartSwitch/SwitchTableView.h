@@ -11,6 +11,8 @@
 @required
 - (void)showSwitchDetail:(NSIndexPath *)indexPath;
 - (void)socketAction:(SDZGSwitch *)aSwitch socketId:(int)socketId;
+- (void)blinkSwitch:(SDZGSwitch *)aSwitch;
+- (void)changeSwitchLockStatus:(SDZGSwitch *)aSwitch;
 @end
 
 @interface SwitchTableView : UITableView

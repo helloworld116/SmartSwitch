@@ -82,6 +82,7 @@
     [self.sidePanelController showLeftPanelAnimated:YES];
   }
   //查询开关状态
+  NSLog(@"point is %@", NSStringFromCGPoint(self.scrollView.contentOffset));
   [self updateSwitchStatus];
 }
 
@@ -175,6 +176,22 @@
 
 - (void)socketAction:(SDZGSwitch *)aSwitch socketId:(int)socketId {
   [self sendMsg11Or13:aSwitch socketId:socketId];
+}
+
+- (void)blinkSwitch:(SDZGSwitch *)aSwitch {
+  if (!self.request11Or13) {
+    self.request11Or13 = [UdpRequest manager];
+    self.request11Or13.delegate = self;
+  }
+  [self.request11Or13 sendMsg39Or3B:aSwitch on:YES sendMode:ActiveMode];
+}
+
+- (void)changeSwitchLockStatus:(SDZGSwitch *)aSwitch {
+  if (!self.request11Or13) {
+    self.request11Or13 = [UdpRequest manager];
+    self.request11Or13.delegate = self;
+  }
+  [self.request11Or13 sendMsg47Or49:aSwitch sendMode:ActiveMode];
 }
 
 #pragma mark - SceneTableViewDelegate
@@ -301,6 +318,10 @@
     case 0x14:
       [self responseMsg12Or14:message];
       break;
+    case 0x3a:
+    case 0x3c:
+      [self responseMsg3AOr3C:message];
+      break;
     default:
       break;
   }
@@ -334,6 +355,18 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kSwitchUpdate
                                                         object:self
                                                       userInfo:nil];
+  }
+}
+
+- (void)responseMsg3AOr3C:(CC3xMessage *)message {
+  if (message.state == 0) {
+    //成功
+  }
+}
+
+- (void)responseMsg48Or4A:(CC3xMessage *)message {
+  if (message.state == 0) {
+    //成功
   }
 }
 @end

@@ -42,6 +42,12 @@
   if ([self.delegate respondsToSelector:@selector(socketChangeStatus:)]) {
     [self.delegate socketChangeStatus:self.socketId];
   }
+  //是否震动 userdefault
+  BOOL shake =
+      [[[NSUserDefaults standardUserDefaults] valueForKey:kShake] boolValue];
+  if (shake) {
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+  }
 }
 - (IBAction)touchTimer:(id)sender {
   if ([self.delegate respondsToSelector:@selector(socketTimer:)]) {

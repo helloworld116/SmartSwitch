@@ -2,7 +2,7 @@
 //  HistoryElecView.h
 //  SmartSwitch
 //
-//  Created by 文正光 on 14-8-24.
+//  Created by sdzg on 14-8-24.
 //  Copyright (c) 2014年 itouchco.com. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  UdpSocketUtil.m
 //  winmin
 //
-//  Created by 文正光 on 14-7-26.
+//  Created by sdzg on 14-7-26.
 //  Copyright (c) 2014年 itouchco.com. All rights reserved.
 //
 

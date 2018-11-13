@@ -10,29 +10,29 @@
 	<string>SmartSwitch</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E08F8D19-D8A8-47A8-9448-BB945796B31E</key>
+		<key>F1DDD2E62DE9EB78FB274ED8D80006CE7A042141</key>
 		<string>https://github.com/helloworld116/SmartSwitch.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>SmartSwitch.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E08F8D19-D8A8-47A8-9448-BB945796B31E</key>
+		<key>F1DDD2E62DE9EB78FB274ED8D80006CE7A042141</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/helloworld116/SmartSwitch.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E08F8D19-D8A8-47A8-9448-BB945796B31E</string>
+	<string>F1DDD2E62DE9EB78FB274ED8D80006CE7A042141</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E08F8D19-D8A8-47A8-9448-BB945796B31E</string>
+			<string>F1DDD2E62DE9EB78FB274ED8D80006CE7A042141</string>
 			<key>IDESourceControlWCCName</key>
 			<string>SmartSwitch</string>
 		</dict>

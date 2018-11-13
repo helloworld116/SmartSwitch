@@ -2,7 +2,7 @@
 //  UdpRequest.m
 //  SmartSwitch
 //
-//  Created by 文正光 on 14-8-17.
+//  Created by sdzg on 14-8-17.
 //  Copyright (c) 2014年 itouchco.com. All rights reserved.
 //#import "UdpRequest.h"
 
